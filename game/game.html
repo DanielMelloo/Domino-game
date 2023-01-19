@@ -7,16 +7,25 @@
     <link rel="stylesheet" href="game.css">
     <title>Game</title>
     <link rel="icon" href="/assets/dominologo.svg" type="image/x-icon">
-    <button id="play-button">Play</button>
-    <script src="../backend.js"></script>
-
+    <!-- <button id="play-button">Play</button> -->
 </head>
 <body>
+    
+    <div id="menu">
+
+        <button type="button" class="play-button" id="Jogador vs Bot" onclick='game("Jogador vs Bot")'>
+            Jogador vs Bot
+        </button>
+        <button type="button" class="play-button" id="Bot vs Bot" onclick='game("Bot vs Bot")'>
+            Bot vs Bot
+        </button>
+
+    </div>
 
      <!------------------------------------------------- Mão do oponente -------------------------------------------------------------------------------------------->
 
-     <div class="handbox" id="oponent   ">
-        <div class="oponentHand">
+     <div class="handbox" id="opponent">
+        <div class="opponentHand">
             <div class="handSlot">
                     <div class="whitesquare">
         
@@ -2081,18 +2090,9 @@
                     </svg>
                 </div>
             </div>
-
-            
-
-
-
-
-
-
         </div>
     </div>
-
-
-<script scr="../backend.js"></script>
+    <!-- <script src="./teste.js"></script> -->
+    <script src="./backend.js"></script>
 </body>
 </html>

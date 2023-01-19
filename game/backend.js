@@ -720,28 +720,34 @@ function restart(){
     
 }
 
-////////////////////////////////////////
+function testing(){
+    alert("Victory!");
+    return true;
+}
 
-////////////////////////////////////////
-// Main:
-////////////////////////////////////////
 
-    // declaração
+function game(mode){
 
-    let hand_size; // quantidade inicial de peças
-    let player_name;
-    let player_list;
-    let table; // objeto que representa o grupo de peças na mesa
-    let shop; // objeto que representa a pilha de compra
-    let current_player;
-
-    hand_size = 7; // quantidade inicial de peças
-    player_name = "Jogador1";
+    let menu = document.querySelector('#menu');
+    menu.style.display = "none";
     
-    // criando players.
-    player_list = new Array();
-    player_list[human] = new Player(player_name); // objeto que representa o jogador
-    player_list[bot] = new Player("bot"); // objeto que representa o BOT
+
+    switch(mode) {
+
+        case "Jogador vs Bot":
+            alert("jogador!");
+            break;
+        
+        case "Bot vs Bot":
+            alert("bot!");
+            break;
+    
+        default:
+            alert("erro!");
+            break;
+    
+    }
+
 
     do {
         do {
@@ -827,8 +833,34 @@ function restart(){
             } while(match_over() === false);
         }while(game_over() === false);
     }while(restart());
-
     console.log("[Game-Over]");
+
+    return true;
+}
+////////////////////////////////////////
+
+////////////////////////////////////////
+// Main:
+////////////////////////////////////////
+
+    // declaração
+
+    let hand_size; // quantidade inicial de peças
+    let player_name;
+    let player_list;
+    let table; // objeto que representa o grupo de peças na mesa
+    let shop; // objeto que representa a pilha de compra
+    let current_player;
+
+    hand_size = 7; // quantidade inicial de peças
+    player_name = "Jogador1";
+    
+    // criando players.
+    player_list = new Array();
+    player_list[human] = new Player(player_name); // objeto que representa o jogador
+    player_list[bot] = new Player("bot"); // objeto que representa o BOT
+
+    
 
     // (to-do) criar Função para mudar o turno de jogadores. change_player()                                    {Pronto!}
     // (to-do) Metodo na Classe Player para mostrar peças jogaveis.  Player.print_playables()                   {Pronto!}
@@ -842,11 +874,11 @@ function restart(){
 
 //Usar a função de exibição de mensagem quando ocorre uma jogada inválida:
 
-if (!is_valid_move(move)){
+/* if (!is_valid_move(move)){
     show_error_message("Invalid move. Please try again.")
 
     return 
-}
+} */
 
 
 // const playButton = document.querySelector('#play-button');
@@ -902,4 +934,8 @@ playButton.addEventListener("click", function() {
 });
 
 
+console.log('Java');
 
+setTimeout(() => {
+  console.log('Script');
+}, 5000);
