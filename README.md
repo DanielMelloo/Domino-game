@@ -43,7 +43,7 @@ Para contribuir com Dominoh Game, siga estas etapas:
 3. Clone o repositório com `<git clone https://github.com/Orkthi/Domino-game>`;
 4. Informe o git as pastas e arquivos alterados com `<git add>`;
 5. Faça suas alterações e confirme-as: `git commit -m '<mensagem_commit>'`;
-6. Envie para o branch original: `git push origin main`;
+6. Envie para a branch original: `git push origin main`;
 7. Crie a solicitação de pull no repositório clone que aparece no seu perfil.
 
 Como alternativa, consulte a documentação do GitHub em [como criar uma solicitação pull](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
