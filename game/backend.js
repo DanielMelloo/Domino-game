@@ -728,8 +728,30 @@ function testing(){
 
 function game(mode){
 
+    // Apaga o menu
+
     let menu = document.querySelector('#menu');
     menu.style.display = "none";
+
+
+    // Mostra o Jogo
+
+    let gameComponentsList = {
+        '.handbox': 2,
+        '.UsableRectangleW': 55,
+        '.UsableRectangleH': 55,
+    };
+
+
+    for (let obj in gameComponentsList) {
+
+    let k = document.querySelectorAll(obj);
+
+    for (let i = 0; i < gameComponentsList[obj]; i++ ){
+        k[i].classList.remove('classNone');
+    }
+
+    }
     
 
     switch(mode) {

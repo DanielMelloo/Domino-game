@@ -8,6 +8,8 @@
     --color3: #7037cd;
     --color4: #651f71;
     --color5: #3B0944;
+
+    --colorImage: 
 }
 
 html{
@@ -51,6 +53,7 @@ body{
 }
 
 .hand{
+    
     position: fixed;
     bottom: 10px;
     display: flex;
@@ -65,12 +68,11 @@ body{
 
     /* width: 50vw; */
     background-color: var(--color5);
-    
 }
 
-.hand, .opponentHand {
-    /* display: none; */
-}
+/* .hand, .opponentHand {
+    display: none;
+} */
 
 .hand .handSlot{
     margin: 0 2px 0 2px;
@@ -80,14 +82,19 @@ body{
 }
 
 .main{
+    
     background-color: green;
-    /* width: 100%;
-    height: 100%; */
+    width: 100vw;
+    height: 100vh;
     
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: radial-gradient(circle, var(--color1) 0%, var(--color2)  70%, var(--color3) 100%);
     
-    width: 1980px;
-    height: 1080px;
+    /* width: 1980px; */
+    /* height: 1080px; */
 }
 
 .table {
@@ -97,9 +104,8 @@ body{
     
     /* position: fixed; */
 
-
-
-    background-color: blue;
+    
+    
     display: grid;
     
     grid-template-columns: repeat(17, 94px);
@@ -305,10 +311,10 @@ height: 45px;
 }
  
 
-#pieceRec3{
-    /* rotate: 180deg;
-    rotate: 90deg; */   
-}
+/* #pieceRec3{
+    rotate: 180deg;
+    rotate: 90deg; 
+} */
 
 #menu{
     position: fixed;
@@ -345,7 +351,11 @@ height: 45px;
     display: none;
 }
 
+/* Init Game */
 
+.classNone  {
+    display: none;
+}
 
 
 
