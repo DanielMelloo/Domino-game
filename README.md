@@ -16,8 +16,8 @@
 O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
 
 - [x] Landing Page
-- [ ] Estrutura do Jogo
-- [ ] Algoritmo
+- [x] Estrutura do Jogo
+- [x] Algoritmo
 - [ ] Integração
 - [ ] Testes
 
@@ -50,4 +50,4 @@ Como alternativa, consulte a documentação do GitHub em [como criar uma solicit
 
 Qualquer dúvida quanto ao git, [clique aqui](https://docs.google.com/document/d/1GY-16Lr75NpcOLlggQAtETKUDwu3o9VLiN2Jm9Il4Aw/edit?usp=share_link)
 
-[⬆ Voltar ao topo](#nome-do-projeto)<br>
+[⬆ Voltar ao topo](#)<br>
