@@ -318,7 +318,7 @@ height: 45px;
 #menu{
     position: fixed;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -435,4 +435,7 @@ height: 45px;
 .remaining-6 .whitesquare,
 .remaining-7 .whitesquare {
 display: block;
+}
+.hide-opponent-hand {
+    display: none;
 }

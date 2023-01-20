@@ -28,7 +28,7 @@ class Piece {
         this.playable = new Array();
         this.playable[left] = no;
         this.playable[right] = no;
-
+        this.svg = this.generate_svg(value_left, value_right);
     }
     string(){ // (W.I.P)
         return "["+this.value[left]+"|"+this.value[right]+"]";
@@ -51,7 +51,7 @@ class Piece {
         return (this.value[left] + this.value[right]);
     }
     
-    /*check_can_play_left(){ // (obsoleta) verifica se pode jogar na ponta esquerda da mesa.
+    /* check_can_play_left(){ // (obsoleta) verifica se pode jogar na ponta esquerda da mesa.
         let first = 0;
 
         if((table[first] === this.value[right]) || (!table.length)) {
@@ -149,7 +149,6 @@ class Player {
         this.can_play;
     }
     draw_piece(quantity = 1) { // compra uma peça da pilha inicial
-        
         if(quantity <= shop.length){
             for(var i = 0; i < quantity; i++){
                 var piece = shop.pop();                
@@ -399,17 +398,17 @@ class Player {
 ////////////////////////////////////////
 
 function generate_pile(pile) { // gera a pilha inicial de peças.
+    
+    let svgs = document.getElementById("values_svg").children;
+
     for(let i = 0; i <= 6; i++){
         pile.push(new Piece(i,i));
     }
     for(let i = 0; i <= 6; i++){
         for(let j = i; j <= 6; j++){
-           
             if(!(i === j)){
                 pile.push(new Piece(i,j));
             }
-            
-
         }
     }
 }
@@ -990,36 +989,3 @@ setTimeout(() => {
 
 */
 
-
-// modificações de movimentação 
-
-function updateOpponentHand(piecesRemaining) {
-    const opponentHand = document.querySelector(".opponentHand");
-    for (let i = 0; i < 7; i++) {
-        const handSlot = opponentHand.children[i];
-        if (i < piecesRemaining) {
-            handSlot.classList.remove("remaining-0");
-            handSlot.classList.add("remaining-" + (piecesRemaining - i));
-        } else {
-            handSlot.classList.remove("remaining-" + (piecesRemaining - i));
-            handSlot.classList.add("remaining-0");
-        }
-    }
-}
-function play_piece_on_hand(element_id) {
-    var position = element_id;
-    play_piece(position);
-}
-function hideOpponentHand() {
-    const opponentHand = document.querySelectorAll('.opponentHand .handSlot');
-    opponentHand.forEach(piece => {
-        piece.classList.add('hidden');
-    });
-}
-
-function showOpponentHand() {
-    const opponentHand = document.querySelectorAll('.opponentHand .handSlot');
-    opponentHand.forEach(piece => {
-        piece.classList.remove('hidden');
-    });
-}
