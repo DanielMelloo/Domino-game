@@ -22,7 +22,7 @@
 
     </div>
 
-     <!------------------------------------------------- Mão do oponente -------------------------------------------------------------------------------------------->
+     <!------------------------------------------------- Mão do oponente ---------------------------------------------------------------->
 
      <div class="handbox classNone" id="opponent">
         <div class="opponentHand">
@@ -64,15 +64,35 @@
         </div>
      </div>
 
-    <!------------------------------------------------- Mão do jogador -------------------------------------------------------------------------------------------->
-    
-    <div class="handbox classNone" id="playerHand">
-        <div class="hand">
-            <div class="handSlot" id="slotId1">
+    <!------------------------------------------------- Modificações Teste -------------------------------------------------------------->
 
-                <div class="sideUp"  >
-                    <svg width="45" height="45">
+    <!-- <div class="handbox classNone" id="opponent">
+        <div class="opponentHand">
+            <div class="handSlot remaining-7">
+                <div class="whitesquare facedown">
+                </div>
+            </div>
+            Additional hand slots 1
+        </div>
+    </div> -->
+
+
+
+    <!------------------------------------------------- Mão do jogador ------------------------------------------------------------------>
+
     
+    <!---------------------------------------teste----------------------------------------->
+
+    <!---------------------------------------teste----------------------------------------->
+
+    <div class="handbox classNone" id="playerHand">
+        <div class="hand" id="playerHandInner">
+            <div class="handSlot" id="slotId1" onclick='handPieces("slotId1")'>
+
+                <div class="sideUp">
+                    <svg width="45" height="45">
+
+
                         <rect x="0" y="0" width="100%" height= "100%"
                         style="filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));;opacity:0" />
                     
@@ -83,6 +103,8 @@
                         <circle cx="34" cy="11" r="3" fill="black"/>
                         <circle cx="34" cy="22.5" r="3" fill="black"/>
                         <circle cx="34" cy="34" r="3" fill="black"/>
+
+                        
                     </svg>
             
                 </div>
@@ -105,7 +127,7 @@
                 
             </div>
                 
-            <div class="handSlot" id="slotId2">
+            <div class="handSlot" id="slotId2" onclick='handPieces("slotId2")'>
                 <div class="pieceside1" id="piece66Side1">
                     <svg class="rotate" width="45" height="45">
     
@@ -144,7 +166,7 @@
                 
             </div>
 
-            <div class="handSlot" id="slotId3">
+            <div class="handSlot" id="slotId3" onclick='handPieces("slotId3")'>
                 <div class="pieceside1" id="piece66Side1">
                     <svg class="rotate" width="45" height="45">
     
@@ -183,7 +205,7 @@
                 
             </div>
 
-            <div class="handSlot" id="slotId4">
+            <div class="handSlot" id="slotId4" onclick='handPieces("slotId4")'>
                 <div class="pieceside1" id="piece66Side1">
                     <svg class="rotate" width="45" height="45">
     
@@ -222,7 +244,7 @@
                 
             </div>
 
-            <div class="handSlot" id="slotId5">
+            <div class="handSlot" id="slotId5" onclick='handPieces("slotId5")'>
                 <div class="pieceside1" id="piece66Side1">
                     <svg class="rotate" width="45" height="45">
     
@@ -261,7 +283,7 @@
                 
             </div>
 
-            <div class="handSlot" id="slotId6">
+            <div class="handSlot" id="slotId6" onclick='handPieces("slotId6")'>
                 <div class="pieceside1" id="piece66Side1">
                     <svg class="rotate" width="45" height="45">
     
@@ -300,7 +322,7 @@
                 
             </div>
 
-            <div class="handSlot" id="slotId7">
+            <div class="handSlot" id="slotId7" onclick='handPieces("slotId7")'>
                 <div class="pieceside1" id="piece66Side1">
                     <svg class="rotate" width="45" height="45">
     
@@ -338,6 +360,7 @@
                 </div>
                 
             </div>
+            
 
         </div>  
     </div>
@@ -349,8 +372,8 @@
     <div class="main">
 
         <div class="table">
-            <div class="horizontalBox" id="div1">
-                <div class="UsableRectangleW classHidden">
+            <div class="horizontalBox classNone" id="div1">
+                <div class="UsableRectangleW">
 
                     <div class="sideLeft">
 
@@ -395,7 +418,7 @@
 
             </div>
 
-            <div class="horizontalBox" id="div2" > 
+            <div class="horizontalBox classNone" id="div2" > 
                 <div class="UsableRectangleW">
 
                     <div class="sideLeft">
@@ -438,7 +461,7 @@
             
             </div> 
             
-            <div class="horizontalBox" id="div3" > 
+            <div class="horizontalBox classNone" id="div3" > 
                 <div class="UsableRectangleW" id="pieceRec3" >
                     <div class="sideLeft">
 
@@ -479,7 +502,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div4"> 
+            <div class="verticalBox classNone" id="div4"> 
                 <div class="UsableRectangleH">
                     
 
@@ -528,7 +551,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div5" > 
+            <div class="verticalBox classNone" id="div5" > 
                 <div class="UsableRectangleH">
 
                 </div>
@@ -539,7 +562,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div6" > 
+            <div class="verticalBox classNone" id="div6" > 
                 <div class="UsableRectangleH">
 
                 </div>
@@ -550,7 +573,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div7" > 
+            <div class="horizontalBox classNone" id="div7" > 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -561,7 +584,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div8" > 
+            <div class="horizontalBox classNone" id="div8" > 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -572,7 +595,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div9" > 
+            <div class="horizontalBox classNone" id="div9" > 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -583,7 +606,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div10"> 
+            <div class="horizontalBox classNone" id="div10"> 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -594,7 +617,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div11"> 
+            <div class="horizontalBox classNone" id="div11"> 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -605,7 +628,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div12"> 
+            <div class="horizontalBox classNone" id="div12"> 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -616,7 +639,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div13"> 
+            <div class="verticalBox classNone" id="div13"> 
                 <div class="rectangleLeft">
 
                 </div>
@@ -627,7 +650,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div14"> 
+            <div class="verticalBox classNone" id="div14"> 
                 <div class="rectangleLeft">
 
                 </div>
@@ -638,7 +661,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div15"> 
+            <div class="verticalBox classNone" id="div15"> 
                 <div class="rectangleLeft">
 
                 </div>
@@ -649,7 +672,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div16"> 
+            <div class="verticalBox classNone" id="div16"> 
                 <div class="rectangleLeft">
 
                 </div>
@@ -660,7 +683,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div17"> 
+            <div class="verticalBox classNone" id="div17"> 
                 <div class="rectangleLeft">
 
                 </div>
@@ -671,7 +694,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div18"> 
+            <div class="horizontalBox classNone" id="div18"> 
                 <div class="RectangleUp">
 
                 </div>
@@ -682,7 +705,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div19"> 
+            <div class="horizontalBox classNone" id="div19"> 
                 <div class="RectangleUp">
 
                 </div>
@@ -693,7 +716,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div20"> 
+            <div class="horizontalBox classNone" id="div20"> 
                 <div class="RectangleUp">
 
                 </div>
@@ -704,7 +727,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div21"> 
+            <div class="horizontalBox classNone" id="div21"> 
                 <div class="RectangleUp">
 
                 </div>
@@ -715,7 +738,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div22"> 
+            <div class="verticalBox classNone" id="div22"> 
                 <div class="UsableRectangleH">
 
                 </div>
@@ -726,7 +749,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div23"> 
+            <div class="verticalBox classNone" id="div23"> 
                 <div class="UsableRectangleH">
 
                 </div>
@@ -737,7 +760,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div24"> 
+            <div class="verticalBox classNone" id="div24"> 
                 <div class="UsableRectangleH">
 
                 </div>
@@ -748,7 +771,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div25"> 
+            <div class="horizontalBox classNone" id="div25"> 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -759,7 +782,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div26"> 
+            <div class="horizontalBox classNone" id="div26"> 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -770,7 +793,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div27"> 
+            <div class="verticalBox classNone" id="div27"> 
                 <div class="rectangleLeft">
 
                 </div>
@@ -781,7 +804,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div28"> 
+            <div class="verticalBox classNone" id="div28"> 
                 <div class="rectangleLeft">
 
                 </div>
@@ -792,7 +815,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div29"> 
+            <div class="horizontalBox classNone" id="div29"> 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -803,7 +826,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div30"> 
+            <div class="horizontalBox classNone" id="div30"> 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -814,7 +837,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div31">
+            <div class="verticalBox classNone" id="div31">
         
                 <div class="rectangleLeft">
 
@@ -827,7 +850,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div32"> 
+            <div class="verticalBox classNone" id="div32"> 
                 <div class="rectangleLeft">
 
                 </div>
@@ -838,7 +861,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div33"> 
+            <div class="verticalBox classNone" id="div33"> 
                 <div class="rectangleLeft">
 
                 </div>
@@ -849,7 +872,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div34"> 
+            <div class="horizontalBox classNone" id="div34"> 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -860,7 +883,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div35"> 
+            <div class="horizontalBox classNone" id="div35"> 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -871,7 +894,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div36"> 
+            <div class="horizontalBox classNone" id="div36"> 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -882,7 +905,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div37"> 
+            <div class="horizontalBox classNone" id="div37"> 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -893,7 +916,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div38"> 
+            <div class="horizontalBox classNone" id="div38"> 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -904,7 +927,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div39"> 
+            <div class="horizontalBox classNone" id="div39"> 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -915,7 +938,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div40"> 
+            <div class="verticalBox classNone" id="div40"> 
                 <div class="UsableRectangleH">
 
                 </div>
@@ -926,7 +949,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div41"> 
+            <div class="verticalBox classNone" id="div41"> 
                 <div class="UsableRectangleH">
 
                 </div>
@@ -937,7 +960,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div42"> 
+            <div class="verticalBox classNone" id="div42"> 
                 <div class="UsableRectangleH">
 
                 </div>
@@ -948,7 +971,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div43"> 
+            <div class="verticalBox classNone" id="div43"> 
                 <div class="UsableRectangleH">
 
                 </div>
@@ -959,7 +982,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div44"> 
+            <div class="verticalBox classNone" id="div44"> 
                 <div class="UsableRectangleH">
 
                 </div>
@@ -970,7 +993,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div45"> 
+            <div class="horizontalBox classNone" id="div45"> 
                 <div class="RectangleUp">
 
                 </div>
@@ -981,7 +1004,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div46"> 
+            <div class="horizontalBox classNone" id="div46"> 
                 <div class="RectangleUp">
 
                 </div>
@@ -992,7 +1015,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div47"> 
+            <div class="horizontalBox classNone" id="div47"> 
                 <div class="RectangleUp">
 
                 </div>
@@ -1003,7 +1026,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div48"> 
+            <div class="horizontalBox classNone" id="div48"> 
                 <div class="RectangleUp">
 
                 </div>
@@ -1014,7 +1037,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div49"> 
+            <div class="verticalBox classNone" id="div49"> 
                 <div class="rectangleLeft">
 
                 </div>
@@ -1025,7 +1048,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div50"> 
+            <div class="verticalBox classNone" id="div50"> 
                 <div class="rectangleLeft">
 
                 </div>
@@ -1036,7 +1059,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div51"> 
+            <div class="verticalBox classNone" id="div51"> 
                 <div class="rectangleLeft">
 
                 </div>
@@ -1047,7 +1070,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div52"> 
+            <div class="horizontalBox classNone" id="div52"> 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -1058,7 +1081,7 @@
             
             </div>
             
-            <div class="horizontalBox" id="div53"> 
+            <div class="horizontalBox classNone" id="div53"> 
                 <div class="UsableRectangleW">
 
                 </div>
@@ -1069,7 +1092,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div54"> 
+            <div class="verticalBox classNone" id="div54"> 
                 <div class="UsableRectangleH">
 
                 </div>
@@ -1080,7 +1103,7 @@
             
             </div>
             
-            <div class="verticalBox" id="div55"> 
+            <div class="verticalBox classNone" id="div55"> 
                 <div class="UsableRectangleH">
 
                 </div>
@@ -1093,7 +1116,7 @@
 
             <!---------------------------------------- Peças---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece00">
+            <div class="gamepiece classNone" id="piece00">
 
                 <div class="pieceside1" id="piece00Side1">
                     <svg width="45" height="45">
@@ -1117,7 +1140,7 @@
 
             <!---------------------------------------- Peça 01 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece01">
+            <div class="gamepiece classNone" id="piece01">
 
                 <div class="pieceside1" id="piece01Side1">
                     <svg width="45" height="45">
@@ -1141,7 +1164,7 @@
 
             <!---------------------------------------- Peça 02 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece02">
+            <div class="gamepiece classNone" id="piece02">
 
                 <div class="pieceside1" id="piece02Side1">
                     <svg width="45" height="45">
@@ -1170,7 +1193,7 @@
 
             <!---------------------------------------- Peça 03 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece02">
+            <div class="gamepiece classNone" id="piece02">
 
                 <div class="pieceside1" id="piece03Side1">
                     <svg width="45" height="45">
@@ -1201,7 +1224,7 @@
             
             <!---------------------------------------- Peça 04 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece04">
+            <div class="gamepiece classNone" id="piece04">
 
                 <div class="pieceside1" id="piece04Side1">
                     <svg width="45" height="45">
@@ -1230,7 +1253,7 @@
 
             <!---------------------------------------- Peça 05 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece05">
+            <div class="gamepiece classNone" id="piece05">
 
                 <div class="pieceside1" id="piece05Side1">
                     <svg width="45" height="45">
@@ -1261,7 +1284,7 @@
 
             <!---------------------------------------- Peça 06 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece06">
+            <div class="gamepiece classNone" id="piece06">
 
                 <div class="pieceside1" id="piece06Side1">
                     <svg width="45" height="45">
@@ -1292,7 +1315,7 @@
 
             <!---------------------------------------- Peça 11 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece11">
+            <div class="gamepiece classNone" id="piece11">
 
                 <div class="pieceside1" id="piece11Side1">
                     <svg width="45" height="45">
@@ -1326,7 +1349,7 @@
 
             <!---------------------------------------- Peça 12 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece11">
+            <div class="gamepiece classNone" id="piece11">
 
                 <div class="pieceside1" id="piece11Side1">
                     <svg width="45" height="45">
@@ -1358,7 +1381,7 @@
 
             <!---------------------------------------- Peça 13 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece13">
+            <div class="gamepiece classNone" id="piece13">
 
                 <div class="pieceside1" id="piece13Side1">
                     <svg width="45" height="45">
@@ -1392,7 +1415,7 @@
 
             <!---------------------------------------- Peça 14 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece14">
+            <div class="gamepiece classNone" id="piece14">
 
                 <div class="pieceside1" id="piece14Side1">
                     <svg width="45" height="45">
@@ -1424,7 +1447,7 @@
 
             <!---------------------------------------- Peça 15 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece15">
+            <div class="gamepiece classNone" id="piece15">
 
                 <div class="pieceside1" id="piece15Side1">
                     <svg width="45" height="45">
@@ -1458,7 +1481,7 @@
             
             <!---------------------------------------- Peça 16 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece16">
+            <div class="gamepiece classNone" id="piece16">
 
                 <div class="pieceside1" id="piece16Side1">
                     <svg width="45" height="45">
@@ -1492,7 +1515,7 @@
 
             <!---------------------------------------- Peça 22 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece22Side1">
+            <div class="gamepiece classNone" id="piece22Side1">
 
                 <div class="pieceside1" id="piece22Side1">
                     <svg width="45" height="45">
@@ -1529,7 +1552,7 @@
             
             <!---------------------------------------- Peça 23 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece23Side1">
+            <div class="gamepiece classNone" id="piece23Side1">
 
                 <div class="pieceside1" id="piece23Side1">
                     <svg width="45" height="45">
@@ -1568,7 +1591,7 @@
             
             <!---------------------------------------- Peça 24 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece24Side1">
+            <div class="gamepiece classNone" id="piece24Side1">
 
                 <div class="pieceside1" id="piece24Side1">
                     <svg width="45" height="45">
@@ -1606,7 +1629,7 @@
 
             <!---------------------------------------- Peça 25 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece25Side1">
+            <div class="gamepiece classNone" id="piece25Side1">
 
                 <div class="pieceside1" id="piece25Side1">
                     <svg width="45" height="45">
@@ -1647,7 +1670,7 @@
 
             <!---------------------------------------- Peça 26 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece26Side1">
+            <div class="gamepiece classNone" id="piece26Side1">
 
                 <div class="pieceside1" id="piece26Side1">
                     <svg width="45" height="45">
@@ -1686,7 +1709,7 @@
 
             <!---------------------------------------- Peça 33 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece33Side1">
+            <div class="gamepiece classNone" id="piece33Side1">
 
                 <div class="pieceside1" id="piece33Side1">
                     <svg width="45" height="45">
@@ -1727,7 +1750,7 @@
 
             <!---------------------------------------- Peça 34 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece34Side1">
+            <div class="gamepiece classNone" id="piece34Side1">
 
                 <div class="pieceside1" id="piece34Side1">
                     <svg width="45" height="45">
@@ -1766,7 +1789,7 @@
 
             <!---------------------------------------- Peça 35 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece35Side1">
+            <div class="gamepiece classNone" id="piece35Side1">
 
                 <div class="pieceside1" id="piece35Side1">
                     <svg width="45" height="45">
@@ -1807,7 +1830,7 @@
 
             <!---------------------------------------- Peça 36 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece36Side1">
+            <div class="gamepiece classNone" id="piece36Side1">
 
                 <div class="pieceside1" id="piece36Side1">
                     <svg width="45" height="45">
@@ -1848,7 +1871,7 @@
 
             <!---------------------------------------- Peça 44 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece44Side1">
+            <div class="gamepiece classNone" id="piece44Side1">
 
                 <div class="pieceside1" id="piece44Side1">
                     <svg width="45" height="45">
@@ -1885,7 +1908,7 @@
 
             <!---------------------------------------- Peça 45 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece45Side1">
+            <div class="gamepiece classNone" id="piece45Side1">
 
                 <div class="pieceside1" id="piece45Side1">
                     <svg width="45" height="45">
@@ -1924,7 +1947,7 @@
 
             <!---------------------------------------- Peça 46 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece46Side1">
+            <div class="gamepiece classNone" id="piece46Side1">
 
                 <div class="pieceside1" id="piece46Side1">
                     <svg width="45" height="45">
@@ -1963,7 +1986,7 @@
             
             <!---------------------------------------- Peça 55 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece55Side1">
+            <div class="gamepiece classNone" id="piece55Side1">
 
                 <div class="pieceside1" id="piece55Side1">
                     <svg width="45" height="45">
@@ -2004,7 +2027,7 @@
 
             <!---------------------------------------- Peça 56 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece56Side1">
+            <div class="gamepiece classNone" id="piece56Side1">
 
                 <div class="pieceside1" id="piece56Side1">
                     <svg width="45" height="45">
@@ -2044,7 +2067,7 @@
             </div>
 
             <!---------------------------------------- Peça na mão do oponente ---------------------------------------------------------------------->
-            <div class="gamepiece">
+            <div class="gamepiece classNone">
                 <div class="whitesquare">
 
                 </div>
@@ -2052,7 +2075,7 @@
             
             <!---------------------------------------- Peça 66 ---------------------------------------------------------------------->
             
-            <div class="gamepiece" id="piece66Side1">
+            <div class="gamepiece classNone" id="piece66Side1">
 
                 <div class="pieceside1" id="piece66Side1">
                     <svg class="rotate" width="45" height="45">
@@ -2096,7 +2119,84 @@
     </div>
 
 
+    <!-- referencias svg (gabriel) -->
+    <div id="values_svg" style="display: none;">
+        <svg id="svg0" width="45" height="45">
+            <rect x="0" y="0" width="100%" height= "100%"
+            style="filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));;opacity:0" />
+        </svg>
+        <svg id="svg1" width="45" height="45">
+    
+            <rect x="0" y="0" width="100%" height= "100%" style="filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));;opacity:0"/>
+
+            <circle cx="22.5" cy="22.5" r="3" fill="black"/>
+            
+        </svg>
+        <svg id="svg2" width="45" height="45">
+
+            <rect x="0" y="0" width="100%" height= "100%"
+            style="filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));;opacity:0" />
+            
+            
+            <circle cx="34" cy="11" r="3" fill="black"/>
+            
+            <circle cx="11" cy="34" r="3" fill="black"/>
+            
+        </svg>
+        <svg id="svg3" width="45" height="45">
+
+            <rect x="0" y="0" width="100%" height= "100%"
+            style="filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));;opacity:0" />
+            
+            <circle cx="34" cy="11" r="3" fill="black"/>
+        
+            <circle cx="22.5" cy="22.5" r="3" fill="black"/>
+            
+            <circle cx="11" cy="34" r="3" fill="black"/>
+                    
+        </svg>
+        <svg id="svg4" width="45" height="45">
+    
+            <rect x="0" y="0" width="100%" height= "100%"
+            style="filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));;opacity:0" />
+            
+            <circle cx="11" cy="11" r="3" fill="black"/>
+            <circle cx="34" cy="11" r="3" fill="black"/>
+            
+            <circle cx="11" cy="34" r="3" fill="black"/>
+            <circle cx="34" cy="34" r="3" fill="black"/>
+        
+        </svg>
+        <svg id="svg5" width="45" height="45">
+    
+            <rect x="0" y="0" width="100%" height= "100%"
+            style="filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));;opacity:0" />
+            
+            <circle cx="11" cy="11" r="3" fill="black"/>
+            <circle cx="34" cy="11" r="3" fill="black"/>
+
+            <circle cx="22.5" cy="22.5" r="3" fill="black"/>
+            
+            <circle cx="11" cy="34" r="3" fill="black"/>
+            <circle cx="34" cy="34" r="3" fill="black"/>
+
+        </svg>
+        <svg id="svg6" width="45" height="45">
+            <rect x="0" y="0" width="100%" height= "100%"
+            style="filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));;opacity:0" />
+        
+            <circle cx="12" cy="11" r="3" fill="black"/>
+            <circle cx="12" cy="22.5" r="3" fill="black"/>
+            <circle cx="12" cy="34" r="3" fill="black"/>
+        
+            <circle cx="34" cy="11" r="3" fill="black"/>
+            <circle cx="34" cy="22.5" r="3" fill="black"/>
+            <circle cx="34" cy="34" r="3" fill="black"/>
+        </svg> 
+    </div>
+
+    <script src="./testehtml.js"></script>
     <!-- <script src="./teste.js"></script> -->
-    <script src="./backend.js"></script>
+    <!-- <script src="./backend.js"></script> -->
 </body>
 </html>

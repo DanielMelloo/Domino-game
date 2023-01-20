@@ -9,7 +9,6 @@
     --color4: #651f71;
     --color5: #3B0944;
 
-    --colorImage: 
 }
 
 html{
@@ -319,7 +318,7 @@ height: 45px;
 #menu{
     position: fixed;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -335,27 +334,26 @@ height: 45px;
     font-size: 45px;
     padding: 30px;
     margin: 20px;
-    color: whitesmoke; 
+    color: black; 
 
-    background: rgba( 112, 55, 205, 0.6 );
+    background: rgba( 255, 255, 255, 0.25 );
     box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-    backdrop-filter: blur( 11.5px );
-    -webkit-backdrop-filter: blur( 11.5px );
+    backdrop-filter: blur( 0px );
+    -webkit-backdrop-filter: blur( 0px );
     border-radius: 10px;
     border: 1px solid rgba( 255, 255, 255, 0.18 );
 
     cursor: pointer;
 }
 
-.none {
-    display: none;
-}
 
 /* Init Game */
 
-.classNone  {
+.classNone {
     display: none;
 }
+
+
 
 
 
@@ -415,3 +413,29 @@ height: 45px;
 #div53 { grid-area: 5 / 3 / 6 / 4; }
 #div54 { grid-area: 4 / 3 / 5 / 4; }
 #div55 { grid-area: 3 / 3 / 4 / 4; }
+
+
+.facedown {
+    /* hide the content of facedown piece */
+    content: "";
+    /* add a facedown image for the piece */
+    background-image: url(facedown-piece.png);
+}
+
+/* hide the pieces that are not in the game */
+.remaining-0 .whitesquare {
+    display: none;
+}
+/* show the remaining pieces */
+.remaining-1 .whitesquare,
+.remaining-2 .whitesquare,
+.remaining-3 .whitesquare,
+.remaining-4 .whitesquare,
+.remaining-5 .whitesquare,
+.remaining-6 .whitesquare,
+.remaining-7 .whitesquare {
+display: block;
+}
+.hide-opponent-hand {
+    display: none;
+}
