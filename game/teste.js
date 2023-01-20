@@ -37,80 +37,561 @@
 
 
 
+// ============================ //
+//         Daniel Space         //
+// ============================ //
 
-//         Daniel Space
 
-let playerHandBox = document.getElementById('playerHandInner');
-let someBox= document.getElementById('algo');
 
-let idPieces = 1
+let playerHandBox = document.getElementById('playerHandInner'); // Hand Player para parâmetro
+let someBox= document.getElementById('algo'); // uma box qualquer para testes
 
-function updateHandP(){
+let idPieces = 1 // contador de ids para diferenciar ids (será substituido)
 
-    generatePiece (playerHandBox)
+
+
+
+function updateTable (){
+
+    let parentPiece = generatePiece ();
+   someBox.appendChild(parentPiece);    
+    
 }
 
-function updateTable(){
+function updateHandP (){
 
-    generatePiece (someBox)
+    // generatePiece (playerHandBox)
+    let parentPiece = generatePiece ();
+    playerHandBox.appendChild(parentPiece);    
+}
+
+
+
+function generatePieceNumber (pieceNumber){  // Gera uma peça e retorna ela
+    
+    // ======================== //
+    // Seta Informaçãoes da div //
+    // ======================== //
+
+
+    let parentPiece = document.createElement('div');     // Cria uma div 
+    parentPiece.setAttribute('id', 'slotId' + idPieces); // Atribui um id para essa div
+
+    idPieces++;                                          // Aumenta o contador de ids (mudar para id das peças no jogo)
+
+    
+        // ================== //
+        // seta filhos da div //
+        // ================== //
+
+
+    // ======= //
+    // Side Up //
+    // ======= //
+
+    
+    let child1 = document.createElement('div');     // Cria uma div (será SideUp)
+    parentPiece.appendChild (child1)                     // Tornna essa div descendente de parentPiece
+    child1.setAttribute('class', 'sideup');         // Atribui uma classe para essa div para estilização
+
+
+    // =========== //
+    // Def do svg1 //
+    // =========== //
+
+
+    // let svg1 = document.getElementById("values_svg").children[0].cloneNode(true);   // Cria um svg da respectiva peça solicitada
+    let svg1 = createSVG_3()
+    child1.appendChild(svg1);                       // Tornna esse svg descendente de child1
+
+
+    // ========= //
+    // Side Down //
+    // ========= //
+
+
+    let child2 = document.createElement('div');     // Cria uma div (será SideDown)
+    parentPiece.appendChild (child2)                // Tornna essa div descendente de parentPiece
+    child2.setAttribute('class', 'sideDown');       // Atribui uma classe para essa div para estilização
+    
+
+    // =========== //
+    // Def do svg2 //
+    // =========== //
+
+    // let svg2 = document.getElementById("values_svg").children[0];   // Cria um svg da respectiva peça solicitada
+    let svg2 = createSVG_5()
+    child2.appendChild(svg2);                       // Tornna esse svg descendente de child1
+
+
+    return parentPiece
+}
+
+
+function generatePiece (){  // Gera uma peça e retorna ela
+    
+    // ======================== //
+    // Seta Informaçãoes da div //
+    // ======================== //
+
+
+    let parentPiece = document.createElement('div');     // Cria uma div 
+    parentPiece.setAttribute('id', 'slotId' + idPieces); // Atribui um id para essa div
+
+    idPieces++;                                          // Aumenta o contador de ids (mudar para id das peças no jogo)
+
+    // ================== //
+    // seta filhos da div //
+    // ================== //
+
+
+
+    // ======= //
+    // Side Up //
+    // ======= //
+    
+    let child1 = document.createElement('div');     // Cria uma div (será SideUp)
+    parentPiece.appendChild (child1)                     // Tornna essa div descendente de parentPiece
+    child1.setAttribute('class', 'sideup');         // Atribui uma classe para essa div para estilização
+
+    // =========== //
+    // Def do svg1 //
+    // =========== //
+
+    // let svg1 = document.getElementById("values_svg").children[0].cloneNode(true);   // Cria um svg da respectiva peça solicitada
+    let svg1 = createSVG_3()
+    child1.appendChild(svg1);                       // Tornna esse svg descendente de child1
+
+
+    // ========= //
+    // Side Down //
+    // ========= //
+
+    let child2 = document.createElement('div');     // Cria uma div (será SideDown)
+    parentPiece.appendChild (child2)                     // Tornna essa div descendente de parentPiece
+    child2.setAttribute('class', 'sideDown');       // Atribui uma classe para essa div para estilização
+    
+
+    // =========== //
+    // Def do svg2 //
+    // =========== //
+
+    // let svg2 = document.getElementById("values_svg").children[0];   // Cria um svg da respectiva peça solicitada
+    let svg2 = createSVG_5()
+    child2.appendChild(svg2);                       // Tornna esse svg descendente de child1
+
+
+    return parentPiece
 }
 
 function initHand (){
     
-    for ( let i = 0 ; i < 7 ; i++ ){
+    for ( let i = 0 ; i < 7 ; i++ ){                // Começa com 7 peças (escolha de implementação)
         
-        let parent = updateHandP ();
-        parent.setAttribute ('class', 'handSlot');
-        parent.setAttribute ('onclick', 'handPieces("slotId1")');
+        let parentPiece = generatePiece ();     1   // Gera 1 peça
+        let idPiece = parentPiece.id;               // Atribui a id da peça gerada
+        
+        parentPiece.setAttribute ('class', 'handSlot'); // Atribui a classe handSlot
+
+        parentPiece.setAttribute ('onclick', 'handPieces("' + idPiece + '")' ); // a função de clique na peça referenciando ela mesma
+        playerHandBox.appendChild (parentPiece)     // torna a peça parte da hand
     }       
 }
 
 
-function generatePiece(Gparent){
+
+function createSVG_6() {  // Gera svg da peça 6
+
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', '45');
+    svg.setAttribute('height', '45');
+
+        // =========== //
+        // Set Circles //
+        // =========== //
+
+
+    // ======== //
+    // Set left //
+    // ======== //
+
+    let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle1.setAttribute('cx', 12);
+    circle1.setAttribute('cy', 11);
+    circle1.setAttribute('r', '3');
+    circle1.setAttribute('fill', 'black');
+    svg.appendChild(circle1);
+
+    let circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle2.setAttribute('cx', 12);
+    circle2.setAttribute('cy', 22.5);
+    circle2.setAttribute('r', '3');
+    circle2.setAttribute('fill', 'black');
+    svg.appendChild(circle2);
+
+    let circle3 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle3.setAttribute('cx', 12);
+    circle3.setAttribute('cy', 34);
+    circle3.setAttribute('r', '3');
+    circle3.setAttribute('fill', 'black');
+    svg.appendChild(circle3);
+
+
+
+    // ========= //
+    // Set right //
+    // ========= //
+
+
+    let circle4 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle4.setAttribute('cx', 34);
+    circle4.setAttribute('cy', 11);
+    circle4.setAttribute('r', '3');
+    circle4.setAttribute('fill', 'black');
+    svg.appendChild(circle4);
+
+    let circle5 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle5.setAttribute('cx', 34);
+    circle5.setAttribute('cy', 22.5);
+    circle5.setAttribute('r', '3');
+    circle5.setAttribute('fill', 'black');
+    svg.appendChild(circle5);
+
+    let circle6 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle6.setAttribute('cx', 34);
+    circle6.setAttribute('cy', 34);
+    circle6.setAttribute('r', '3');
+    circle6.setAttribute('fill', 'black');
+    svg.appendChild(circle6);
+
+    return svg;
+
+}
+
+    
+function createSVG_5() {  // Gera svg da peça 5
+
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', '45');
+    svg.setAttribute('height', '45');
+
+        // =========== //
+        // Set Circles //
+        // =========== //
+
+
+    // ======== //
+    // Set left //
+    // ======== //
+
+    let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle1.setAttribute('cx', 12);
+    circle1.setAttribute('cy', 11);
+    circle1.setAttribute('r', '3');
+    circle1.setAttribute('fill', 'black');
+    svg.appendChild(circle1);
+
+
+
+    let circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle2.setAttribute('cx', 12);
+    circle2.setAttribute('cy', 34);
+    circle2.setAttribute('r', '3');
+    circle2.setAttribute('fill', 'black');
+    svg.appendChild(circle2);
+
+
+
+    // ========= //
+    // Set right //
+    // ========= //
+
+
+    let circle3 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle3.setAttribute('cx', 34);
+    circle3.setAttribute('cy', 11);
+    circle3.setAttribute('r', '3');
+    circle3.setAttribute('fill', 'black');
+    svg.appendChild(circle3);
+
+
+    let circle4 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle4.setAttribute('cx', 34);
+    circle4.setAttribute('cy', 34);
+    circle4.setAttribute('r', '3');
+    circle4.setAttribute('fill', 'black');
+    svg.appendChild(circle4);
+
+
+
+    // ========= //
+    // Set Midle //
+    // ========= //
+
+
+    let circle5 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle5.setAttribute('cx', 22.5);
+    circle5.setAttribute('cy', 22.5);
+    circle5.setAttribute('r', '3');
+    circle5.setAttribute('fill', 'black');
+    svg.appendChild(circle5);
     
 
-    // Seta Informaçãoes da div
+    return svg;
 
-    let parent = document.createElement('div');
-    Gparent.appendChild(parent);
-    parent.setAttribute('id', 'SlotId' + idPieces);
+} 
 
-    idPieces++;
+
+function createSVG_4() {  // Gera svg da peça 4
+
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', '45');
+    svg.setAttribute('height', '45');
+
+        // =========== //
+        // Set Circles //
+        // =========== //
+
+
+    // ======== //
+    // Set left //
+    // ======== //
+
+    let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle1.setAttribute('cx', 12);
+    circle1.setAttribute('cy', 11);
+    circle1.setAttribute('r', '3');
+    circle1.setAttribute('fill', 'black');
+    svg.appendChild(circle1);
+
+
+
+    let circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle2.setAttribute('cx', 12);
+    circle2.setAttribute('cy', 34);
+    circle2.setAttribute('r', '3');
+    circle2.setAttribute('fill', 'black');
+    svg.appendChild(circle2);
+
+
+
+    // ========= //
+    // Set right //
+    // ========= //
+
+
+    let circle3 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle3.setAttribute('cx', 34);
+    circle3.setAttribute('cy', 11);
+    circle3.setAttribute('r', '3');
+    circle3.setAttribute('fill', 'black');
+    svg.appendChild(circle3);
+
+
+    let circle4 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle4.setAttribute('cx', 34);
+    circle4.setAttribute('cy', 34);
+    circle4.setAttribute('r', '3');
+    circle4.setAttribute('fill', 'black');
+    svg.appendChild(circle4);
 
     
-    // seta filhos da div
 
-    // Side Up
+    return svg;
+
+} 
+
+
+function createSVG_3() {  // Gera svg da peça 3
+
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', '45');
+    svg.setAttribute('height', '45');
+
+        // =========== //
+        // Set Circles //
+        // =========== //
+
+
+    // ======== //
+    // Set left //
+    // ======== //
+
+
+    let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle1.setAttribute('cx', 12);
+    circle1.setAttribute('cy', 34);
+    circle1.setAttribute('r', '3');
+    circle1.setAttribute('fill', 'black');
+    svg.appendChild(circle1);
+
+
+    // ========= //
+    // Set right //
+    // ========= //
+
+
+    let circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle2.setAttribute('cx', 34);
+    circle2.setAttribute('cy', 11);
+    circle2.setAttribute('r', '3');
+    circle2.setAttribute('fill', 'black');
+    svg.appendChild(circle2);
+
+
+
+    // ========= //
+    // Set Midle //
+    // ========= //
+
+
+    let circle3 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle3.setAttribute('cx', 22.5);
+    circle3.setAttribute('cy', 22.5);
+    circle3.setAttribute('r', '3');
+    circle3.setAttribute('fill', 'black');
+    svg.appendChild(circle3);
     
-    let child1 = document.createElement('div');
-    parent.appendChild (child1)
-    child1.setAttribute('class', 'sideup');
+
+    return svg;
+
+} 
 
 
-    // Def do svg1
+function createSVG_2() {  // Gera svg da peça 2
 
-    let svg1 = document.getElementById("values_svg").children[0].cloneNode(true);
-    console.log(svg1);
-    child1.appendChild(svg1);
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', '45');
+    svg.setAttribute('height', '45');
+
+        // =========== //
+        // Set Circles //
+        // =========== //
 
 
+    // ======== //
+    // Set left //
+    // ======== //
 
-    // Side Down 
+    let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle1.setAttribute('cx', 12);
+    circle1.setAttribute('cy', 34);
+    circle1.setAttribute('r', '3');
+    circle1.setAttribute('fill', 'black');
+    svg.appendChild(circle1);
 
-    let child2 = document.createElement('div');
-    parent.appendChild (child2)
-    child2.setAttribute('class', 'sideDown');
     
-    // Def do svg2
+    // ========= //
+    // Set right //
+    // ========= //
 
-    let svg2 = document.getElementById("values_svg").children[0];
-    child2.appendChild(svg2);
+
+    let circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle2.setAttribute('cx', 34);
+    circle2.setAttribute('cy', 11);
+    circle2.setAttribute('r', '3');
+    circle2.setAttribute('fill', 'black');
+    svg.appendChild(circle2);
 
 
-    return parent
+    return svg;
+
 }
 
 
+function createSVG_1() {  // Gera svg da peça 1
+
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', '45');
+    svg.setAttribute('height', '45');
+
+    
+        // =========== //
+        // Set Circles //
+        // =========== //
+
+
+    let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle1.setAttribute('cx', 22.5);
+    circle1.setAttribute('cy', 22.5);
+    circle1.setAttribute('r', '3');
+    circle1.setAttribute('fill', 'black');
+    svg.appendChild(circle1);
+    
+
+    return svg;
+
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ============================= //
+//         Gabriel Space         //
+// ============================= //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ============================ //
+//         Rafael Space         //
+// ============================ //
 
 
 // function createSVG_6() {
@@ -232,9 +713,6 @@ function generatePiece(Gparent){
 
 
 
-//                      Rafael space
-
-
 // modificações de movimentação 
 
 // function updateOpponentHand(piecesRemaining) {
@@ -302,7 +780,7 @@ function generatePiece(Gparent){
 
     
     // class ='handSlot' 
-    // id = 'SlotId' + idDaPeça
+    // id = 'slotId' + idDaPeça
 
         
 
@@ -342,3 +820,56 @@ function generatePiece(Gparent){
 
 //     })
 // }())
+
+
+// ================== //
+//   Gabriel-Zone     //
+// ================== //
+
+function generate_piece_svg(value_up, value_down){  // Gera uma peça e retorna ela
+
+    let parentPiece = document.createElement('div');     // Cria uma div 
+    parentPiece.setAttribute('id', 'slotId' + idPieces); // Atribui um id para essa div
+    let value_up_svg = document.getElementById("values_svg").children[value_up].cloneNode(true);
+    let value_down_svg = document.getElementById("values_svg").children[value_down].cloneNode(true);
+
+   
+
+
+
+    
+    
+    let child1 = document.createElement('div');        // Cria uma div (será SideUp)
+    parentPiece.appendChild(child1);                   // Tornna essa div descendente de parentPiece
+    child1.setAttribute('class', 'sideup');           // Atribui uma classe para essa div para estilização
+
+    // =========== //
+    // Def do svg1 //
+    // =========== //
+
+    // let svg1 = document.getElementById("values_svg").children[0].cloneNode(true);   // Cria um svg da respectiva peça solicitada
+    // let svg1 = createSVG_2()
+    
+    child1.appendChild(svg1);                       // Tornna esse svg descendente de child1
+
+
+    // ========= //
+    // Side Down //
+    // ========= //
+
+    let child2 = document.createElement('div');     // Cria uma div (será SideDown)
+    parentPiece.appendChild (child2)                     // Tornna essa div descendente de parentPiece
+    child2.setAttribute('class', 'sideDown');       // Atribui uma classe para essa div para estilização
+    
+
+    // =========== //
+    // Def do svg2 //
+    // =========== //
+
+    // let svg2 = document.getElementById("values_svg").children[0];   // Cria um svg da respectiva peça solicitada
+    let svg2 = createSVG_3()
+    child2.appendChild(svg2);                       // Tornna esse svg descendente de child1
+
+
+    return parentPiece
+}
