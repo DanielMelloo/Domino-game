@@ -144,7 +144,7 @@ class Piece {
 class Player {
     constructor(name = "generic"){
         this.name = name;
-        this.hand = [];
+        this.hand = new Array();
         this.score = 0;
         this.can_play;
     }
@@ -199,7 +199,6 @@ class Player {
                 }
             }
         }
-        // console.log("------------------------------");
     }
     print_hand_playables() { // imprime cada peça da mão do jogador que podem ser jogadas na hora
         console.log("------------------------------");
@@ -250,12 +249,10 @@ class Player {
         console.log("------------------------------");
     }
     update_playables() { // 
-        // console.log("------------------------------");
         console.log(">>>> [Updating-Playables: "+this.name+"] <<<<");
         for(let i = 0; i < this.hand.length; i++) {
             this.hand[i].update_playable();
         }
-        // console.log("------------------------------");
         this.update_can_play();
     }
     update_can_play() { //
@@ -465,7 +462,6 @@ function draw_piece(pile, player, quantity = 1) { // passa uma peça da pilha de
     
 }
 function remove_piece(pile, position) { // remove uma peça de um grupo de peças (contagem começa do 1, não do 0)
-    // console.log("[removing piece "+(position)+"]");
     return pile.splice((position), 1)[0];
 }
 function check_empty(pile) { // verifica se tem peças na mesa
@@ -592,10 +588,8 @@ function change_player() {
         next = player_list[human];
     }
 
-    // console.log("--------------------------");
     console.log("changing to: "+next.name+"");
     current_player = next;
-    // console.log("--------------------------");
 
     current_player.update_playables();
 }
@@ -620,16 +614,47 @@ function ask_play_prompt() {
     
     return true;
 }
-function bot_play(){
-    
-    for(let position = 0; (position < player_list[bot].hand.length); position++){
-        for(let side = 0; (side < player_list[bot].hand[position].playable.length); side++){
-            if(player_list[bot].hand[position].playable[side]){
-                ask_play(position, side);
-                return true;
+function bot_play(mode = "easy"){
+
+    switch(mode){
+        case "easy":
+            for(let position = 0; position < (current_player.hand.length); position++){
+                for(let side = 0; (side < current_player.hand[position].playable.length); side++){
+                    if(current_player.hand[position].playable[side] === true){
+                        ask_play(position, side);
+                        return true;
+                    }
+                }
             }
-        }
+            break;
+
+        case "hard":
+            let highest_sum = -1;
+            for(let position = 0; position < (current_player.hand.length); position++){
+                for(let side = 0; side < (current_player.hand[position].playable.length); side++){
+                    if(current_player[position].playable[side] === true && current_player[position].sum() > highest_sum){
+                        highest_sum = current_player[position].sum();
+                        highest_sum_position = position;
+                        highest_sum_side = side;
+                    }
+                }
+                if(highest_sum >= 0){
+                    ask_play(highest_sum_position, highest_sum_side);
+                } else {
+                    console.error("Error: AI hard mode");
+                }
+            }   
+            break;
+
+        case "mittens":
+            break;
+
+        default:
+            console.error("error");
+        
     }
+    
+    
 
 }
 function check_shop_empty() {
@@ -667,7 +692,6 @@ function match_over() {
             var loser = player_list[human];
             over = true;
         } else {
-            // console.log("bodge 1: match_over()  (FUCK!!!)"); // quantidade de peças iguais
             
             if((player_list[human].hand_sum()) < (player_list[bot].hand_sum())) {
                 var winner = player_list[human];
@@ -692,6 +716,7 @@ function match_over() {
         console.log(">>>> Match-Winner: ["+winner.name+"] <<<<");
         console.log("added points: "+points);
         console.log("=========================================");
+        alert(">>>> Match-Winner: ["+winner.name+"] <<<<"+"\n"+"added points: "+points);
         return true;
     } else {
         return false;
@@ -726,7 +751,7 @@ function testing(){
 }
 
 
-function game(mode){
+function game(mode = "Jogador vs Bot"){
 
     // Apaga o menu
 
@@ -738,21 +763,23 @@ function game(mode){
 
     let gameComponentsList = {
         '.handbox': 2,
-        '.UsableRectangleW': 55,
-        '.UsableRectangleH': 55,
+        '.horizontalBox': 29,
+        '.verticalBox': 26,
+        // '.UsableRectangleW': 55,
+        // '.UsableRectangleH': 55,
     };
 
 
-    for (let obj in gameComponentsList) {
+    for (let obj in gameComponentsList) {   
 
     let k = document.querySelectorAll(obj);
-
-    for (let i = 0; i < gameComponentsList[obj]; i++ ){
-        k[i].classList.remove('classNone');
+        
+        for (let i = 0; i < gameComponentsList[obj]; i++ ){
+            
+                k[i].classList.remove('classNone');
+                console.log ()
+        }
     }
-
-    }
-    
 
     switch(mode) {
 
@@ -773,7 +800,6 @@ function game(mode){
 
     do {
         do {
-            
             for(let player of player_list){
                 player.reset_score();
                 player.reset_hand();
@@ -825,9 +851,7 @@ function game(mode){
                         console.log("Can't Play | piece-drawn: "+drawn);
                         current_player.update_playables();
                     } else { 
-                        // console.log("------------------------------");
                         console.log("[shop-empty, draw]");
-                        // console.log("------------------------------");
                         break; // sai do loop se não houverem mais peças para compras
                     }
                 }
@@ -924,6 +948,8 @@ function game(mode){
 //         // Exibir mensagem de erro para jogada inválida
 //     }
 // });
+
+/* // Daniel
 const hand = document.querySelector("#hand");
 hand.addEventListener("click", selectPiece);
 hand.addEventListener("dragstart", dragPiece);
@@ -960,4 +986,40 @@ console.log('Java');
 
 setTimeout(() => {
   console.log('Script');
-}, 5000);
+}, 5000); 
+
+*/
+
+
+// modificações de movimentação 
+
+function updateOpponentHand(piecesRemaining) {
+    const opponentHand = document.querySelector(".opponentHand");
+    for (let i = 0; i < 7; i++) {
+        const handSlot = opponentHand.children[i];
+        if (i < piecesRemaining) {
+            handSlot.classList.remove("remaining-0");
+            handSlot.classList.add("remaining-" + (piecesRemaining - i));
+        } else {
+            handSlot.classList.remove("remaining-" + (piecesRemaining - i));
+            handSlot.classList.add("remaining-0");
+        }
+    }
+}
+function play_piece_on_hand(element_id) {
+    var position = element_id;
+    play_piece(position);
+}
+function hideOpponentHand() {
+    const opponentHand = document.querySelectorAll('.opponentHand .handSlot');
+    opponentHand.forEach(piece => {
+        piece.classList.add('hidden');
+    });
+}
+
+function showOpponentHand() {
+    const opponentHand = document.querySelectorAll('.opponentHand .handSlot');
+    opponentHand.forEach(piece => {
+        piece.classList.remove('hidden');
+    });
+}
