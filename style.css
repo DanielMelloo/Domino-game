@@ -26,7 +26,7 @@ body{
   /* ========= */
 
   background: rgb(101,31,113);
-  background: linear-gradient(63deg, rgba(101,31,113,1) 0%, rgba(104,178,248,1) 100%);;
+  background: linear-gradient(63deg, rgba(101,31,113,1) 0%, rgba(104,178,248,1) 100%);
 }
 
 .header{
