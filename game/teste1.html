@@ -4,15 +4,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="game.css">
 </head>
 <body>
     <button onclick="updateHandP()">Generate piece in hand</button>
     <button  onclick="initHand ()">Init Hand</button>
-    
-    <div id='playerHandInner'>
 
+    <div class="handbox" id="player1Hand">
+        <div class="player1 hand" id="player1HandInner">
+
+        </div>
     </div>
-
     <div id="algo">
 
     </div>
@@ -96,11 +98,11 @@
 
     <style>
 
-        #playerHandInner {
+        /* #playerHandInner {
             background-color: aqua;
             width: 30px;
             height: 30px;
-        }
+        } */
 
     </style>
 </body>

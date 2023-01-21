@@ -28,7 +28,10 @@ class Piece {
         this.playable = new Array();
         this.playable[left] = no;
         this.playable[right] = no;
-        this.svg = this.generate_svg(value_left, value_right);
+        // this.piece_svg = generate_piece_svg(value_left, value_right);
+        this.piece_svg = generatePiece(value_left, value_right);
+        this.piece_svg.setAttribute('class', 'handSlot');
+
     }
     string(){ // (W.I.P)
         return "["+this.value[left]+"|"+this.value[right]+"]";
@@ -50,64 +53,6 @@ class Piece {
     sum(){
         return (this.value[left] + this.value[right]);
     }
-    
-    /* check_can_play_left(){ // (obsoleta) verifica se pode jogar na ponta esquerda da mesa.
-        let first = 0;
-
-        if((table[first] === this.value[right]) || (!table.length)) {
-            return yes; // pode jogar, valor compativel.
-        } else if(table[first] === this.value[left]) {
-            return yes_rotate; // pode jogar, valor compativel, mas tem que girar.
-        } else {
-            return no;
-        }
-    }*/
-    /*check_can_play_right(){ // (obsoleta) verifica se pode jogar na ponta direita da mesa.
-        let last = ((table.length)-1);
-
-        if((table[last] === this.value[right]) || (!table.length)) {
-            return yes; // pode jogar, valor compativel.
-        } else if(table[last] === this.value[left]) {
-            return yes_rotate; // pode jogar, valor compativel, mas tem que girar.
-        } else {
-            return no;
-        }
-    }*/
-    /*check_playable(side){ // (obsoleta)
-        
-        if(hand_is_empty(table)){
-            return yes;
-        }
-        
-        if(side === left){
-            
-            const first = 0;
-
-            if((table[first].value[left] === this.value[right])) {
-                return yes; // pode jogar, valor compativel.
-            } else if(table[first] === this.value[left]) {
-                return yes_rotate; // pode jogar, valor compativel, mas tem que girar.
-            } else {
-                return no;
-            }
-
-        } else if(side === right) {
-
-            const last = ((table.length)-1);
-
-            if(table.length === empty){
-                return yes;
-            }
-            if((table[last] === this.value[left])) {
-                return yes; // pode jogar, valor compativel.
-            } else if(table[last] === this.value[right]) {
-                return yes_rotate; // pode jogar, valor compativel, mas tem que girar.
-            } else {
-                return no; // valores incompativeis em ambos os lados.
-            }
-
-        }
-    }*/
     check_playable(side) { // verifica se a peça é jogavel
         
         let piece = this;
@@ -142,17 +87,25 @@ class Piece {
 }
 
 class Player {
-    constructor(name = "generic"){
+    constructor(name = "generic", input_type = "bot", hand_div_id){
         this.name = name;
         this.hand = new Array();
+        this.hand_div = document.getElementById(hand_div_id);
         this.score = 0;
         this.can_play;
+        this.input_type = input_type;
+    }
+    add_piece_svg_to_hand_div(piece_svg){ // transformar em metodo (Gabriel)
+        
+        this.hand_div.appendChild(piece_svg);
+
     }
     draw_piece(quantity = 1) { // compra uma peça da pilha inicial
         if(quantity <= shop.length){
             for(var i = 0; i < quantity; i++){
                 var piece = shop.pop();                
                 this.hand.push(piece);
+                this.add_piece_svg_to_hand_div(piece.piece_svg);
             }
             return piece.string();
         } else {
@@ -397,9 +350,9 @@ class Player {
 // functions:
 ////////////////////////////////////////
 
-function generate_pile(pile) { // gera a pilha inicial de peças.
+function generate_pile(pile) { // gera a pilha inicial de peças. 
     
-    let svgs = document.getElementById("values_svg").children;
+    let svgs = document.getElementById("template_values_svg").children;
 
     for(let i = 0; i <= 6; i++){
         pile.push(new Piece(i,i));
@@ -412,6 +365,9 @@ function generate_pile(pile) { // gera a pilha inicial de peças.
         }
     }
 }
+
+
+
 function print_pile(pile) { // imprime no console as peças de grupo de peças
     
     let last = ((pile.length)-1)
@@ -616,10 +572,10 @@ function ask_play_prompt() {
 function bot_play(mode = "easy"){
 
     switch(mode){
-        case "easy":
-            for(let position = 0; position < (current_player.hand.length); position++){
-                for(let side = 0; (side < current_player.hand[position].playable.length); side++){
-                    if(current_player.hand[position].playable[side] === true){
+        case "easy": // broken here 20230120
+            for(let position = 0; position < (player_list[bot].hand.length); position++){
+                for(let side = 0; (side < player_list[bot].hand[position].playable.length); side++){
+                    if(player_list[bot].hand[position].playable[side] === true){
                         ask_play(position, side);
                         return true;
                     }
@@ -744,21 +700,21 @@ function restart(){
     
 }
 
-function testing(){
-    alert("Victory!");
-    return true;
-}
 
 
 function game(mode = "Jogador vs Bot"){
 
-    // Apaga o menu
+    // ============ //
+    // Apaga o menu //
+    // ============ //
 
     let menu = document.querySelector('#menu');
     menu.style.display = "none";
 
+    // ============= //
+    // Mostra o Jogo //
+    // ============= //
 
-    // Mostra o Jogo
 
     let gameComponentsList = {
         '.handbox': 2,
@@ -783,15 +739,15 @@ function game(mode = "Jogador vs Bot"){
     switch(mode) {
 
         case "Jogador vs Bot":
-            alert("jogador!");
+            // alert("jogador!");
             break;
         
         case "Bot vs Bot":
-            alert("bot!");
+            // alert("bot!");
             break;
     
         default:
-            alert("erro!");
+            // alert("erro!");
             break;
     
     }
@@ -799,6 +755,12 @@ function game(mode = "Jogador vs Bot"){
 
     do {
         do {
+            
+            dificulty_mode = "easy";
+
+            player_list[human] = new Player("Generic-1", "Jogador", "player1HandInner"); // objeto que representa o jogador
+            player_list[bot] = new Player("Generic-2", "Bot", "player2HandInner"); // objeto que representa o BOT
+
             for(let player of player_list){
                 player.reset_score();
                 player.reset_hand();
@@ -829,7 +791,7 @@ function game(mode = "Jogador vs Bot"){
                     ask_play_prompt();
                     break;
                 case player_list[bot]:
-                    bot_play();
+                    bot_play(dificulty_mode);
                     break;
             }
             
@@ -866,7 +828,7 @@ function game(mode = "Jogador vs Bot"){
                             ask_play_prompt();
                             break;
                         case player_list[bot]:
-                            bot_play();
+                            bot_play(dificulty_mode);
                             break;
                     }
                     
@@ -882,6 +844,22 @@ function game(mode = "Jogador vs Bot"){
 
     return true;
 }
+
+function generate_piece_svg(value_up, value_down){  // Gera uma peça e retorna ela (Gabriel)
+
+    let piece_frame_svg = document.createElement('div');     // Cria uma div 
+    let value_up_svg = document.getElementById("template_values_svg").children[value_up].cloneNode(true);
+    let value_down_svg = document.getElementById("template_values_svg").children[value_down].cloneNode(true);
+   
+    piece_frame_svg.setAttribute("class", "handSlot");
+    piece_frame_svg.appendChild(value_up_svg);
+    piece_frame_svg.appendChild(value_down_svg);
+
+    // class="handSlot" id="slotId1"
+
+    return piece_frame_svg;
+}
+
 ////////////////////////////////////////
 
 ////////////////////////////////////////
@@ -902,8 +880,7 @@ function game(mode = "Jogador vs Bot"){
     
     // criando players.
     player_list = new Array();
-    player_list[human] = new Player(player_name); // objeto que representa o jogador
-    player_list[bot] = new Player("bot"); // objeto que representa o BOT
+    
 
     
 
@@ -989,3 +966,455 @@ setTimeout(() => {
 
 */
 
+
+// ========== //
+// | Daniel | //  
+// ========== //
+
+function generatePiece(value1, value2){  // Gera uma peça e retorna ela
+    
+    // ======================== //
+    // Seta Informaçãoes da div //
+    // ======================== //
+
+
+    let parentPiece = document.createElement('div');     // Cria uma div 
+    // parentPiece.setAttribute('id', 'slotId' + idPieces); // Atribui um id para essa div
+
+    // idPieces++;                                          // Aumenta o contador de ids (mudar para id das peças no jogo)
+
+    // ================== //
+    // seta filhos da div //
+    // ================== //
+
+    // ======= //
+    // Side Up //
+    // ======= //
+    
+    let child1 = document.createElement('div');     // Cria uma div (será SideUp)
+    parentPiece.appendChild (child1)                     // Tornna essa div descendente de parentPiece
+    child1.setAttribute('class', 'sideup');         // Atribui uma classe para essa div para estilização
+
+    // =========== //
+    // Def do svg1 //
+    // =========== //
+
+    // let svg1 = document.getElementById("values_svg").children[0].cloneNode(true);   // Cria um svg da respectiva peça solicitada
+    
+    let svg1;
+    switch(value1){
+        case 0:
+            svg1 = createSVG_0();
+            break;
+        case 1:
+            svg1 = createSVG_1();
+            break;
+        case 2:
+            svg1 = createSVG_2();
+            break;
+        case 3:
+            svg1 = createSVG_3();
+            break;
+        case 4:
+            svg1 = createSVG_4();
+            break;
+        case 5:
+            svg1 = createSVG_5();
+            break;
+        case 6:
+            svg1 = createSVG_6();
+            break;
+    }
+    
+    
+    child1.appendChild(svg1);                       // Tornna esse svg descendente de child1
+
+
+    // ========= //
+    // Side Down //
+    // ========= //
+
+    let child2 = document.createElement('div');     // Cria uma div (será SideDown)
+    parentPiece.appendChild (child2)                     // Tornna essa div descendente de parentPiece
+    child2.setAttribute('class', 'sideDown');       // Atribui uma classe para essa div para estilização
+    
+    
+
+    // =========== //
+    // Def do svg2 //
+    // =========== //
+
+    // let svg2 = document.getElementById("values_svg").children[0];   // Cria um svg da respectiva peça solicitada
+    
+    
+    
+    let svg2;
+    switch(value2){
+        case 0:
+            svg2 = createSVG_0();
+            break;
+        case 1:
+            svg2 = createSVG_1();
+            break;
+        case 2:
+            svg2 = createSVG_2();
+            break;
+        case 3:
+            svg2 = createSVG_3();
+            break;
+        case 4:
+            svg2 = createSVG_4();
+            break;
+        case 5:
+            svg2 = createSVG_5();
+            break;
+        case 6:
+            svg2 = createSVG_6();
+            break;
+    }
+    
+    // let svg2 = createSVG_5()
+    child2.appendChild(svg2);                       // Tornna esse svg descendente de child1
+
+
+    return parentPiece;
+}
+
+
+
+
+
+function createSVG_6() {  // Gera svg da peça 6
+
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', '45');
+    svg.setAttribute('height', '45');
+
+        // =========== //
+        // Set Circles //
+        // =========== //
+
+
+    // ======== //
+    // Set left //
+    // ======== //
+
+    let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle1.setAttribute('cx', 12);
+    circle1.setAttribute('cy', 11);
+    circle1.setAttribute('r', '3');
+    circle1.setAttribute('fill', 'black');
+    svg.appendChild(circle1);
+
+    let circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle2.setAttribute('cx', 12);
+    circle2.setAttribute('cy', 22.5);
+    circle2.setAttribute('r', '3');
+    circle2.setAttribute('fill', 'black');
+    svg.appendChild(circle2);
+
+    let circle3 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle3.setAttribute('cx', 12);
+    circle3.setAttribute('cy', 34);
+    circle3.setAttribute('r', '3');
+    circle3.setAttribute('fill', 'black');
+    svg.appendChild(circle3);
+
+
+
+    // ========= //
+    // Set right //
+    // ========= //
+
+
+    let circle4 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle4.setAttribute('cx', 34);
+    circle4.setAttribute('cy', 11);
+    circle4.setAttribute('r', '3');
+    circle4.setAttribute('fill', 'black');
+    svg.appendChild(circle4);
+
+    let circle5 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle5.setAttribute('cx', 34);
+    circle5.setAttribute('cy', 22.5);
+    circle5.setAttribute('r', '3');
+    circle5.setAttribute('fill', 'black');
+    svg.appendChild(circle5);
+
+    let circle6 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle6.setAttribute('cx', 34);
+    circle6.setAttribute('cy', 34);
+    circle6.setAttribute('r', '3');
+    circle6.setAttribute('fill', 'black');
+    svg.appendChild(circle6);
+
+    return svg;
+
+}
+
+    
+function createSVG_5() {  // Gera svg da peça 5
+
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', '45');
+    svg.setAttribute('height', '45');
+
+        // =========== //
+        // Set Circles //
+        // =========== //
+
+
+    // ======== //
+    // Set left //
+    // ======== //
+
+    let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle1.setAttribute('cx', 12);
+    circle1.setAttribute('cy', 11);
+    circle1.setAttribute('r', '3');
+    circle1.setAttribute('fill', 'black');
+    svg.appendChild(circle1);
+
+
+
+    let circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle2.setAttribute('cx', 12);
+    circle2.setAttribute('cy', 34);
+    circle2.setAttribute('r', '3');
+    circle2.setAttribute('fill', 'black');
+    svg.appendChild(circle2);
+
+
+
+    // ========= //
+    // Set right //
+    // ========= //
+
+
+    let circle3 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle3.setAttribute('cx', 34);
+    circle3.setAttribute('cy', 11);
+    circle3.setAttribute('r', '3');
+    circle3.setAttribute('fill', 'black');
+    svg.appendChild(circle3);
+
+
+    let circle4 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle4.setAttribute('cx', 34);
+    circle4.setAttribute('cy', 34);
+    circle4.setAttribute('r', '3');
+    circle4.setAttribute('fill', 'black');
+    svg.appendChild(circle4);
+
+
+
+    // ========= //
+    // Set Midle //
+    // ========= //
+
+
+    let circle5 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle5.setAttribute('cx', 22.5);
+    circle5.setAttribute('cy', 22.5);
+    circle5.setAttribute('r', '3');
+    circle5.setAttribute('fill', 'black');
+    svg.appendChild(circle5);
+    
+
+    return svg;
+
+} 
+
+
+function createSVG_4() {  // Gera svg da peça 4
+
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', '45');
+    svg.setAttribute('height', '45');
+
+        // =========== //
+        // Set Circles //
+        // =========== //
+
+
+    // ======== //
+    // Set left //
+    // ======== //
+
+    let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle1.setAttribute('cx', 12);
+    circle1.setAttribute('cy', 11);
+    circle1.setAttribute('r', '3');
+    circle1.setAttribute('fill', 'black');
+    svg.appendChild(circle1);
+
+
+
+    let circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle2.setAttribute('cx', 12);
+    circle2.setAttribute('cy', 34);
+    circle2.setAttribute('r', '3');
+    circle2.setAttribute('fill', 'black');
+    svg.appendChild(circle2);
+
+
+
+    // ========= //
+    // Set right //
+    // ========= //
+
+
+    let circle3 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle3.setAttribute('cx', 34);
+    circle3.setAttribute('cy', 11);
+    circle3.setAttribute('r', '3');
+    circle3.setAttribute('fill', 'black');
+    svg.appendChild(circle3);
+
+
+    let circle4 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle4.setAttribute('cx', 34);
+    circle4.setAttribute('cy', 34);
+    circle4.setAttribute('r', '3');
+    circle4.setAttribute('fill', 'black');
+    svg.appendChild(circle4);
+
+    
+
+    return svg;
+
+} 
+
+
+function createSVG_3() {  // Gera svg da peça 3
+
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', '45');
+    svg.setAttribute('height', '45');
+
+        // =========== //
+        // Set Circles //
+        // =========== //
+
+
+    // ======== //
+    // Set left //
+    // ======== //
+
+
+    let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle1.setAttribute('cx', 12);
+    circle1.setAttribute('cy', 34);
+    circle1.setAttribute('r', '3');
+    circle1.setAttribute('fill', 'black');
+    svg.appendChild(circle1);
+
+
+    // ========= //
+    // Set right //
+    // ========= //
+
+
+    let circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle2.setAttribute('cx', 34);
+    circle2.setAttribute('cy', 11);
+    circle2.setAttribute('r', '3');
+    circle2.setAttribute('fill', 'black');
+    svg.appendChild(circle2);
+
+
+
+    // ========= //
+    // Set Midle //
+    // ========= //
+
+
+    let circle3 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle3.setAttribute('cx', 22.5);
+    circle3.setAttribute('cy', 22.5);
+    circle3.setAttribute('r', '3');
+    circle3.setAttribute('fill', 'black');
+    svg.appendChild(circle3);
+    
+
+    return svg;
+
+} 
+
+
+function createSVG_2() {  // Gera svg da peça 2
+
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', '45');
+    svg.setAttribute('height', '45');
+
+        // =========== //
+        // Set Circles //
+        // =========== //
+
+
+    // ======== //
+    // Set left //
+    // ======== //
+
+    let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle1.setAttribute('cx', 12);
+    circle1.setAttribute('cy', 34);
+    circle1.setAttribute('r', '3');
+    circle1.setAttribute('fill', 'black');
+    svg.appendChild(circle1);
+
+    
+    // ========= //
+    // Set right //
+    // ========= //
+
+
+    let circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle2.setAttribute('cx', 34);
+    circle2.setAttribute('cy', 11);
+    circle2.setAttribute('r', '3');
+    circle2.setAttribute('fill', 'black');
+    svg.appendChild(circle2);
+
+
+    return svg;
+
+}
+
+
+
+
+function createSVG_1() {  // Gera svg da peça 1
+
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', '45');
+    svg.setAttribute('height', '45');
+
+    
+        // =========== //
+        // Set Circles //
+        // =========== //
+
+
+    let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle1.setAttribute('cx', 22.5);
+    circle1.setAttribute('cy', 22.5);
+    circle1.setAttribute('r', '3');
+    circle1.setAttribute('fill', 'black');
+    svg.appendChild(circle1);
+    
+
+    return svg;
+
+} 
+
+function createSVG_0() {  // Gera svg da peça 0
+    
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', '45');
+    svg.setAttribute('height', '45');
+
+
+    return svg;
+}

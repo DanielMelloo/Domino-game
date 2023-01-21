@@ -43,89 +43,44 @@
 
 
 
-let playerHandBox = document.getElementById('playerHandInner'); // Hand Player para parâmetro
-let someBox= document.getElementById('algo'); // uma box qualquer para testes
+let player1HandBox = document.getElementById('player1HandInner'); // Hand Player1 para parâmetro
+let player2HandBox = document.getElementById('player2HandInner'); // Hand Player2 para parâmetro
 
 let idPieces = 1 // contador de ids para diferenciar ids (será substituido)
 
 
 
 
-function updateTable (){
+function updateTable(){
 
-    let parentPiece = generatePiece ();
-   someBox.appendChild(parentPiece);    
+    let parentPiece = generatePiece();
+   someBox.appendChild(parentPiece);
     
 }
 
-function updateHandP (){
+function updateHandP(){
 
     // generatePiece (playerHandBox)
     let parentPiece = generatePiece ();
-    playerHandBox.appendChild(parentPiece);    
+    player1HandBox.appendChild(parentPiece);
+    parentPiece.setAttribute("class", "handSlot");
+
 }
 
-
-
-function generatePieceNumber (pieceNumber){  // Gera uma peça e retorna ela
+function initHand (){
     
-    // ======================== //
-    // Seta Informaçãoes da div //
-    // ======================== //
+    for ( let i = 0 ; i < 7 ; i++ ){                // Começa com 7 peças (escolha de implementação)
+        
+        let parentPiece = generatePiece ();     1   // Gera 1 peça
+        let idPiece = parentPiece.id;               // Atribui a id da peça gerada
+        
+        parentPiece.setAttribute ('class', 'handSlot'); // Atribui a classe handSlot
 
-
-    let parentPiece = document.createElement('div');     // Cria uma div 
-    parentPiece.setAttribute('id', 'slotId' + idPieces); // Atribui um id para essa div
-
-    idPieces++;                                          // Aumenta o contador de ids (mudar para id das peças no jogo)
-
-    
-        // ================== //
-        // seta filhos da div //
-        // ================== //
-
-
-    // ======= //
-    // Side Up //
-    // ======= //
-
-    
-    let child1 = document.createElement('div');     // Cria uma div (será SideUp)
-    parentPiece.appendChild (child1)                     // Tornna essa div descendente de parentPiece
-    child1.setAttribute('class', 'sideup');         // Atribui uma classe para essa div para estilização
-
-
-    // =========== //
-    // Def do svg1 //
-    // =========== //
-
-
-    // let svg1 = document.getElementById("values_svg").children[0].cloneNode(true);   // Cria um svg da respectiva peça solicitada
-    let svg1 = createSVG_3()
-    child1.appendChild(svg1);                       // Tornna esse svg descendente de child1
-
-
-    // ========= //
-    // Side Down //
-    // ========= //
-
-
-    let child2 = document.createElement('div');     // Cria uma div (será SideDown)
-    parentPiece.appendChild (child2)                // Tornna essa div descendente de parentPiece
-    child2.setAttribute('class', 'sideDown');       // Atribui uma classe para essa div para estilização
-    
-
-    // =========== //
-    // Def do svg2 //
-    // =========== //
-
-    // let svg2 = document.getElementById("values_svg").children[0];   // Cria um svg da respectiva peça solicitada
-    let svg2 = createSVG_5()
-    child2.appendChild(svg2);                       // Tornna esse svg descendente de child1
-
-
-    return parentPiece
+        parentPiece.setAttribute ('onclick', 'handPieces("' + idPiece + '")' ); // a função de clique na peça referenciando ela mesma
+        player1HandBox.appendChild (parentPiece)     // torna a peça parte da hand
+    }       
 }
+
 
 
 function generatePiece (){  // Gera uma peça e retorna ela
@@ -184,19 +139,7 @@ function generatePiece (){  // Gera uma peça e retorna ela
     return parentPiece
 }
 
-function initHand (){
-    
-    for ( let i = 0 ; i < 7 ; i++ ){                // Começa com 7 peças (escolha de implementação)
-        
-        let parentPiece = generatePiece ();     1   // Gera 1 peça
-        let idPiece = parentPiece.id;               // Atribui a id da peça gerada
-        
-        parentPiece.setAttribute ('class', 'handSlot'); // Atribui a classe handSlot
 
-        parentPiece.setAttribute ('onclick', 'handPieces("' + idPiece + '")' ); // a função de clique na peça referenciando ela mesma
-        playerHandBox.appendChild (parentPiece)     // torna a peça parte da hand
-    }       
-}
 
 
 
@@ -499,6 +442,8 @@ function createSVG_2() {  // Gera svg da peça 2
 }
 
 
+
+
 function createSVG_1() {  // Gera svg da peça 1
 
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -522,6 +467,16 @@ function createSVG_1() {  // Gera svg da peça 1
     return svg;
 
 } 
+
+function createSVG_0() {  // Gera svg da peça 0
+
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', '45');
+    svg.setAttribute('height', '45');
+
+
+    return svg;
+}
 
 
 
@@ -823,53 +778,31 @@ function createSVG_1() {  // Gera svg da peça 1
 
 
 // ================== //
-//   Gabriel-Zone     //
+// |  Gabriel-Zone  | //
 // ================== //
+
+
 
 function generate_piece_svg(value_up, value_down){  // Gera uma peça e retorna ela
 
-    let parentPiece = document.createElement('div');     // Cria uma div 
-    parentPiece.setAttribute('id', 'slotId' + idPieces); // Atribui um id para essa div
-    let value_up_svg = document.getElementById("values_svg").children[value_up].cloneNode(true);
-    let value_down_svg = document.getElementById("values_svg").children[value_down].cloneNode(true);
-
+    let piece_frame_svg = document.createElement('div');     // Cria uma div 
+    let value_up_svg = document.getElementById("template_values_svg").children[value_up].cloneNode(true);
+    let value_down_svg = document.getElementById("template_values_svg").children[value_down].cloneNode(true);
    
+    piece_frame_svg.setAttribute("class", "handSlot");
+    piece_frame_svg.appendChild(value_up_svg);
+    piece_frame_svg.appendChild(value_down_svg);
 
+    return piece_frame_svg;
+}
 
+function add_piece_svg_hand(piece_svg){ // transformar em metodo
+    
+    this.hand_div;
 
+    let player_hand_div = document.getElementById('playerHandInner');
+    player_hand_div.appendChild(parentPiece);
+    parentPiece.setAttribute("class", "handSlot");
     
     
-    let child1 = document.createElement('div');        // Cria uma div (será SideUp)
-    parentPiece.appendChild(child1);                   // Tornna essa div descendente de parentPiece
-    child1.setAttribute('class', 'sideup');           // Atribui uma classe para essa div para estilização
-
-    // =========== //
-    // Def do svg1 //
-    // =========== //
-
-    // let svg1 = document.getElementById("values_svg").children[0].cloneNode(true);   // Cria um svg da respectiva peça solicitada
-    // let svg1 = createSVG_2()
-    
-    child1.appendChild(svg1);                       // Tornna esse svg descendente de child1
-
-
-    // ========= //
-    // Side Down //
-    // ========= //
-
-    let child2 = document.createElement('div');     // Cria uma div (será SideDown)
-    parentPiece.appendChild (child2)                     // Tornna essa div descendente de parentPiece
-    child2.setAttribute('class', 'sideDown');       // Atribui uma classe para essa div para estilização
-    
-
-    // =========== //
-    // Def do svg2 //
-    // =========== //
-
-    // let svg2 = document.getElementById("values_svg").children[0];   // Cria um svg da respectiva peça solicitada
-    let svg2 = createSVG_3()
-    child2.appendChild(svg2);                       // Tornna esse svg descendente de child1
-
-
-    return parentPiece
 }
