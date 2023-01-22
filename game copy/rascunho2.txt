@@ -1,56 +1,77 @@
+(function criaHorizontal(){
 
+    let l1 = document.querySelector('#createHDiv');
 
+    // ============ //
+    // Rodar função //
+    // ============ //
 
-
-
-
-// let containerTable = document.querySelector('#table');
-
-
-let containerTable = document.getElementById('table'); 
-
-
-function createTablePiece (){
-
-
-    let userInput1 = prompt("Insira um valor:");                // Entrada de Usuário 1
-    userInput1 = parseInt(userInput1, 10);                      // Seta a entrada como inteiro
-
+    l1.addEventListener('click', function criaHorizontal(){
     
-    let userInput2 = prompt("Insira outro valor:");             // Entrada de Usuário 2
-    userInput2 = parseInt(userInput2, 10);                      // Seta a entrada como inteiro
+        // ============= //
+        // Criando a div //
+        // ============= //
 
-    let piece = generatePiece (userInput1,userInput2);
+        let cHDiv = document.createElement('div');
 
-    if (userInput1 == userInput2){                              // Peça na Vertical
+        // ========= //
+        // Atributos //
+        // ========= //
 
-        piece.setAttribute ('class', 'piece UsableRectangleH'); // Seta a classe de peça na Vertical (height)
-    }
+        cHDiv.classList.add('horizontalPiece');
+        // cDiv.id.add('piece01')
+
+        // ========== //
+        // Posicionar //
+        // ========== //
+
+        let containerEl = document.querySelector('#table');
+        containerEl.appendChild (cHDiv);
+
+        piecesPlaced++;
+        console.log(piecesPlaced);
+
+    })
+}()) 
     
-    else {   
+// ============= //
+// Peça Vertical //
+// ============= //
 
-        piece.setAttribute ('class', 'piece UsableRectangleW'); // Seta a classe de peça na Horizontal (width)
-    }
+(function criaVertical(){
 
-    return piece
-}
+    let l2 = document.querySelector('#createVDiv');
 
-function updateTable (){
+    // ============ //
+    // Rodar função //
+    // ============ //
 
-    let piece = createTablePiece ();
-    let tableSide = prompt("Insira um lado: [L] ou [R]");
+    l2.addEventListener('click', function criaVertical(){
 
-    tableSide.toLowerCase();
+        // ============= //
+        // Criando a div //
+        // ============= //
 
-    if (tableSide == 'l'){
-        containerTable.prepend (piece);
-    }
+        let cVDiv = document.createElement('div');
 
-    else if (tableSide == 'r'){
-        
-        containerTable.appendChild (piece);
-    }
-}
+        // ========= //
+        // Atributos //
+        // ========= //
+
+        cVDiv.classList.add('verticalPiece');
+        // cDiv.id.add('piece01')
+
+        // ========== //
+        // Posicionar //
+        // ========== //
+
+        let containerEl = document.querySelector('#table');
+        containerEl.appendChild (cVDiv);
+
+        piecesPlaced++;
+        console.log(piecesPlaced);
+    })
+}())
 
 
 
@@ -58,69 +79,36 @@ function updateTable (){
 
 
 
-function generatePiece (value1, value2){  // Gera uma peça e retorna ela
-
-
+function generatePiece(value1, value2){  // Gera uma peça e retorna ela
+    
     // ======================== //
     // Seta Informaçãoes da div //
     // ======================== //
 
 
     let parentPiece = document.createElement('div');     // Cria uma div 
-
+    
 
     // ================== //
     // seta filhos da div //
     // ================== //
 
-
+    // ======= //
+    // Side Up //
+    // ======= //
+    
     let child1 = document.createElement('div');     // Cria uma div (será SideUp)
     parentPiece.appendChild (child1)                // Tornna essa div descendente de parentPiece
+    child1.setAttribute('class', 'sideup');         // Atribui uma classe para essa div para estilização
 
-    let child2 = document.createElement('div');     // Cria uma div (será SideDown)
-    parentPiece.appendChild (child2)                // Tornna essa div descendente de parentPiece
-
-
-    // ============================== //
-    // Verifica se tem números iguais //
-    // ============================== //
-
-    if (value1 == value2) {
-
-        // ======= //
-        // Side Up //
-        // ======= //
-        
-        child1.setAttribute('class', 'sideUp');         // Atribui uma classe para essa div para estilização
-
-        // ========= //
-        // Side Down //
-        // ========= //
-
-        child2.setAttribute('class', 'sideDown');       // Atribui uma classe para essa div para estilização
-    }
-
-    else{
-        
-        // ========= //
-        // Side Left //
-        // ========= //
-
-        child1.setAttribute('class', 'sideLeft');         // Atribui uma classe para essa div para estilização
-
-        // ========== //
-        // Side Right //
-        // ========== //
-
-        child2.setAttribute('class', 'sideRight');       // Atribui uma classe para essa div para estilização
-    }
     // =========== //
     // Def do svg1 //
     // =========== //
 
     
     let svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    
+    // let svg1;
+
     switch(value1){
         case 0:
             svg1 = createSVG_0();
@@ -145,14 +133,28 @@ function generatePiece (value1, value2){  // Gera uma peça e retorna ela
             break;
     }
     
+        
     child1.appendChild (svg1);                       // Tornna esse svg descendente de child1
+
+
+    // ========= //
+    // Side Down //
+    // ========= //
+
+    let child2 = document.createElement('div');     // Cria uma div (será SideDown)
+    parentPiece.appendChild (child2)                // Tornna essa div descendente de parentPiece
+    child2.setAttribute('class', 'sideDown');       // Atribui uma classe para essa div para estilização
+    
+    
 
     // =========== //
     // Def do svg2 //
     // =========== //
     
-    let svg2 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     
+    
+    let svg2 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    // console.log (svg2)
     switch(value2){
         case 0:
             svg2 = createSVG_0();
@@ -188,7 +190,6 @@ function generatePiece (value1, value2){  // Gera uma peça e retorna ela
 function createSVG_6() {  // Gera svg da peça 6
 
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-
     svg.setAttribute('width', '45');
     svg.setAttribute('height', '45');
 
@@ -519,78 +520,3 @@ function createSVG_0() {  // Gera svg da peça 0
 
     return svg;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function addSVGtoTable(svg) {
-//     let table = document.querySelector('#table');
-//     table.appendChild(svg.cloneNode(true));
-// }
-
-
-// for (let i = 0; i < 7; i++) {
-//     let piece = document.createElement('div');
-//     piece.classList.add('domino-piece');
-//     piece.appendChild(createSVG_1());
-//     pieces.appendChild(piece);
-// }
-
-// let pieces = document.getElementById('player-hand');
