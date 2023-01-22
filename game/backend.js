@@ -572,19 +572,43 @@ function ask_play_prompt() {
 function bot_play(mode = "easy"){
 
     switch(mode){
-        case "easy": // broken here 20230120
-            for(let position = 0; position < (player_list[bot].hand.length); position++){
-                for(let side = 0; (side < player_list[bot].hand[position].playable.length); side++){
-                    if(player_list[bot].hand[position].playable[side] === true){
+        case "easy": // itera pelas peças na mão do BOT procurando a primeira peça que pode ser jogada, e joga ela // broken here 20230120
+            for(let position = 0; position < current_player.hand.length; position++){
+                for(let side = 0; side < current_player.hand[position].playable.length; side++){
+                    if(current_player.hand[position].playable[side] === yes || current_player.hand[position].playable[side] === yes_rotate){       
                         ask_play(position, side);
-                        return true;
+                        return "worked!";
                     }
                 }
             }
+            console.error("Error: AI easy mode");
             break;
 
         case "hard":
+
             let highest_sum = -1;
+            let highest_sum_position;
+            let highest_sum_side;
+
+            for(let position = 0; position < current_player.hand.length; position++){
+                for(let side = 0; side < current_player.hand[position].playable.length; side++){
+                    if((current_player.hand[position].playable[side] == true && current_player.hand[position].sum() > highest_sum)){
+                        highest_sum = current_player.hand[position].sum();
+                        highest_sum_position = position;
+                        highest_sum_side = side;
+                    }
+                }
+            }
+            
+            console.log("highest_sum: "+highest_sum); // debug
+            console.log("highest_sum_position: "+highest_sum_position); // debug
+            console.log("highest_sum_side: "+highest_sum_side); // debug
+            ask_play(highest_sum_position, highest_sum_side); // debug
+
+
+            console.error("Error: AI easy mode");
+
+            /* 
             for(let position = 0; position < (current_player.hand.length); position++){
                 for(let side = 0; side < (current_player.hand[position].playable.length); side++){
                     if(current_player[position].playable[side] === true && current_player[position].sum() > highest_sum){
@@ -598,19 +622,18 @@ function bot_play(mode = "easy"){
                 } else {
                     console.error("Error: AI hard mode");
                 }
-            }   
+            } */   
+            
             break;
 
         case "mittens":
+            
             break;
 
         default:
             console.error("error");
-        
-    }
-    
-    
 
+    }
 }
 function check_shop_empty() {
     if(shop.length === empty){
@@ -756,7 +779,7 @@ function game(mode = "Jogador vs Bot"){
     do {
         do {
             
-            dificulty_mode = "easy";
+            dificulty_mode = "hard"; // tag: change
 
             player_list[human] = new Player("Generic-1", "Jogador", "player1HandInner"); // objeto que representa o jogador
             player_list[bot] = new Player("Generic-2", "Bot", "player2HandInner"); // objeto que representa o BOT
