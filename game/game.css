@@ -81,9 +81,6 @@ body{
     border-radius: 5px;
 }
 
-/* .hand, .opponentHand {
-    display: none;
-} */
 
 .hand .handSlot{
     margin: 0 2px 0 2px;

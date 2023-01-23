@@ -1,3 +1,7 @@
+
+
+
+
 ////////////////////////////////////////
 // Consts:
 ////////////////////////////////////////
@@ -29,7 +33,7 @@ class Piece {
         this.playable[left] = no;
         this.playable[right] = no;
         // this.piece_svg = generate_piece_svg(value_left, value_right);
-        this.piece_svg = generatePiece(value_left, value_right);
+        this.piece_svg = generateHandPiece(value_left, value_right);
         this.piece_svg.setAttribute('class', 'handSlot');
 
     }
@@ -606,7 +610,7 @@ function bot_play(mode = "easy"){
             ask_play(highest_sum_position, highest_sum_side); // debug
 
 
-            console.error("Error: AI easy mode");
+            // console.error("Error: AI hard mode");
 
             /* 
             for(let position = 0; position < (current_player.hand.length); position++){
@@ -722,18 +726,6 @@ function restart(){
     return answer;
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 function game(mode = "Jogador vs Bot"){ // mode esta sempre como jogador vs bot
 
@@ -953,6 +945,9 @@ playButton.addEventListener("click", function() {
 /**  */
 
 
+
+
+
 /** Componentes que deverão aparecer após iniciar o game
  * 
  *  Elementos dever ser dispostos na forma <'classe': quantidade> 
@@ -966,7 +961,7 @@ let gameComponentsList = {
 };
 
 
-/** seleção da table para utilizar de referência de inserçãp */
+/** Seleção da table para utilizar de referência de inserçãp */
 let containerTable = document.getElementById('table'); 
 
 
@@ -1002,66 +997,6 @@ function initGame (mode){
 }
 
 
-/** 
- * Cria uma peça preparada para ser colocada na mesa já com sua rotação correta.
- * 
- * Atualmente admite como parâmetros internos os valores dos lados a ser gerada via prompt, mudar para peça da hand.
- * 
- * Ordem de escolha: ( sideLeft, sideRight ) ou ( sideUp, sideDown ).
- * 
- * Parametros aceitos atualmente: [0, 1, 2, 3, 4, 5, 6]
-*/
-function createTablePiece (){
-    
-
-    let userInput1 = prompt("Insira um valor:");                // Entrada de Usuário 1
-    userInput1 = parseInt(userInput1, 10);                      // Seta a entrada como inteiro
-
-    
-    let userInput2 = prompt("Insira outro valor:");             // Entrada de Usuário 2
-    userInput2 = parseInt(userInput2, 10);                      // Seta a entrada como inteiro
-
-    let piece = generatePiece (userInput1,userInput2);
-
-    if (userInput1 == userInput2){                              // Peça na Vertical
-
-        piece.setAttribute ('class', 'piece UsableRectangleH'); // Seta a classe de peça na Vertical (height)
-    }
-    
-    else {   
-
-        piece.setAttribute ('class', 'piece UsableRectangleW'); // Seta a classe de peça na Horizontal (width)
-    }
-
-    return piece
-}
-
-
-/** 
- * Coloca uma peça na table 
- * 
- * Atualemente admite como parâmetro interno o lado a ser colocado via prompt, mudar para parâmetro intrinseco da peça
- *
- * Parametros aceitos atualmente: [l] ou [r]
-*/
-function updateTable (){
-
-    let piece = createTablePiece ();
-    let tableSide = prompt("Insira um lado: [L] ou [R]");
-
-    tableSide.toLowerCase();
-
-    if (tableSide == 'l'){
-        containerTable.prepend (piece);
-    }
-
-    else if (tableSide == 'r'){
-        
-        containerTable.appendChild (piece);
-    }
-}
-
-
 /**
  * Gera uma peça a partir dos parâmetros de entrada
  * 
@@ -1069,11 +1004,11 @@ function updateTable (){
  * 
  * A definição da orientação da peça é dada pela classe side, sendo elas: Up, Down, Left e Ritgh
  * 
- * > ( Essa função não define classe de permanencia da peça, como hand ou table) 
+ * > ( Essa função não define classe de permanencia da peça como a table) 
  * 
  * > ( A classe de permanencia da peça deverá ser definida após ela ser gerada)
  */
-function generatePiece (value1, value2){
+function generateTablePiece (value1, value2){
 
 
     // ======================== //
@@ -1198,6 +1133,186 @@ function generatePiece (value1, value2){
     return parentPiece;
 }
 
+
+/** 
+ * Cria uma peça preparada para ser colocada na mesa já com sua rotação correta.
+ * 
+ * Atualmente admite como parâmetros internos os valores dos lados a ser gerada via prompt, mudar para peça da hand.
+ * 
+ * Ordem de escolha: ( sideLeft, sideRight ) ou ( sideUp, sideDown ).
+ * 
+ * Parametros aceitos atualmente: [0, 1, 2, 3, 4, 5, 6]
+*/
+function createTablePiece (){
+    
+
+    let userInput1 = prompt("Insira um valor:");                // Entrada de Usuário 1
+    userInput1 = parseInt(userInput1, 10);                      // Seta a entrada como inteiro
+
+    
+    let userInput2 = prompt("Insira outro valor:");             // Entrada de Usuário 2
+    userInput2 = parseInt(userInput2, 10);                      // Seta a entrada como inteiro
+
+    let piece = generateTablePiece (userInput1,userInput2);
+
+    if (userInput1 == userInput2){                              // Peça na Vertical
+
+        piece.setAttribute ('class', 'piece UsableRectangleH'); // Seta a classe de peça na Vertical (height)
+    }
+    
+    else {   
+
+        piece.setAttribute ('class', 'piece UsableRectangleW'); // Seta a classe de peça na Horizontal (width)
+    }
+
+    return piece
+}
+
+
+/** 
+ * Coloca uma peça na table 
+ * 
+ * Atualemente admite como parâmetro interno o lado a ser colocado via prompt, mudar para parâmetro intrinseco da peça
+ *
+ * Parametros aceitos atualmente: [L] ou [R]
+*/
+function updateTable (){
+
+    let piece = createTablePiece ();
+    let tableSide = prompt("Insira um lado: [L] ou [R]");
+
+    tableSide = tableSide.toLowerCase();
+
+    if (tableSide == 'l'){
+        containerTable.prepend (piece);
+    }
+
+    else if (tableSide == 'r'){
+        
+        containerTable.appendChild (piece);
+    }
+}
+
+
+/**
+ * Gera uma peça a partir dos parâmetros de entrada
+ * 
+ * Números iguais: peça em pé // Números diferentes: peça deitada
+ * 
+ * A definição da orientação da peça é dada pela classe side, sendo elas: Up, Down, Left e Ritgh
+ * 
+ * > ( Essa função não define classe de permanencia da peça, como hand ou table) 
+ * 
+ * > ( A classe de permanencia da peça deverá ser definida após ela ser gerada)
+ */
+function generateHandPiece (value1, value2){
+
+
+    // ======================== //
+    // Seta Informaçãoes da div //
+    // ======================== //
+
+
+    let parentPiece = document.createElement('div');     // Cria uma div 
+
+
+    // ================== //
+    // seta filhos da div //
+    // ================== //
+
+
+    let child1 = document.createElement('div');     // Cria uma div (será SideUp)
+    parentPiece.appendChild (child1)                // Tornna essa div descendente de parentPiece
+
+    let child2 = document.createElement('div');     // Cria uma div (será SideDown)
+    parentPiece.appendChild (child2)                // Tornna essa div descendente de parentPiece
+
+
+    // ============================== //
+    // Verifica se tem números iguais //
+    // ============================== //
+
+    // ======= //
+    // Side Up //
+    // ======= //
+    
+    child1.setAttribute('class', 'sideUp');         // Atribui uma classe para essa div para estilização
+
+    // ========= //
+    // Side Down //
+    // ========= //
+
+    child2.setAttribute('class', 'sideDown');       // Atribui uma classe para essa div para estilização
+
+
+    // =========== //
+    // Def do svg1 //
+    // =========== //
+
+    
+    let svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    
+    switch(value1){
+        case 0:
+            svg1 = createSVG_0();
+            break;
+        case 1:
+            svg1 = createSVG_1();
+            break;
+        case 2:
+            svg1 = createSVG_2();
+            break;
+        case 3:
+            svg1 = createSVG_3();
+            break;
+        case 4:
+            svg1 = createSVG_4();
+            break;
+        case 5:
+            svg1 = createSVG_5();
+            break;
+        case 6:
+            svg1 = createSVG_6();
+            break;
+    }
+    
+    child1.appendChild (svg1);                       // Tornna esse svg descendente de child1
+
+    // =========== //
+    // Def do svg2 //
+    // =========== //
+    
+    let svg2 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    
+    switch(value2){
+        case 0:
+            svg2 = createSVG_0();
+            break;
+        case 1:
+            svg2 = createSVG_1();
+            break;
+        case 2:
+            svg2 = createSVG_2();
+            break;
+        case 3:
+            svg2 = createSVG_3();
+            break;
+        case 4:
+            svg2 = createSVG_4();
+            break;
+        case 5:
+            svg2 = createSVG_5();
+            break;
+        case 6:
+            svg2 = createSVG_6();
+            break;
+    }
+    
+    child2.appendChild(svg2);                       // Tornna esse svg descendente de child1
+
+
+    return parentPiece;
+}
 
 
 // ========== //
@@ -1551,6 +1666,27 @@ function createSVG_0() {
 // ============== //
 // Sleep Function //
 // ============== //
+
+
+
+
+/**
+ * Executa uma função após um determinado tempo
+ * 
+ * Parâmetros de entrada <função, tempo>
+ * 
+ * Função: qualquer função a ser executada, sem parâmetros de entrada
+ * 
+ * tempo: Um valor <int> em ms
+ */
+function sleepFor  (func ,time)
+{
+    setTimeout(() => {
+        func();
+      }, time); 
+}
+
+
 
 /* 
 

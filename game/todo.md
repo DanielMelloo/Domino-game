@@ -2,7 +2,7 @@
 
 
 
-[ ] template da table
+[x] template da table
 
 [ ] inserir função de movimentação da hand
 
@@ -18,6 +18,6 @@
 
 [ ] Tornar o tabuleiro visivel antes de realizar qualquer movimento
 
-[ ] mode esta sempre como jogador vs bot - lembrar o gabriel disso
-
 [ ] Consertar mão que está incializando invertida (mao do bot na mao do player) quando bot joga primeiro
+
+[ ] atualizar mao do jogador a cada movimento
