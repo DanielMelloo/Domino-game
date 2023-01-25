@@ -21,3 +21,9 @@
 [ ] Consertar mão que está incializando invertida (mao do bot na mao do player) quando bot joga primeiro
 
 [ ] atualizar mao do jogador a cada movimento
+
+[ ] qualquer bjeto arrastado tenta jogar!!!!
+
+[ ] draggable com bugs
+
+[ ] tirar playable no css quando n e possivel

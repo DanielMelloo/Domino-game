@@ -13,46 +13,46 @@
 
 
 
-        <!-------------------------------------------------------- Mão do oponente --------------------------------------------------------->
+    <!--------------------------------------------------------- Mão do oponente --------------------------------------------------------->
 
 
-        <div class="handbox classNone" id="player2Hand">
-            <div class="player2 hand" id="player2HandInner">
-    
-                 
-            </div>
-        </div>
-    
-    
-        <!-------------------------------------------------------- Mão do jogador ---------------------------------------------------------->
-    
-    
-        <div class="handbox classNone" id="player1Hand">
-            <div class="player1 hand" id="player1HandInner">
+    <div class="handbox classNone" id="player2Hand">
+        <div class="player2 hand" id="player2HandInner">
+
                 
-            </div>  
         </div>
+    </div>
 
 
-        <!-------------------------------------------------------- Menu1 ---------------------------------------------------------->
-
-
-
-        <div id="menu">
-
-            <button type="button" class="play-button" id="Jogador vs Bot" onclick='initGame("Jogador vs Bot")'>
-                Jogador vs Bot
-            </button>
-            <button type="button" class="play-button" id="Bot vs Bot" onclick='initGame ("Bot vs Bot")'>
-                Bot vs Bot
-            </button>
+    <!--------------------------------------------------------- Mão do jogador ---------------------------------------------------------->
     
-        </div>
-    
-        <!-------------------------------------------------------- Menu2 ---------------------------------------------------------->
+
+    <div class="handbox classNone" id="player1Hand">
+        <div class="player1 hand" id="player1HandInner">
+            
+        </div>  
+    </div>
+
+
+    <!-------------------------------------------------------------- Menu1 -------------------------------------------------------------->
 
 
 
+    <div id="menu">
+
+        <button type="button" class="play-button" id="Jogador vs Bot" onclick='initGame("Jogador vs Bot")'>
+            Jogador vs Bot
+        </button>
+        <button type="button" class="play-button" id="Bot vs Bot" onclick='initGame ("Bot vs Bot")'>
+            Bot vs Bot
+        </button>
+
+    </div>
+
+    <!-------------------------------------------------------------- Menu2 -------------------------------------------------------------->
+
+
+<!-- 
     <div class="menu">
         <div>
             <button onclick="updateTable()">Gerar peça</button>
@@ -62,9 +62,33 @@
             <button onclick="updateTableSP()">Gerar peça Aleatória</button>
         </div>
 
-    </div>
+    </div> -->
+
+    <!------------------------------------------------------------ drop area ------------------------------------------------------------>
+
 
     <!-- <div class="main" ondrop="drop(event)" ondragover="allowDrop(event)"> -->
+
+
+        <div id="dropArea">
+            <div class="dropAreaInner" id="left" ondrop="drop(left)" ondragover="allowDrop(event)">
+
+            </div>
+
+            <div class="dropAreaInner" id="right" ondrop="drop(right)" ondragover="allowDrop(event)">
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+    <!-------------------------------------------------------------- table -------------------------------------------------------------->
+
     <div class="main" id="main">
 
         <div id="table">
@@ -72,6 +96,15 @@
         </div>
 
     </div>
+
+
+
+
+
+
+
+
+
     <!-- <button id="reset">Reset example</button> -->
     <!-- <script type="text/javascript" src="script.js"></script> -->
     <script src="script.js" defer></script>

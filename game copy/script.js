@@ -1,9 +1,23 @@
+
+
+
+// =============== //
+// Debug Variables //
+// =============== //
+
+
+let debugMode = true;
+let botDrag = false; // Só da pra usar quando o debug mode esta ativo
+let botInit = true;
+
+
 ////////////////////////////////////////
 // Consts:
 ////////////////////////////////////////
 
 // const debugMode = false;
-let debugMode = true;
+
+
 const left = 0;
 const right = 1;
 const human = 0;
@@ -32,7 +46,10 @@ class Piece {
         this.playable[right] = no;
         // this.piece_svg = generate_piece_svg(value_left, value_right);
         this.piece_svg = generateHandPiece(value_left, value_right);
-        this.piece_svg.setAttribute('class', 'handSlot');
+        // this.onluSvgs = 
+        this.piece_svg.setAttribute('class', 'handSlot'); 
+        // this.piece_svg.setAttribute('id', '');
+        this.piece_svg.setAttribute('ondragstart', 'drag(this)');
         // this.piece_svg.setAttribute('onclick', 'check_playable_onclick()');
 
     }
@@ -86,14 +103,11 @@ class Piece {
             } else {
                 return no;
             }
-        }
-
-        
+        }        
     }
     update_playable() { // atualiza o status se peça é jogavel
         this.playable[left] = this.check_playable(left);
         this.playable[right] = this.check_playable(right);
-
         this.update_classes_by_playable();
     }
 
@@ -113,7 +127,8 @@ class Piece {
             this.piece_svg.classList.add('playable');
         }
 
-        else {
+        else if(!(debugMode && botDrag)){
+            
             this.piece_svg.setAttribute('draggable', 'false');
         }
     }
@@ -122,7 +137,7 @@ class Piece {
 
 
 class Player {
-    constructor(name = "generic", input_type = "bot", hand_div_id){
+    constructor(name = "generic", input_type = "Bot", hand_div_id){
         this.name = name;
         this.hand = new Array();
         this.hand_div = document.getElementById(hand_div_id);
@@ -130,7 +145,20 @@ class Player {
         this.can_play;
         this.input_type = input_type; // guarda se o objeto Player é Humano ou Bot
     }
+
     add_piece_svg_to_hand_div(piece_svg){ // transformar em metodo (Gabriel)
+        
+        
+        if (this.input_type == 'Bot'){
+            if (!debugMode){
+                setUnview (piece_svg)
+            }
+
+        }
+
+        else if (this.input_type == "Jogador"){
+
+        }
         
         this.hand_div.appendChild(piece_svg);
 
@@ -142,6 +170,7 @@ class Player {
                 this.hand.push(piece);
                 this.add_piece_svg_to_hand_div(piece.piece_svg);
             }
+            
             return piece.string();
         } else {
             console.log("error: not enough pieces!");
@@ -247,10 +276,20 @@ class Player {
         if (debugMode){
             console.log(">>>> [Updating-Playables: "+this.name+"] <<<<");
         }
-
         for(let i = 0; i < this.hand.length; i++) {
             this.hand[i].update_playable();
+            this.hand[i].piece_svg.setAttribute('id', 'slotId' + i); 
+            
+            if(this.input_type === "Bot" && !(debugMode && botDrag)){  // se a peça estivar com o bot...
+
+                this.hand[i].piece_svg.setAttribute('draggable', 'false'); // ...remover propriedade "dragable" da peça          
+            //     this.piece_svg.setAttribute('draggable', 'false'); // ...remover propriedade "dragable" da peça
+            }
+
         }
+        // update_playable();
+        
+        
         this.update_can_play();
     }
     update_can_play() { //
@@ -311,10 +350,28 @@ class Player {
             return false;
         }
 
+        // this.update_playables();
         // update_table(value1, value2, side)
         // update_table(this.hand[position].value[0], this.hand[position].value[1], side);
         // console.log ('value1: ' + this.hand[position].value[0] + 'value2: ' + this.hand[position].value[1], side);
         // console.log (this.hand[position].value[left], this.hand[position].value[right]);
+        
+        this.update_playables();
+        
+        change_player(); // muda de jogador
+
+        if(current_player.input_type === "Bot"){ // se o jogador seguinte for um Bot, faz a jogada por ele 
+            
+            // (ToDo: encapsular na função bot_play())
+            current_player.update_playables();
+            current_player.update_can_play();
+            if(current_player.can_play == false){
+                
+                // current_player.draw_piece // {tsusuku}
+            }
+                
+        }
+
         return true;
     }
     hand_sum() {
@@ -549,7 +606,7 @@ function going_first() {
         if(highest_value[human] > highest_value[bot]){ // se o human tiver a peça não-espelhada de maior soma de valores, então human ganha.
             winner = player_list[human];
             winner_position = highest_position[human];
-        } else if(highest_value[bot] > highest_value[human]){ // se o bot tiver a peça não-espelhada de maior soma de valores, então bot ganha.
+        } else if(highest_value[bot] > highest_value[human]) { // se o bot tiver a peça não-espelhada de maior soma de valores, então bot ganha.
             winner = player_list[bot];
             winner_position = highest_position[bot];
         } else { // error testing 2.
@@ -571,14 +628,30 @@ function going_first() {
         for(let j = 0; j < winner.hand[i].playable.length; j++){ 
             winner.hand[i].playable[j] = no; // marca como não jogavel em ambos os lados da mesa.
         }
+        winner.hand[i].piece_svg.setAttribute('id', 'slotId' + i); // marca o indice da peça na mão como id do svg da peça
     }
+    
+    winner.hand[winner_position].update_playable(); // marca somente a peça ganhadora como jogavel.
+    winner.hand[winner_position].piece_svg.setAttribute('id', 'slotId' + winner_position); // marca o indice da peça na mão como id do svg da peça
+    if(winner.input_type === "Bot" && !(debugMode && botDrag)){ // transforma em não arrastavel se pertencer ao bot 
+        winner.hand[winner_position].piece_svg.setAttribute('draggable', 'false');     
+    }
+    // botDrag = false
+    // !botDrag = true
 
-    for(let i = 0; i < winner.hand[winner_position].playable.length; i++){ // marca somente a peça ganhadora como jogavel.
+
+    // botDrag = true
+    // !botDrag = false
+
+    /* for(let i = 0; i < winner.hand[winner_position].playable.length; i++){ // marca somente a peça ganhadora como jogavel.
        
         winner.hand[winner_position].update_playable();
+        winner.hand[winner_position].piece_svg.setAttribute('id', 'slotId' + i); 
         // winner.hand[winner_position].playable[i] = yes; // (old!)
         // winner.hand[winner_position].update_classes_by_playable();
-    }
+    } */
+
+    
     
     if (debugMode){
         console.log("First: "+winner.name);
@@ -619,7 +692,7 @@ function change_player() {
     
     current_player = next;
 
-    current_player.update_playables();
+    // current_player.update_playables();
 }
 function ask_play(position, side) {
     if (debugMode){
@@ -654,7 +727,8 @@ function bot_play(mode = "easy"){
             for(let position = 0; position < current_player.hand.length; position++){
                 for(let side = 0; side < current_player.hand[position].playable.length; side++){
                     if(current_player.hand[position].playable[side] === yes || current_player.hand[position].playable[side] === yes_rotate){       
-                        ask_play(position, side);
+                        current_player.play_piece(position, side);
+                        // ask_play(position, side);
                         return "worked!";
                     }
                 }
@@ -804,7 +878,22 @@ function restart(){
     
 }
 
-function game(mode = "Jogador vs Bot"){ // mode esta sempre como jogador vs bot
+
+
+function game(mode = "Jogador vs Bot"){
+    
+
+    if (mode = "Jogador vs Bot"){
+        
+        // player2Hand.setAttribute.children[1].remove()
+        
+        
+    }
+
+    else if (mode = "Bot vs Bot"){
+        
+    }
+    
 
     dificulty_mode = "hard"; // tag: change
 
@@ -831,6 +920,9 @@ function game(mode = "Jogador vs Bot"){ // mode esta sempre como jogador vs bot
     // decidindo qual jogador joga primeiro.
     current_player = going_first();
 
+    if(current_player.input_type === "Bot" && botInit){
+        bot_play(dificulty_mode); // Bot faz primeira jogada
+    }
     
     // ask_play();
 
@@ -941,20 +1033,20 @@ function game(mode = "Jogador vs Bot"){ // mode esta sempre como jogador vs bot
      */
 }
 
-function generate_piece_svg(value_up, value_down){  // Gera uma peça e retorna ela (Gabriel)
+// function generate_piece_svg(value_up, value_down){  // Gera uma peça e retorna ela (Gabriel)
 
-    let piece_frame_svg = document.createElement('div');     // Cria uma div 
-    let value_up_svg = document.getElementById("template_values_svg").children[value_up].cloneNode(true);
-    let value_down_svg = document.getElementById("template_values_svg").children[value_down].cloneNode(true);
+//     let piece_frame_svg = document.createElement('div');     // Cria uma div 
+//     let value_up_svg = document.getElementById("template_values_svg").children[value_up].cloneNode(true);
+//     let value_down_svg = document.getElementById("template_values_svg").children[value_down].cloneNode(true);
    
-    piece_frame_svg.setAttribute("class", "handSlot");
-    piece_frame_svg.appendChild(value_up_svg);
-    piece_frame_svg.appendChild(value_down_svg);
+//     piece_frame_svg.setAttribute("class", "handSlot");
+//     piece_frame_svg.appendChild(value_up_svg);
+//     piece_frame_svg.appendChild(value_down_svg);
 
-    // class="handSlot" id="slotId1"
+//     // class="handSlot" id="slotId1"
 
-    return piece_frame_svg;
-}
+//     return piece_frame_svg;
+// }
 
 ////////////////////////////////////////
 
@@ -977,7 +1069,7 @@ function generate_piece_svg(value_up, value_down){  // Gera uma peça e retorna 
     // criando players.
     player_list = new Array();
     
-
+    // current_player.update_playables(); // quebrando!
     
 
     // (to-do) criar Função para mudar o turno de jogadores. change_player()                                    {Pronto!}
@@ -1061,14 +1153,47 @@ playButton.addEventListener("click", function() {
 // |         Daniel Init         | //
 // =============================== //
 
+/** Componentes que deverão aparecer após iniciar o game
+ * 
+ *  Elementos dever ser dispostos na forma <'classe': quantidade> 
+ * */
+let gameComponentsList = {
+    '.handbox': 2,
+    // '.horizontalBox': 29,
+    // '.verticalBox': 26,
+    // '.UsableRectangleW': 55,
+    // '.UsableRectangleH': 55,
+};
 
-/**  */
 
-const mao = document.getElementById("player1Hand");
-mao.addEventListener("click", someFun);
+/** Seleção da table para utilizar de referência de inserçãp */
+let containerTable = document.getElementById('table'); 
+let containerHand = document.getElementById('player1HandInner'); 
 
-function someFun() {
-    console.log ('algo')
+let player2Hand = document.getElementById ('player2HandInner');
+
+
+
+function setUnview (piece_svg) {
+
+    for (let i = 0; i < piece_svg.children.length; i++) {
+
+        // let subStr = 'playable'
+        // console.log (piece_svg.getAttributeNode("class").value)
+
+        
+        let pieces = piece_svg.children[i]
+        pieces.setAttribute('style', 'border: unset')
+
+
+        for (let j = 0; j < pieces.children.length; j++){
+
+            let svgs = pieces.children[j]
+            
+            svgs.classList.add ('classNone')
+        }
+    }
+
 }
 
 
@@ -1081,16 +1206,65 @@ function someFun() {
 
 
 
+/**  */
+
+// const mao = document.getElementById("player1Hand");
+// mao.addEventListener("click", someFun);
+
+// function someFun() {
+//     console.log ('algo')
+// }
+
+
+
+let masterPiece
+
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+  
+function drag(piece) {
+    masterPiece = piece
+    
+}
 
 
 
 
+function addToTable (side) {
 
 
+    id = parseInt(masterPiece.id.slice(6), 10);
 
+    if (current_player.hand[id].value[left] == current_player.hand[id].value[right]){
+        masterPiece.setAttribute('class', 'piece UsableRectangleH');
+    }
 
+    else{
+        masterPiece.setAttribute('class', 'piece UsableRectangleW');
+    }
+    
+    if (side == left){
+        containerTable.prepend(masterPiece);
+    }
+    
+    else if (side == right){
+        containerTable.appendChild(masterPiece);
+    }
 
+}
 
+function drop(side) {
+    // addToTable (side);
+    let masterPiece_id = parseInt(masterPiece.id.slice(6));
+    current_player.play_piece(masterPiece_id, side);
+    if(current_player.input_type === "Jogador"){
+        bot_play(dificulty_mode);
+        console.log("triggered!");
+    }
+}
+
+/** Função de testes com valores arbitrarios e aleatorios */
 function updateTableSP (){
 
     let tableSide = 'r'
@@ -1102,7 +1276,7 @@ function updateTableSP (){
     updateTableWP (tableSide, value1, value2);
 }
 
-
+/** Função de testes com valores arbitrarios e aleatorios */
 function updateTableWP (tableSide, value1, value2){
 
     let piece = createTablePieceWP (value1, value2);
@@ -1121,7 +1295,7 @@ function updateTableWP (tableSide, value1, value2){
     }
 }
 
-
+/** Função de testes com valores arbitrarios e aleatorios */
 function createTablePieceWP (value1, value2){
     
     let piece = generateTablePiece (value1,value2);
@@ -1140,26 +1314,7 @@ function createTablePieceWP (value1, value2){
 }
 
 
-// function handToTable () {
-    
-// }
 
-
-/** Componentes que deverão aparecer após iniciar o game
- * 
- *  Elementos dever ser dispostos na forma <'classe': quantidade> 
- * */
-let gameComponentsList = {
-    '.handbox': 2,
-    // '.horizontalBox': 29,
-    // '.verticalBox': 26,
-    // '.UsableRectangleW': 55,
-    // '.UsableRectangleH': 55,
-};
-
-
-/** Seleção da table para utilizar de referência de inserçãp */
-let containerTable = document.getElementById('table'); 
 
 
 /** Apaga o menu de seleção de modo de jogo */
@@ -1523,7 +1678,7 @@ function generateHandPiece (value1, value2){
             break;
     }
     
-    child2.appendChild(svg2);                       // Tornna esse svg descendente de child1
+    child2.appendChild(svg2);                       // Torna esse svg descendente de child1
 
 
     return parentPiece;
@@ -1945,6 +2100,12 @@ function create_table_piece(value1, value2){ // [Gabriel(adaptação)]
     }
 
     return piece
+}
+function player_vs_bot_flow(){
+    
+}
+function bot_vs_bot_flow(){
+
 }
 
 

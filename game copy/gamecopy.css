@@ -60,6 +60,8 @@ body{
     position: fixed;
     left: 10px;
     height: 100%;
+
+    z-index: 22;
 }
 
 #menu{
@@ -147,6 +149,7 @@ body{
     
     
     justify-content: center;
+    align-items: center;
     border-radius: 5px;
 }
 
@@ -156,6 +159,10 @@ body{
     background: white;
     border-radius:  5px;
     border: solid black 2px;
+
+    max-height: 92px;
+
+    transition: 2s
 }
 
 
@@ -188,6 +195,8 @@ body{
 
 
 .sideUp {
+    width: 45px;
+    height: 45px;
     max-width: 45px;
     max-height: 45px;
 
@@ -195,6 +204,8 @@ body{
 }
 
 .sideDown {
+    width: 45px;
+    height: 45px;
     max-width: 45px;
     max-height: 45px;
 
@@ -202,6 +213,8 @@ body{
 }
 
 .sideLeft{
+    width: 45px;
+    height: 45px;
     max-width: 45px;
     max-height: 45px;
 
@@ -211,6 +224,8 @@ body{
 }
 
 .sideRight{
+    width: 45px;
+    height: 45px;
     max-width: 45px;
     max-height: 45px;
 
@@ -241,3 +256,32 @@ body{
 }
 
 
+
+#dropArea{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: row;
+}
+
+
+.dropAreaInner{
+    width: 100vw;
+    width: 50vw;
+    
+    /* background-color: black; */
+
+    z-index: 1;
+}   
+
+/* #left{
+    border-right: 2px solid black;
+}
+
+
+#right{
+    border-left: 2px solid black;
+
+} */
