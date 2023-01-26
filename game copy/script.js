@@ -10,7 +10,7 @@
 // Debug Variables //
 // =============== //
 
-let debugMode = true;
+let debugMode = false;
 let botDrag = false; // Só da pra usar quando o debug mode esta ativo
 let botInit = true;
 
@@ -1410,28 +1410,28 @@ function drag(piece) {
 
 
 
-function addToTable (side) {
+// function  addToTable (side) {
 
 
-    id = parseInt(masterPiece.id.slice(6), 10);
+//     id = parseInt(masterPiece.id.slice(6), 10);
 
-    if (current_player.hand[id].value[left] == current_player.hand[id].value[right]){
-        masterPiece.setAttribute('class', 'piece UsableRectangleH');
-    }
+//     if (current_player.hand[id].value[left] == current_player.hand[id].value[right]){
+//         masterPiece.setAttribute('class', 'piece UsableRectangleH');
+//     }
 
-    else{
-        masterPiece.setAttribute('class', 'piece UsableRectangleW');
-    }
+//     else{
+//         masterPiece.setAttribute('class', 'piece UsableRectangleW');
+//     }
     
-    if (side == left){
-        containerTable.prepend(masterPiece);
-    }
+//     if (side == left){
+//         containerTable.prepend(masterPiece);
+//     }
     
-    else if (side == right){
-        containerTable.appendChild(masterPiece);
-    }
+//     else if (side == right){
+//         containerTable.appendChild(masterPiece);
+//     }
 
-}
+// }
 
 function drop(side){
     
@@ -2243,10 +2243,17 @@ function createSVG_0() {
 // ============== //
 // Sleep Function //
 // ============== //
+function text (){
+    console.log ('bom dia')
+}
 
+setTimeout(function() {
+    text ();
+}, 1000);
 
-
-
+setTimeout(function() {
+    text ();
+}, 1000);
 /**
  * Executa uma função após um determinado tempo
  * 

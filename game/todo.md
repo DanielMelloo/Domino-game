@@ -27,3 +27,6 @@
 [ ] draggable com bugs
 
 [ ] tirar playable no css quando n e possivel
+
+[ ] Bot n passa a vez quando joga primeiro
+ 
