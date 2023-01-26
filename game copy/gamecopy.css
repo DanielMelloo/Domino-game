@@ -237,9 +237,6 @@ body{
 
 
 
-.classNone {
-    display: none;
-}
 
 
 .hand .handSlot .sideLeft, .hand .handSlot .sideRight{
@@ -276,12 +273,106 @@ body{
     z-index: 1;
 }   
 
-/* #left{
-    border-right: 2px solid black;
+
+
+.card{
+    position: fixed;
+    top: 0;
+    display: grid;
+    place-items: center;
+
+    width: 100vw;
+    height: 100vh;
+
+    z-index: 40;
+
+
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.cardInner{
+    color: var(--color1);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 45vw;
+    height: 45vh;
+
+
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.cardInner h1 {
+    justify-content: center;
+    text-align: center;
+    
+    font-size: 4vh; 
+}
+
+.cardInner button {
+    color: var(--color1);
+    background-color: transparent;
+
+    justify-content: center;
+    text-align: center;
+    
+    font-size: 4vh;
+
+    margin-top: 2vh;
+    padding: 3vh; 
+    border-radius: 3vh; 
+
+    border: var(--color1) solid;
+    
+
+    cursor: pointer;
+
 }
 
 
-#right{
-    border-left: 2px solid black;
 
-} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.classNone {
+    display: none;
+}
