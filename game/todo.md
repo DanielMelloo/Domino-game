@@ -21,3 +21,20 @@
 [ ] Consertar mão que está incializando invertida (mao do bot na mao do player) quando bot joga primeiro
 
 [ ] atualizar mao do jogador a cada movimento
+
+[ ] qualquer bjeto arrastado tenta jogar!!!!
+
+[ ] draggable com bugs
+
+[ ] tirar playable no css quando n e possivel
+
+
+[-]: uma janela de status com:
+    - nome dos jogadores
+    - suas pontuações
+    - contagem do turno da vez
+    - peças restantes do 
+=======
+[ ] Bot n passa a vez quando joga primeiro
+ 
+
