@@ -2443,8 +2443,6 @@ function createSVG_0() {
     return svg;
 }
 
-=======
-
 
 // ============== //
 // Sleep Function //
