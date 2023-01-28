@@ -28,5 +28,13 @@
 
 [ ] tirar playable no css quando n e possivel
 
+
+[-]: uma janela de status com:
+    - nome dos jogadores
+    - suas pontuações
+    - contagem do turno da vez
+    - peças restantes do 
+=======
 [ ] Bot n passa a vez quando joga primeiro
  
+

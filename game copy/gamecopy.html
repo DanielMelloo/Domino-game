@@ -11,6 +11,8 @@
 </head>
 <body>
 
+    
+
 
 
     <!--------------------------------------------------------- Mão do oponente --------------------------------------------------------->
@@ -34,7 +36,7 @@
     </div>
 
 
-    <!-------------------------------------------------------------- Menu1 -------------------------------------------------------------->
+    <!-------------------------------------------------------------- InitMenu ------------------------------------------------------------->
 
 
 
@@ -49,28 +51,31 @@
 
     </div>
 
-    <!-------------------------------------------------------------- Menu2 -------------------------------------------------------------->
+    <!-------------------------------------------------------------- MenuInGame ----------------------------------------------------------->
 
 
-<!-- 
+
     <div class="menu">
-        <div>
+        <!-- <div>
             <button onclick="updateTable()">Gerar peça</button>
         </div>
 
         <div>
             <button onclick="updateTableSP()">Gerar peça Aleatória</button>
-        </div>
+        </div> -->
+        <!-- <div>
+            <button >Comprar</button>
+        </div> -->
 
-    </div> -->
+    </div>
 
     <!------------------------------------------------------------ drop area ------------------------------------------------------------>
 
 
-    <!-- <div class="main" ondrop="drop(event)" ondragover="allowDrop(event)"> -->
+    <!-- <div class="mainDrop" ondrop="drop(event)" ondragover="allowDrop(event)">
+ -->
 
-
-        <div id="dropArea">
+         <div id="dropArea">
             <div class="dropAreaInner" id="left" ondrop="drop(left)" ondragover="allowDrop(event)">
 
             </div>
@@ -79,6 +84,8 @@
 
             </div>
         </div>
+
+    <!-- </div> -->
 
 
 
@@ -94,45 +101,77 @@
 
     </div>
 
+    <!-------------------------------------------------------------- Overlays Init -------------------------------------------------------->
+    
+    
+    
+    <!-------------------------------------------------------------- Card Stats -------------------------------------------------------->
 
 
-    <!-------------------------------------------------------------- Winner -------------------------------------------------------------->
+    
+    <div class="cardStats classNone" id="">
+
+        <h1 id="player1Stats" ></h1>
+        <h1 id="player2Stats" ></h1>
+        <h1 id="turns" ></h1>
+
+    </div>
+
+
+    <!-------------------------------------------------------------- Peças Restantes ------------------------------------------------------>
+
+
+    <div class="buyable classNone" id="buyable">
+
+        <div class="buyableInner classNone" id="buyableInner">
+
+            <div id="pieceRef">
+    
+                <div id="pieceRefInner">
+                    
+                    <h1 id="restingPieces" ></h1>
+            
+                </div>
+        
+            </div>
+
+            <button id="drawPieceBtn" onclick="draw_piece_button()">
+                Comprar
+            </button>
+        </div>
+
+
+    </div>
+
+
+
+    <!-------------------------------------------------------------- MatchWinner ---------------------------------------------------------->
 
 
 
     <div class="card classNone" id="matchCard">
         <div class="cardInner" id="matchCardInner">
-            <!-- <h1>O vencedor desse round é Daniel com um total de 20 pontos</h1> -->
 
-            <!-- <button onclick="continueGame ()">Continue</button> -->
         </div>
     </div>
 
 
 
 
-    <!-------------------------------------------------------------- winner2 -------------------------------------------------------------->
+    <!-------------------------------------------------------------- GameWinner ----------------------------------------------------------->
     
 
     <div class="card classNone" id="gameCard">
         <div class="cardInner" id="gameCardInner">
-            <!-- <button onclick="resetGame ()">Reset</button> -->
+            
         </div>
     </div>
 
     
     
-    <!-------------------------------------------------------------- winner2 -------------------------------------------------------------->
+    <!-------------------------------------------------------------- Overlays End --------------------------------------------------------->
 
 
-    <!-- <div class="card classNone" id="card1">
-        <div class="cardInner">
-
-                <h1 class="classNone" id="reference1">Si fudeu</h1>
-                <h1 class="classNone" id="reference2">Danieeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeellllllllllllllllll</h1>
-                <h1 class="classNone" id="reference3">Parabéns Você acaba de encontrar um easteregg beeeem ruizin</h1>
-        </div>
-    </div> -->
 
 
     <!-- <button id="reset">Reset example</button> -->
