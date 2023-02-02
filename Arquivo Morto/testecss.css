@@ -1,0 +1,1435 @@
+/* Define um estilo para o container geral */
+#container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Define estilos para a div do jogador */
+.player {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Define estilos para a div das peças do jogador */
+.player .piece {
+    width: 10%;
+    height: 20%;
+    margin: 2%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Define estilos para a div do inimigo */
+.opponent {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Define estilos para a div das peças do inimigo */
+.opponent .piece {
+    width: 10%;
+    height: 20%;
+    margin: 2%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Define estilos para a div da mesa */
+.table {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Define estilos para a div das peças da mesa */
+.table .piece {
+    width: 10%;
+    height: 20%;
+    margin: 2%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilos para as peças do dominó */
+.domino-piece {
+    width: 50px;
+    height: 100px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Estilos para as peças jogadas na tabela */
+#played-pieces {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#played-pieces th, #played-pieces td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+/* Estilos para a pontuação dos jogadores */
+#score-board {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#score-board div {
+    width: 45%;
+    text-align: center;
+}
+
+/* Estilos para o indicador de turno */
+#turn-indicator {
+    text-align: center;
+}
+
+/* Estilos para as opções de jogada */
+#play-options {
+    display: flex;
+    justify-content: space-between;
+}
+
+#play-options ul {
+    list-style: none;
+    padding: 0;
+}
+
+#play-options li {
+    border: 1px solid black;
+    padding: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    }
+    
+    #play-options li:hover {
+    background-color: lightgray;
+    }
+    
+    /* Peças de dominó */
+    .domino-piece {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 80px;
+    border: 1px solid black;
+    }
+    
+    .domino-piece div {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: white;
+    border: 1px solid black;
+    }
+    
+    .domino-piece.double div {
+    width: 30px;
+    height: 30px;
+    }
+    
+    /* Mapa do jogo */
+    #game-board {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    }
+    
+    #player-hand, #play-area, #opponent-hand {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    }
+    
+    #player-hand li, #play-area li, #opponent-hand li {
+    width: 33%;
+    height: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+    
+    /* Estilos para os botões de controle */
+    #controls {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    }
+    
+    #controls button {
+    width: 48%;
+    }
+    
+    /* Estilos para a pontuação dos jogadores */
+    #score-board {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    }
+    
+    #score-board div {
+    width: 45%;
+    text-align: center;
+    }
+    
+    /* Estilos para o indicador de turno */
+    #turn-indicator {
+    width: 100%;
+    text-align: center;
+    padding: 16px;
+    }
+    
+    /* Estilos para as opções de jogada */
+    #play-options {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    }
+    
+    #play-options ul {
+    list-style: none;
+    padding: 0;
+    }
+    
+    #play-options li {
+    border: 1px solid black;
+    padding: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    }
+    
+    #play-options li:hover {
+    background-color: lightgray;
+    }
+    
+    /* Estilos para a mensagem de fim de jogo */
+    #game-over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    color: white;
+    visibility: hidden;
+    }
+#game-over {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 36px;
+color: white;
+visibility: hidden;
+}
+
+/* Estilos para o botão de novo jogo */
+#new-game {
+background-color: blue;
+color: white;
+padding: 8px 16px;
+border: none;
+border-radius: 4px;
+font-size: 16px;
+cursor: pointer;
+margin-top: 16px;
+}
+
+#new-game:hover {
+background-color: darkblue;
+}
+
+/* Esconder elementos */
+.hide {
+visibility: hidden;
+}
+
+/* Exibir elementos */
+.show {
+visibility: visible;
+}
+
+/* Estilos para o botão de desistir */
+#surrender {
+background-color: red;
+color: white;
+padding: 8px 16px;
+border: none;
+border-radius: 4px;
+font-size: 16px;
+cursor: pointer;
+margin-left: 16px;
+}
+
+#surrender:hover {
+background-color: darkred;
+}
+
+/* Estilos para o botão de passar a vez */
+#pass {
+background-color: gray;
+color: white;
+padding: 8px 16px;
+border: none;
+border-radius: 4px;
+font-size: 16px;
+cursor: pointer;
+margin-left: 16px;
+}
+
+#pass:hover {
+background-color: darkgray;
+}
+
+/* Estilos para o botão de ajuda */
+#help {
+background-color: yellow;
+color: black;
+padding: 8px 16px;
+border: none;
+border-radius: 4px;
+font-size: 16px;
+cursor: pointer;
+margin-left: 16px;
+}
+
+#help:hover {
+background-color: darkyellow;
+}
+
+/* Estilos para o modal de ajuda */
+#help-modal {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 24px;
+color: white;
+visibility: hidden;
+}
+
+#help-modal h2 {
+margin-bottom: 16px;
+}
+
+#help-modal p {
+text-align: center;
+margin-bottom: 16px;
+}
+
+#close-help {
+background-color: white;
+color: black;
+padding: 8px 16px;
+border: none;
+border-radius: 4px;
+font-weight: bold;
+margin-top: 16px;
+}
+/* Estilos para o botão fechar da mensagem de fim de jogo */
+#game-over #close-help {
+    background-color: white;
+    color: black;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-top: 16px;
+    cursor: pointer;
+    }
+    
+    #game-over #close-help:hover {
+    background-color: black;
+    color: white;
+    }
+    
+    /* Estilos para o botão de reiniciar o jogo */
+    #game-over #restart {
+    background-color: white;
+    color: black;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-top: 16px;
+    cursor: pointer;
+    }
+    
+    #game-over #restart:hover {
+    background-color: black;
+    color: white;
+    }
+    
+    /* Estilos para as peças de dominó */
+    .domino-piece {
+    width: 50px;
+    height: 100px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    }
+    
+    /* Estilos para as peças jogadas na tabela */
+    #played-pieces {
+    border-collapse: collapse;
+    width: 100%;
+    }
+    
+    #played-pieces th, #played-pieces td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+    }
+    
+    /* Estilos para a pontuação dos jogadores */
+    #score-board {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    }
+    
+    #score-board div {
+    width: 45%;
+    text-align: center;
+    }
+    
+    /* Estilos para o indicador de turno */
+    #turn-indicator {
+    text-align: center;
+    }
+    
+    /* Estilos para as opções de jogada */
+    #play-options {
+    display: flex;
+    justify-content: space-between;
+    }
+    
+    #play-options ul {
+    list-style: none;
+    padding: 0;
+    }
+    
+    #play-options li.selected {
+    background-color: lightgray;
+    }
+    
+    /* Peças de dominó */
+    .domino-piece {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 80px;
+    border: 1px solid black;
+    }
+
+.domino-piece div {
+width: 20px;
+height: 20px;
+border-radius: 50%;
+background-color: white;
+border: 1px solid black;
+}
+
+.domino-piece.double div {
+width: 30px;
+height: 30px;
+}
+
+/* Mapa do jogo */
+#game-board {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+/* Estilos para as peças jogadas na tabela */
+#played-pieces {
+border-collapse: collapse;
+width: 100%;
+}
+
+#played-pieces th, #played-pieces td {
+border: 1px solid black;
+padding: 8px;
+text-align: center;
+}
+
+/* Estilos para a pontuação dos jogadores */
+#score-board {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+#score-board div {
+width: 45%;
+text-align: center;
+}
+
+/* Estilos para o indicador de turno */
+#turn-indicator {
+text-align: center;
+}
+
+/* Estilos para as opções de jogada */
+#play-options {
+display: flex;
+justify-content: space-between;
+}
+
+#play-options ul {
+list-style: none;
+padding: 0;
+}
+
+#play-options li {
+border: 1px solid black;
+padding: 8px;
+margin-bottom: 8px;
+}
+
+#play-options li:hover {
+background-color: lightgray;
+}
+
+/* Estilos para a mensagem de fim de jogo */
+#game-over {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 36px;
+color: white;
+visibility: hidden;
+}
+
+#game-over #close-help {
+background-color: white;
+color: black;
+padding: 8px 16px;
+border: none;
+border-radius: 4px;
+font-size: 18px;
+cursor: pointer;
+}
+
+#game-over #close-help:hover {
+background-color: lightgray;
+}
+
+/* Estilos para o botão de ajuda */
+#help-button {
+background-color: white;
+color: black;
+padding: 8px 16px;
+border: none;
+border-radius: 4px;
+font-size: 18px;
+cursor: pointer;
+}
+
+#help-button:hover {
+background-color: lightgray;
+}
+
+
+
+
+
+    
+    
+    
+
+
+
+#close-help:hover {
+    background-color: lightgray;
+    cursor: pointer;
+    }
+    
+    #help-modal .content p {
+    margin-bottom: 16px;
+    }
+    
+    #help-modal .content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    }
+    
+    #help-modal .content li {
+    margin-bottom: 8px;
+    }
+    
+    #help-modal .content img {
+    max-width: 100%;
+    }
+    
+    #help-modal .content .keyboard-shortcuts {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+    }
+    
+    #help-modal .content .keyboard-shortcuts div {
+    width: 45%;
+    text-align: center;
+    }
+    
+    #help-modal .content .keyboard-shortcuts img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 8px;
+    }
+    
+    #help-modal .content .keyboard-shortcuts p {
+    margin: 0;
+    }
+    
+    #help-modal .content .keyboard-shortcuts .key {
+    font-weight: bold;
+    font-size: 20px;
+    }
+    
+    #help-modal .content .keyboard-shortcuts .description {
+    font-size: 16px;
+    }
+    
+    #help-modal .content .keyboard-shortcuts .separator {
+    width: 10%;
+    height: 1px;
+    background-color: black;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    }
+    
+    #help-modal .content .controls {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    }
+    
+    #help-modal .content .controls img {
+    width: 50px;
+    height: 50px;
+    margin-right: 8px;
+    }
+    
+    #help-modal .content .controls p {
+    margin: 0;
+    }
+    
+    #help-modal .content .controls .description {
+    font-size: 16px;
+    }
+    
+    #help-modal .content .controls .separator {
+    width: 10%;
+    height: 1px;
+    background-color: gray;
+}
+
+#help-modal .content .controls button {
+    background-color: white;
+    color: black;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    }
+    
+    #help-modal .content .controls button:hover {
+    background-color: lightgray;
+    cursor: pointer;
+    }
+    
+    #help-modal .content .controls #close-help {
+    margin-left: auto;
+    }
+    
+    /* Estilos para o modal de ajuda */
+    #help-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    }
+    
+    #help-modal .content {
+    background-color: white;
+    padding: 16px;
+    border-radius: 4px;
+    width: 80%;
+    height: 80%;
+    overflow: auto;
+    }
+    
+    #help-modal .content h2 {
+    margin-bottom: 16px;
+    }
+    
+    #help-modal .content p {
+    margin-bottom: 16px;
+    }
+    
+    #help-modal .content .controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 16px;
+    }
+    
+    #help-modal .content .controls .separator {
+    width: 10%;
+    height: 1px;
+    background-color: gray;
+    }
+    
+    #help-modal .content .controls button {
+    background-color: white;
+    color: black;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    }
+    
+    #help-modal .content .controls button:hover {
+    background-color: lightgray;
+    cursor: pointer;
+    }
+    
+    #help-modal .content .controls #close-help {
+    margin-left: auto;
+    }
+    
+    
+    
+    #help-modal .content .controls #close-help:hover {
+        cursor: pointer;
+        background-color: lightgray;
+        }
+        
+        #help-modal .content .controls .prev, #help-modal .content .controls .next {
+        width: 40px;
+        height: 40px;
+        border: none;
+        background-color: white;
+        font-size: 20px;
+        font-weight: bold;
+        }
+        
+        #help-modal .content .controls .prev:hover, #help-modal .content .controls .next:hover {
+        cursor: pointer;
+        background-color: lightgray;
+        }
+        
+        #help-modal .content .controls .prev {
+        border-radius: 50% 0 0 50%;
+        }
+        
+        #help-modal .content .controls .next {
+        border-radius: 0 50% 50% 0;
+        }
+    
+    
+    /* Define um estilo para o container geral */
+#container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Define estilos para a div do jogador */
+.player {
+    width: 50%;
+    height: 50%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Define estilos para a div das peças do jogador */
+.player .piece {
+    width: 10%;
+    height: 20%;
+    margin: 2%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Define estilos para a div do inimigo */
+.opponent {
+    width: 50%;
+    height: 50%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Define estilos para a div das peças do inimigo */
+.opponent .piece {
+    width: 10%;
+    height: 20%;
+    margin: 2%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Define estilos para a div da mesa */
+.table {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Define estilos para a div das peças da mesa */
+.table .piece {
+    width: 10%;
+    height: 20%;
+    margin: 2%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilos para as peças do dominó */
+.domino-piece {
+    width: 50px;
+    height: 100px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  /* Estilos para as peças jogadas na tabela */
+  #played-pieces {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #played-pieces th, #played-pieces td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  /* Estilos para a pontuação dos jogadores */
+  #score-board {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  #score-board div {
+    width: 45%;
+    text-align: center;
+  }
+  
+  /* Estilos para o indicador de turno */
+  #turn-indicator {
+    text-align: center;
+  }
+  
+  /* Estilos para as opções de jogada */
+  #play-options {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  #play-options ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+
+
+#play-options li.selected {
+background-color: lightgray;
+}
+
+/* Peças de dominó */
+.domino-piece {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 40px;
+height: 80px;
+border: 1px solid black;
+}
+
+.domino-piece div {
+width: 20px;
+height: 20px;
+border-radius: 50%;
+background-color: white;
+border: 1px solid black;
+}
+
+.domino-piece.double div {
+width: 30px;
+height: 30px;
+}
+
+/* Mapa do jogo */
+#game-board {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+#game-board #player-hand, #game-board #opponent-hand {
+width: 100px;
+height: 400px;
+overflow-y: scroll;
+}
+
+#game-board #play-area {
+width: 600px;
+height: 400px;
+border: 1px solid black;
+display: flex;
+flex-wrap: wrap;
+}
+
+#game-board #play-area .play-position {
+width: 40px;
+height: 80px;
+border: 1px solid black;
+}
+
+/* Controles */
+#controls {
+text-align: center;
+margin-top: 16px;
+}
+
+#controls button {
+padding: 8px;
+margin-right: 8px;
+}
+
+/* Jogada válida */
+.valid-play {
+border: 2px solid green;
+}
+
+/* Jogada inválida */
+.invalid-play {
+border: 2px solid red;
+}
+/* Estilos gerais */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  /* Estilos do cabeçalho */
+  header {
+    width: 100%;
+    text-align: center;
+  }
+  
+  /* Estilos do tabuleiro */
+  #game-board {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  #player-hand, #play-area, #opponent-hand {
+    flex: 1;
+    width: 33%;
+    height: 200px;
+    overflow: auto;
+    padding: 16px;
+    border: 1px solid #ccc;
+  }
+  
+  #play-area {
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #play-area h2 {
+    text-align: center;
+  }
+  
+  /* Estilos das peças */
+  #hand, #playables, #board, #opponent-hand {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  #hand li, #playables li, #board li, #opponent-hand li {
+    display: flex;
+    align-items: center;
+
+        display: flex;
+        align-items: center;
+        }
+        
+        #hand li img, #playables li img, #board li img, #opponent-hand li img {
+        width: 50px;
+        height: 50px;
+        }
+        
+        #board li {
+        border: 1px solid black;
+        padding: 8px;
+        margin-bottom: 8px;
+        }
+        
+        #play-options {
+        position: absolute;
+        background-color: white;
+        border: 1px solid black;
+        display: none;
+        }
+        
+        #play-options li {
+        border: 1px solid black;
+        padding: 8px;
+        margin-bottom: 8px;
+        }
+        
+        #play-options li:hover {
+        background-color: lightgray;
+        cursor: pointer;
+        }
+        
+        .container {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        }
+        
+        .container > div {
+        flex: 1;
+        padding: 16px;
+        text-align: center;
+        }
+        
+        #game-board {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+        
+        #player-hand, #opponent-hand {
+        width: 20%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        }
+        
+        #play-area {
+        width: 60%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+        
+        #controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+        
+        #controls button {
+        padding: 8px;
+        margin-left: 8px;
+        }
+        
+        header {
+        text-align: center;
+        }
+        
+        header h1 {
+        margin-bottom: 16px;
+        }
+        
+        #play-area {
+        position: relative;
+        }
+        #board {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            }
+            
+            #board li {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            width: 20%;
+            height: 20%;
+            border: 1px solid black;
+            margin: 2%;
+            }
+            
+            #board li img {
+            max-width: 100%;
+            max-height: 100%;
+            }
+            
+            #board li.double {
+            width: 40%;
+            }
+            
+            #board li.rotate {
+            transform: rotate(90deg);
+            }
+            
+            #hand, #opponent-hand {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            }
+            
+            #hand li, #opponent-hand li {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20%;
+            height: 50px;
+            border: 1px solid black;
+            margin: 2%;
+            }
+            
+            #hand li img, #opponent-hand li img {
+            max-width: 100%;
+            max-height: 100%;
+            }
+            
+            #play-options {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            }
+            
+            #play-options li {
+            border: 1px solid black;
+            padding: 8px;
+            margin-bottom: 8px;
+            }
+            
+            #controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            }
+            
+            #controls button {
+            margin-right: 8px;
+            }
+            
+            /* Adicionei estilos extras para melhorar a aparência do jogo */
+            header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1em;
+            }
+            
+            #game-board {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            }
+            
+            #player-hand, #play-area, #opponent-hand {
+            margin: 16px;
+            border: 2px solid black;
+            padding: 8px;
+            }
+            
+            #player-hand {
+            width: 20%;
+            }
+            
+            #play-area {
+            width: 60%;
+            position: relative;
+            }
+            
+            #opponent-hand {
+            width: 20%;
+            }
+            
+            #play-options {
+            background-color: #f2f2f2;
+            padding: 8px;
+            text-align: center;
+            }
+            
+            #controls {
+            background-color: #f2f2f2;
+            padding: 8px;
+            }
+            
+            /* Adicionei estilos extras para melhorar a aparência do jogo */
+
+/* Adicionei estilos extras para melhorar a aparência do jogo */
+
+/* Adicionei estilos para as peças do jogo */
+#player-hand li, #opponent-hand li, #board li {
+    width: 60px;
+    height: 30px;
+    background-color: white;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    }
+    
+    /* Adicionei estilos para o tabuleiro de jogo */
+    #board {
+    width: 400px;
+    height: 150px;
+    border: 1px solid black;
+    margin: 0 auto;
+    position: relative;
+    }
+    
+    /* Adicionei estilos para as opções de jogada */
+    #play-options {
+    position: absolute;
+    top: 150px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    }
+    
+    #play-options li {
+    border: 1px solid black;
+    padding: 8px;
+    margin-bottom: 8px;
+    width: 30%;
+    text-align: center;
+    cursor: pointer;
+    }
+    
+    /* Adicionei estilos para a área de controle do jogo */
+    #controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    }
+    
+    #controls button {
+    padding: 8px 16px;
+    margin-left: 8px;
+    }
+
+/* Adicionei estilos extras para melhorar a aparência do jogo */
+header h1 {
+    margin-bottom: 16px;
+    }
+    
+    #play-area {
+    position: relative;
+    }
+    
+    #player-hand, #opponent-hand, #play-options {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    }
+    
+    #play-options {
+    flex-wrap: wrap;
+    }
+    
+    #play-options li:hover {
+    background-color: lightgray;
+    }
+    
+    #play-options li:hover {
+        background-color: lightgray;
+        }
+        
+        /* Peças do jogo */
+        .piece {
+        width: 50px;
+        height: 50px;
+        border: 1px solid black;
+        border-radius: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
+        
+        /* Peças com números */
+        .piece.double {
+        font-size: 20px;
+        font-weight: bold;
+        }
+        
+        /* Peças vazias */
+        .piece.empty {
+        background-color: white;
+        }
+        
+        /* Peças selecionadas */
+        .piece.selected {
+        border: 2px solid blue;
+        }
+        
+        /* Mapa do jogo */
+        #board {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
+        
+        #board li {
+        position: relative;
+        }
+        
+        /* Peças do mapa */
+        #board .piece {
+        position: absolute;
+        transform: rotate(45deg);
+        }
+        
+        #board .piece:first-child {
+        left: 0;
+        top: 25px;
+        }
+        
+        #board .piece:last-child {
+        left: 25px;
+        top: 0;
+        }
+        
+        /* Posições jogáveis no mapa */
+        #board .playable {
+        width: 25px;
+        height: 25px;
+        border: 1px solid black;
+        position: absolute;
+        left: 12.5px;
+        top: 12.5px;
+        }
+        
+        /* Botões de controle */
+        #controls button {
+        margin-right: 8px;
+        }
+        
+        /* Mensagem de fim de jogo */
+        #game-over {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.75);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 36px;
+        font-weight: bold;
+        }
+        
+        #game-over h2 {
+        margin-bottom: 16px;
+        }
+        
+        /* Esconde a mensagem de fim de jogo */
+        #game-over.hide {
+        display: none;
+        }   
+    
+    
