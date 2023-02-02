@@ -1,5 +1,24 @@
 :root {
 
+
+    /* ======= */
+    /* Numbers */
+    /* ======= */
+
+    --defaultSize: 45px;
+    --default2xSize: calc(var(--defaultSize)*2);
+
+    --defaultCardStatsSize: 20vw;
+    --marginCard: 20px;
+
+    --defaultTipCardSizeW: 60vw;
+    --defaultTipCardSizeH: 60vh;
+
+    --fontSize: x-large;
+    --fontSize2: x-large;
+    --fontSize3: xx-large;
+    
+
     /* ====== */
     /* Colors */
     /* ====== */
@@ -13,9 +32,9 @@
     --pieceColor: white;
 
 
-    /* ====== */
+    /* ===== */
     /* Geral */
-    /* ====== */
+    /* ===== */
 
 
     --display: flex;
@@ -121,7 +140,7 @@ body{
 
 #menu button {
 
-    font-size: 45px;
+    font-size: var(--defaultSize);
     padding: 30px;
     margin: 20px;
     color: black; 
@@ -213,19 +232,15 @@ body{
 
 
 .UsableRectangleW{
-    width: 92px;
-    width: 90px;
-
-    height: 45px;
+    height: var(--default2xSize);
+    height: var(--defaultSize);
 
     flex-direction: row;
 }
 
 .UsableRectangleH{
-    height: 92px;
-    height: 90px;
-
-    width: 45px;
+    height: var(--default2xSize);
+    width: var(--defaultSize);
     
     flex-direction: column;
 }
@@ -236,28 +251,28 @@ body{
 
 
 .sideUp {
-    width: 45px;
-    height: 45px;
-    max-width: 45px;
-    max-height: 45px;
+    width: var(--defaultSize);
+    height: var(--defaultSize);
+    max-width: var(--defaultSize);
+    max-height: var(--defaultSize);
 
     border-bottom: solid black 1px;
 }
 
 .sideDown {
-    width: 45px;
-    height: 45px;
-    max-width: 45px;
-    max-height: 45px;
+    width: var(--defaultSize);
+    height: var(--defaultSize);
+    max-width: var(--defaultSize);
+    max-height: var(--defaultSize);
 
     border-top: solid black 1px;
 }
 
 .sideLeft{
-    width: 45px;
-    height: 45px;
-    max-width: 45px;
-    max-height: 45px;
+    width: var(--defaultSize);
+    height: var(--defaultSize);
+    max-width: var(--defaultSize);
+    max-height: var(--defaultSize);
 
     border-top: solid black 1px;
 
@@ -265,10 +280,10 @@ body{
 }
 
 .sideRight{
-    width: 45px;
-    height: 45px;
-    max-width: 45px;
-    max-height: 45px;
+    width: var(--defaultSize);
+    height: var(--defaultSize);
+    max-width: var(--defaultSize);
+    max-height: var(--defaultSize);
 
     border-bottom: solid black 1px;
 
@@ -392,10 +407,10 @@ body{
     right: 0;
     top: 0;
 
-    margin: 20px;
+    margin: var(--marginCard);
 
     
-    width: 20vw;
+    width: var(--defaultCardStatsSize);
     height: auto; 
     /* height: 20vh; */
 
@@ -410,6 +425,10 @@ body{
     border: 1px solid rgba( 255, 255, 255, 0.18 );
 
     padding: 20px;
+}
+
+.cardStats h1{
+    font-size: var(--fontSize2);
 }
 
 
@@ -434,8 +453,8 @@ body{
     align-items: center;
     justify-content: space-between;
 
-    width: 60vw;
-    height: 60vh;
+    width: var(--defaultTipCardSizeW);
+    height: var(--defaultTipCardSizeH);
 
     color: var(--color1);
 
@@ -451,12 +470,20 @@ body{
     margin-top: 5rem;
 }
 
+.tipsText h1 {
+    margin: 2rem;
+    font-size: var(--fontSize2);
+    text-align: center;
+}
+
+
 
 
 .buyable {
     position: fixed;
     right: 0;
     top: 0;
+    margin: var(--marginCard);
 
     width: auto;
     height: 100vh;
@@ -468,12 +495,10 @@ body{
     justify-content: center;
 
 
-    z-index: 500;
+    z-index: 100;
 }
 
-
 #buyableInner {
-    width: auto;
     height: auto;
 
     display: flex;
@@ -500,12 +525,11 @@ body{
 
 #pieceRefInner {
 
-    margin: 20px;
+    margin: var(--marginCard);
 
-    width: 45px;
-    height: 90px;
+    width: var(--defaultSize);
+    height: var(--default2xSize);
 
-    
 
     background-color: var(--pieceColor);
 
@@ -521,6 +545,8 @@ body{
 #pieceRefInner h1{
 
     color: var(--color5);
+
+    font-size: var(--fontSize3);
 }
 
 
@@ -531,8 +557,7 @@ body{
     padding: 10px;
 
 
-
-    font-size: x-large;
+    font-size: var(--fontSize);
     color: var(--color1);
 
     background: rgba( 0, 0, 0, 0.35 );
@@ -558,12 +583,12 @@ body{
 
 .btnDefalt{
 
-    margin: 20px;
-    padding: 10px;
+    margin: var(--marginCard);
+    padding: calc(var(--marginCard)/2);
 
     width:auto;
 
-    font-size: x-large;
+    font-size: var(--fontSize);
     color: var(--color1);
 
     background: rgba( 0, 0, 0, 0.35 );
@@ -600,4 +625,46 @@ body{
 
 .classNone {
     display: none;
+}
+
+
+
+
+/* Mobile View */
+@media screen and (max-width: 899px) {
+    :root{
+        --defaultSize: 30px;
+        --default2xSize: calc(var(--defaultSize)*2);
+
+
+        --defaultCardStatsSize: 15vw;
+        --marginCard: 10px;
+        --defaultMargin-top: 15vh;
+        --defaultWidth: 10vh;
+        
+        --defaultTipCardSizeW: 80vw;
+        --defaultTipCardSizeH: 40vh;
+    
+        
+        --fontSize: small;
+        --fontSize2: smaller;
+        --fontSize3: x-large;
+
+    }
+
+    .statsMobileMode {
+        left: 0;
+        margin-top: var(--defaultMargin-top);
+        /* width: var(--defaultWidth); */
+    }
+    
+    .buyableMobileMode{
+        height: unset;
+        margin-top: var(--defaultMargin-top);
+        /* width: var(--defaultWidth); */
+    }
+    
+    .buyableMobileModeInner{
+        top:0;
+    }
 }
