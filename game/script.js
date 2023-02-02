@@ -24,6 +24,7 @@ let dualBot = false;
 // Consts:
 ////////////////////////////////////////
 
+let masterPiece
 const left = 0;
 const right = 1;
 const player1 = 0;
@@ -1011,6 +1012,10 @@ playButton.addEventListener("click", function() {
 // |         Daniel Init         | //
 // =============================== //
 
+
+/**  */
+
+
 /** Componentes que deverão aparecer após iniciar o game
  * 
  *  Elementos dever ser dispostos na forma <'classe': quantidade> 
@@ -1025,6 +1030,47 @@ let gameComponentsList = {
     // '.UsableRectangleW': 55,
     // '.UsableRectangleH': 55,
 };
+
+
+// ===================================================== //
+// |         Tamanho da peça (definida no css)         | //
+// ===================================================== //
+
+
+const defaultSize = getComputedStyle(document.documentElement).getPropertyValue('--defaultSize').slice(1,3);
+
+const default3 = defaultSize/15
+const default11 = (defaultSize*11)/45
+const default12 = (defaultSize*4)/15
+const defaultMetade = defaultSize/2 // 22.5
+const default34 = (defaultSize*34)/45
+    
+
+/** Seleção da table para utilizar de referência de inserção */
+let containerTable = document.getElementById('table'); 
+
+
+/** Seleção da table para utilizar de referência de inserção */
+let containerHand = document.getElementById('player1HandInner');
+
+
+/** Seleção da table para utilizar de referência de inserção */ 
+let player2Hand = document.getElementById ('player2HandInner');
+
+
+// ====== //
+// Cheats //
+// ====== //
+
+
+let cheats = [
+    'genetate20pieces ()',
+    'createCard ()',
+    'drawPieceCurrentPlayer ()',
+    'updateTableSP ()',
+    'updateTableWP ()',
+    'createTablePieceWP()',
+];
 
 
 /**
@@ -1042,36 +1088,24 @@ function sleepFor(sleepDuration){
 }
 
 
-/** Seleção da table para utilizar de referência de inserçãp */
-let containerTable = document.getElementById('table'); 
-let containerHand = document.getElementById('player1HandInner'); 
-let player2Hand = document.getElementById ('player2HandInner');
-
-
-
-// ====== //
-// Cheats //
-// ====== //
-
-
-let cheats = [
-    'genetate20pieces ()',
-    'createCard ()',
-    'drawPieceCurrentPlayer ()',
-];
-
-
-
-
+/**  */
 function printCheats (){
+
     if (debugMode){
-        console.log (cheats);
+        console.log ('\n\n*** Cheats ***\n\n')
+
+        for (i in cheats){
+
+            console.log (cheats[i]);
+        }
     }
     else{
         console.error('Change debug mode to on to use this function!!!')
     }
 }
 
+
+/**  */
 function generate20pieces (){
     if (debugMode){
         for ( let i = 0; i< 20; i++){
@@ -1085,6 +1119,7 @@ function generate20pieces (){
 }
 
 
+/**  */
 function createCard (){
     if (debugMode){
         updateByTurn ();
@@ -1095,6 +1130,8 @@ function createCard (){
     }
 }
 
+
+/**  */
 function drawPieceCurrentPlayer (){
     if (debugMode){
 
@@ -1106,21 +1143,62 @@ function drawPieceCurrentPlayer (){
 }
 
 
+/** Função de testes com valores arbitrarios e aleatorios */
+function updateTableSP (){
+
+    let tableSide = 'r'
+    
+    let value1 = Math.floor(Math.random() * 6);
+    let value2 = Math.floor(Math.random() * 6);
+
+    
+    updateTableWP (tableSide, value1, value2);
+}
+
+
+/** Função de testes com valores arbitrarios e aleatorios */
+function updateTableWP (tableSide, value1, value2){
+
+    let piece = createTablePieceWP (value1, value2);
+
+    if (tableSide == 'l'){
+        containerTable.prepend (piece);
+    }
+
+    else if (tableSide == 'r'){
+        
+        containerTable.appendChild (piece);
+    }
+
+    else {
+        return console.error('Invalid Entry');
+
+    }
+}
+
+
+/** Função de testes com valores arbitrarios e aleatorios */
+function createTablePieceWP (value1, value2){
+    
+    let piece = generateTablePiece (value1,value2);
+
+    if (value1 == value2){                              // Peça na Vertical
+
+        piece.setAttribute ('class', 'piece UsableRectangleH'); // Seta a classe de peça na Vertical (height)
+    }
+    
+    else {   
+
+        piece.setAttribute ('class', 'piece UsableRectangleW'); // Seta a classe de peça na Horizontal (width)
+    }
+
+    return piece
+}
+
+
 // ========== //
 // Cheats End //
 // ========== //
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /**
@@ -1129,6 +1207,8 @@ function drawPieceCurrentPlayer (){
  * Parâmetro de entrada: acturalTurn < int >
  * 
  * actualTurn: Turno atual (após cada mudança de turno) que deverá aparecer no card
+ * 
+ * Valor Default: 1
  */
 function updateByTurn (actualTurn = 1){
     turnsStats (actualTurn);
@@ -1141,21 +1221,24 @@ function updateByTurn (actualTurn = 1){
  * Parâmetro de entrada: remainingPieces < int >
  * 
  * remainingPieces: Peças restantes (após cada movimento) que deverá aparecer no card
+ * 
+ * Valor Default: 14
  */
 function updateByMove (remainingPieces = 14){
     restingPiecesStats (remainingPieces);
 }
 
 
-
 /**
  * Funções que devem ser atualizadas a cada partida
  * 
- * Parâmetro de entrada: player1Name < string > , player1Score < int >, player2Name < string >, player2Score1 < int >
+ * Parâmetros de entrada: player1Name < string > , player1Score < int >, player2Name < string >, player2Score1 < int >
  * 
  * player1Name e player2Name: Nome do jogador 1 e jogador 2 respectivamente, que deveram aparecer no card
  * 
  * player1Score e player2Name: Score do jogador 1 e jogador 2 respectivamente, que deveram aparecer no card
+ * 
+ * Valor Default: 'Player1', 0, 'Bot', 0
  */
 function updateByMatches (player1Name='Player1', player1Score=0, player2Name='Bot', player2Score=0){
     
@@ -1164,6 +1247,18 @@ function updateByMatches (player1Name='Player1', player1Score=0, player2Name='Bo
 
 }
 
+
+/**
+ * Atualiza pontuação do jogador no cardStats
+ * 
+ * Parâmetros de entrada: playerName < string > , playerScore < int >, PlayerOrder < int >
+ * 
+ * playerName: Nome do jogador que deverá aparecer no card
+ * 
+ * playerScore: Score do jogador que deverá aparecer no card
+ * 
+ * PlayerOrder: Qual jogador está sendo referenciado (1 ou 2)
+ */
 function playerStats (playerName, playerScore, playerOrder) {
 
     let playerStats = document.getElementById ('player'+ playerOrder + 'Stats'); // Nome: pontos
@@ -1171,6 +1266,16 @@ function playerStats (playerName, playerScore, playerOrder) {
     playerStats.textContent = playerName + ': ' + playerScore + ' Pontos';
 }
 
+
+/**
+ * Atualiza o turno no cardStats
+ * 
+ * Parâmetros de entrada: turn < int >
+ * 
+ * turn: turno atual do jogo que deverá aparecer no card
+ * 
+ * Valor Default: 1
+ */
 function turnsStats (turn = 1){
 
     let turns = document.getElementById ('turns');
@@ -1178,23 +1283,22 @@ function turnsStats (turn = 1){
     turns.textContent = 'Turno: ' + turn;
 }
 
+
+/**
+ * Atualiza as peças no bolo (peças restantes) no cardStats
+ * 
+ * Parâmetros de entrada: remainingPieces < int >
+ * 
+ * remainingPieces: número de peças restantes no bolo/monte que deverá aparecer no card
+ * 
+ * Valor Default: 14
+ */
 function restingPiecesStats (remainingPieces = 14) {
 
     let amount = document.getElementById ('restingPieces');
     
     amount.textContent = remainingPieces;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 /**
@@ -1309,6 +1413,7 @@ function displayOverlayGameOn (player = 'unkn0wn pl4yer', score = '0x1337'){
     }
 }
 
+
 /**
  * Retira o Overlay da >> partida << da tela
  */
@@ -1322,6 +1427,7 @@ function displayOverlayMatchOff (){
     removeChild (cardInner)
 }
 
+
 /**
  * Retira o Overlay do >> jogo << da tela
  */
@@ -1334,7 +1440,6 @@ function displayOverlayGameOff (){
 
     removeChild (cardInner)
 }
-
 
 
 /**
@@ -1364,15 +1469,13 @@ function continueGame (){
     displayOverlayMatchOff ()
 }
 
+
 /**
  * Chama o displayOverlayGameOff
  */
 function resetGame (){
     displayOverlayGameOff ()
 }
-
-
-
 
 
 /**
@@ -1417,54 +1520,21 @@ function setUnview (piece_div) {
 
 }
 
-/**  */
 
-// const mao = document.getElementById("player1Hand");
-// mao.addEventListener("click", someFun);
-
-// function someFun() {
-//     console.log ('algo')
-// }
-
-
-
-let masterPiece
-
+/** Permite o drop quando detectado dragevent em cima da div */
 function allowDrop(ev) {
     ev.preventDefault();
 }
-  
+
+
+/** Identifica qual peça está sendo arrastada */
 function drag(piece) {
     masterPiece = piece
     
 }
 
 
-
-
-function addToTable (side) {
-
-
-    let id = parseInt(masterPiece.id.slice(6), 10);
-
-    if (current_player.hand[id].value[left] == current_player.hand[id].value[right]){
-        masterPiece.setAttribute('class', 'piece UsableRectangleH');
-    }
-
-    else{
-        masterPiece.setAttribute('class', 'piece UsableRectangleW');
-    }
-    
-    if (side == left){
-        containerTable.prepend(masterPiece);
-    }
-    
-    else if (side == right){
-        containerTable.appendChild(masterPiece);
-    }
-
-}
-
+/** Executa movimentação da peça no back e no front */
 function drop(side){ // [drop_event]
     
     /* // sistema drag & drop
@@ -1486,59 +1556,34 @@ function drop(side){ // [drop_event]
 }
 
 
+/** 
+ * Gera uma peça na table, com as propriedades da table, e identificação visual da peça que foi arrastada 
+ * 
+ * Parâmetro de entrada: side < int > , typed: < left, right >
+ * 
+ * side: lado que a peça deverá ser colocada na mesa
+*/
+function addToTable (side) {
 
-/** Função de testes com valores arbitrarios e aleatorios */
-function updateTableSP (){
+    let id = parseInt(masterPiece.id.slice(6), 10);
 
-    let tableSide = 'r'
+    if (current_player.hand[id].value[left] == current_player.hand[id].value[right]){
+        masterPiece.setAttribute('class', 'piece UsableRectangleH');
+    }
+
+    else{
+        masterPiece.setAttribute('class', 'piece UsableRectangleW');
+    }
     
-    let value1 = Math.floor(Math.random() * 6);
-    let value2 = Math.floor(Math.random() * 6);
-
+    if (side == left){
+        containerTable.prepend(masterPiece);
+    }
     
-    updateTableWP (tableSide, value1, value2);
+    else if (side == right){
+        containerTable.appendChild(masterPiece);
+    }
+
 }
-
-/** Função de testes com valores arbitrarios e aleatorios */
-function updateTableWP (tableSide, value1, value2){
-
-    let piece = createTablePieceWP (value1, value2);
-
-    if (tableSide == 'l'){
-        containerTable.prepend (piece);
-    }
-
-    else if (tableSide == 'r'){
-        
-        containerTable.appendChild (piece);
-    }
-
-    else {
-        return console.error('Invalid Entry');
-
-    }
-}
-
-/** Função de testes com valores arbitrarios e aleatorios */
-function createTablePieceWP (value1, value2){
-    
-    let piece = generateTablePiece (value1,value2);
-
-    if (value1 == value2){                              // Peça na Vertical
-
-        piece.setAttribute ('class', 'piece UsableRectangleH'); // Seta a classe de peça na Vertical (height)
-    }
-    
-    else {   
-
-        piece.setAttribute ('class', 'piece UsableRectangleW'); // Seta a classe de peça na Horizontal (width)
-    }
-
-    return piece
-}
-
-
-
 
 
 /** Apaga o menu de seleção de modo de jogo */
@@ -1564,6 +1609,7 @@ function displayGame (){
     }
 }
 
+
 /** Mostra o menu de seleção de modo de jogo */
 function showModeMenu ()
 {  
@@ -1571,30 +1617,35 @@ function showModeMenu ()
     menu.style.display = "flex";
 }
 
-function prevCard (card){
-    let id = parseInt(card.id.slice(10), 10);
-    let grand = document.getElementById ('howToPlay')
 
-    if (id != 1){ // Se pode voltar
-        grand.classList.toggle('classNone');
-        grand[id-1].classList.toggle('classNone');
-        console.log('dsa');
+/** Mostra o card anterior */
+function prevCard (btn){
+    let card = btn.parentNode.parentNode
+    let cardParent = card.parentNode
+    let id = parseInt(card.id.slice(10), 10) -1;
+
+    if (id > 0){ // Se pode voltar
+        card.classList.toggle('classNone');
+        cardParent.children[id-1].classList.toggle('classNone');
     }
 
     else {
         console.error ('Não tem mais cards para tras');
         return;
-    }
+    }   
 }
 
 
-function nextCard (card){
-    let id = parseInt(card.id.slice(10), 10);
-    let grand = document.getElementById ('howToPlay')
+/** Mostra o próximo card */
+function nextCard (btn){
 
-    if (id < grand.length){ // Se pode avançar
-        grand.classList.toggle('classNone');
-        grand[id+1].classList.toggle('classNone');
+    let card = btn.parentNode.parentNode
+    let cardParent = card.parentNode
+    let id = parseInt(card.id.slice(10), 10) -1;
+
+    if ( id < cardParent.children.length - 1 ){  // Se pode avançar
+        card.classList.toggle('classNone');
+        cardParent.children[id+1].classList.toggle('classNone');
     }
     
     else {
@@ -1603,11 +1654,15 @@ function nextCard (card){
     }
 }
 
+
+/** Retorna ao menu inicial */
 function returnToMenu (){
     displayHowToPlay ();
     showModeMenu ()
 }
 
+
+/** Mostra a aba de como jogar o dominó */
 function displayHowToPlay (){
     document.getElementById('howToPlay').classList.toggle('classNone');
 }
@@ -1991,8 +2046,8 @@ function generateHandPiece (value1, value2){
 function createSVG_6() {  
 
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute('width', '45');
-    svg.setAttribute('height', '45');
+    svg.setAttribute('width', defaultSize);
+    svg.setAttribute('height', defaultSize);
 
         // =========== //
         // Set Circles //
@@ -2004,23 +2059,23 @@ function createSVG_6() {
     // ======== //
 
     let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle1.setAttribute('cx', 12);
-    circle1.setAttribute('cy', 11);
-    circle1.setAttribute('r', '3');
+    circle1.setAttribute('cx', default12);
+    circle1.setAttribute('cy', default11);
+    circle1.setAttribute('r', default3);
     circle1.setAttribute('fill', 'black');
     svg.appendChild(circle1);
 
     let circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle2.setAttribute('cx', 12);
-    circle2.setAttribute('cy', 22.5);
-    circle2.setAttribute('r', '3');
+    circle2.setAttribute('cx', default12);
+    circle2.setAttribute('cy', defaultMetade);
+    circle2.setAttribute('r', default3);
     circle2.setAttribute('fill', 'black');
     svg.appendChild(circle2);
 
     let circle3 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle3.setAttribute('cx', 12);
-    circle3.setAttribute('cy', 34);
-    circle3.setAttribute('r', '3');
+    circle3.setAttribute('cx', default12);
+    circle3.setAttribute('cy', default34);
+    circle3.setAttribute('r', default3);
     circle3.setAttribute('fill', 'black');
     svg.appendChild(circle3);
 
@@ -2032,23 +2087,23 @@ function createSVG_6() {
 
 
     let circle4 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle4.setAttribute('cx', 34);
-    circle4.setAttribute('cy', 11);
-    circle4.setAttribute('r', '3');
+    circle4.setAttribute('cx', default34);
+    circle4.setAttribute('cy', default11);
+    circle4.setAttribute('r', default3);
     circle4.setAttribute('fill', 'black');
     svg.appendChild(circle4);
 
     let circle5 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle5.setAttribute('cx', 34);
-    circle5.setAttribute('cy', 22.5);
-    circle5.setAttribute('r', '3');
+    circle5.setAttribute('cx', default34);
+    circle5.setAttribute('cy', defaultMetade);
+    circle5.setAttribute('r', default3);
     circle5.setAttribute('fill', 'black');
     svg.appendChild(circle5);
 
     let circle6 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle6.setAttribute('cx', 34);
-    circle6.setAttribute('cy', 34);
-    circle6.setAttribute('r', '3');
+    circle6.setAttribute('cx', default34);
+    circle6.setAttribute('cy', default34);
+    circle6.setAttribute('r', default3);
     circle6.setAttribute('fill', 'black');
     svg.appendChild(circle6);
 
@@ -2060,8 +2115,8 @@ function createSVG_6() {
 function createSVG_5() {  
 
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute('width', '45');
-    svg.setAttribute('height', '45');
+    svg.setAttribute('width', defaultSize);
+    svg.setAttribute('height', defaultSize);
 
         // =========== //
         // Set Circles //
@@ -2073,18 +2128,18 @@ function createSVG_5() {
     // ======== //
 
     let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle1.setAttribute('cx', 12);
-    circle1.setAttribute('cy', 11);
-    circle1.setAttribute('r', '3');
+    circle1.setAttribute('cx', default12);
+    circle1.setAttribute('cy', default11);
+    circle1.setAttribute('r', default3);
     circle1.setAttribute('fill', 'black');
     svg.appendChild(circle1);
 
 
 
     let circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle2.setAttribute('cx', 12);
-    circle2.setAttribute('cy', 34);
-    circle2.setAttribute('r', '3');
+    circle2.setAttribute('cx', default12);
+    circle2.setAttribute('cy', default34);
+    circle2.setAttribute('r', default3);
     circle2.setAttribute('fill', 'black');
     svg.appendChild(circle2);
 
@@ -2096,17 +2151,17 @@ function createSVG_5() {
 
 
     let circle3 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle3.setAttribute('cx', 34);
-    circle3.setAttribute('cy', 11);
-    circle3.setAttribute('r', '3');
+    circle3.setAttribute('cx', default34);
+    circle3.setAttribute('cy', default11);
+    circle3.setAttribute('r', default3);
     circle3.setAttribute('fill', 'black');
     svg.appendChild(circle3);
 
 
     let circle4 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle4.setAttribute('cx', 34);
-    circle4.setAttribute('cy', 34);
-    circle4.setAttribute('r', '3');
+    circle4.setAttribute('cx', default34);
+    circle4.setAttribute('cy', default34);
+    circle4.setAttribute('r', default3);
     circle4.setAttribute('fill', 'black');
     svg.appendChild(circle4);
 
@@ -2118,9 +2173,9 @@ function createSVG_5() {
 
 
     let circle5 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle5.setAttribute('cx', 22.5);
-    circle5.setAttribute('cy', 22.5);
-    circle5.setAttribute('r', '3');
+    circle5.setAttribute('cx', defaultMetade);
+    circle5.setAttribute('cy', defaultMetade);
+    circle5.setAttribute('r', default3);
     circle5.setAttribute('fill', 'black');
     svg.appendChild(circle5);
     
@@ -2131,8 +2186,8 @@ function createSVG_5() {
 function createSVG_4() {  
 
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute('width', '45');
-    svg.setAttribute('height', '45');
+    svg.setAttribute('width', defaultSize);
+    svg.setAttribute('height', defaultSize);
 
         // =========== //
         // Set Circles //
@@ -2144,18 +2199,18 @@ function createSVG_4() {
     // ======== //
 
     let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle1.setAttribute('cx', 12);
-    circle1.setAttribute('cy', 11);
-    circle1.setAttribute('r', '3');
+    circle1.setAttribute('cx', default12);
+    circle1.setAttribute('cy', default11);
+    circle1.setAttribute('r', default3);
     circle1.setAttribute('fill', 'black');
     svg.appendChild(circle1);
 
 
 
     let circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle2.setAttribute('cx', 12);
-    circle2.setAttribute('cy', 34);
-    circle2.setAttribute('r', '3');
+    circle2.setAttribute('cx', default12);
+    circle2.setAttribute('cy', default34);
+    circle2.setAttribute('r', default3);
     circle2.setAttribute('fill', 'black');
     svg.appendChild(circle2);
 
@@ -2167,17 +2222,17 @@ function createSVG_4() {
 
 
     let circle3 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle3.setAttribute('cx', 34);
-    circle3.setAttribute('cy', 11);
-    circle3.setAttribute('r', '3');
+    circle3.setAttribute('cx', default34);
+    circle3.setAttribute('cy', default11);
+    circle3.setAttribute('r', default3);
     circle3.setAttribute('fill', 'black');
     svg.appendChild(circle3);
 
 
     let circle4 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle4.setAttribute('cx', 34);
-    circle4.setAttribute('cy', 34);
-    circle4.setAttribute('r', '3');
+    circle4.setAttribute('cx', default34);
+    circle4.setAttribute('cy', default34);
+    circle4.setAttribute('r', default3);
     circle4.setAttribute('fill', 'black');
     svg.appendChild(circle4);
 
@@ -2191,8 +2246,8 @@ function createSVG_4() {
 function createSVG_3() {  
 
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute('width', '45');
-    svg.setAttribute('height', '45');
+    svg.setAttribute('width', defaultSize);
+    svg.setAttribute('height', defaultSize);
 
         // =========== //
         // Set Circles //
@@ -2205,9 +2260,9 @@ function createSVG_3() {
 
 
     let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle1.setAttribute('cx', 12);
-    circle1.setAttribute('cy', 34);
-    circle1.setAttribute('r', '3');
+    circle1.setAttribute('cx', default11);
+    circle1.setAttribute('cy', default34);
+    circle1.setAttribute('r', default3);
     circle1.setAttribute('fill', 'black');
     svg.appendChild(circle1);
 
@@ -2218,9 +2273,9 @@ function createSVG_3() {
 
 
     let circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle2.setAttribute('cx', 34);
-    circle2.setAttribute('cy', 11);
-    circle2.setAttribute('r', '3');
+    circle2.setAttribute('cx', default34);
+    circle2.setAttribute('cy', default11);
+    circle2.setAttribute('r', default3);
     circle2.setAttribute('fill', 'black');
     svg.appendChild(circle2);
 
@@ -2232,9 +2287,9 @@ function createSVG_3() {
 
 
     let circle3 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle3.setAttribute('cx', 22.5);
-    circle3.setAttribute('cy', 22.5);
-    circle3.setAttribute('r', '3');
+    circle3.setAttribute('cx', defaultMetade);
+    circle3.setAttribute('cy', defaultMetade);
+    circle3.setAttribute('r', default3);
     circle3.setAttribute('fill', 'black');
     svg.appendChild(circle3);
     
@@ -2246,8 +2301,8 @@ function createSVG_3() {
 function createSVG_2() {  
 
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute('width', '45');
-    svg.setAttribute('height', '45');
+    svg.setAttribute('width', defaultSize);
+    svg.setAttribute('height', defaultSize);
 
         // =========== //
         // Set Circles //
@@ -2259,9 +2314,9 @@ function createSVG_2() {
     // ======== //
 
     let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle1.setAttribute('cx', 12);
-    circle1.setAttribute('cy', 34);
-    circle1.setAttribute('r', '3');
+    circle1.setAttribute('cx', default12);
+    circle1.setAttribute('cy', default34);
+    circle1.setAttribute('r', default3);
     circle1.setAttribute('fill', 'black');
     svg.appendChild(circle1);
 
@@ -2272,9 +2327,9 @@ function createSVG_2() {
 
 
     let circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle2.setAttribute('cx', 34);
-    circle2.setAttribute('cy', 11);
-    circle2.setAttribute('r', '3');
+    circle2.setAttribute('cx', default34);
+    circle2.setAttribute('cy', default11);
+    circle2.setAttribute('r', default3);
     circle2.setAttribute('fill', 'black');
     svg.appendChild(circle2);
 
@@ -2287,8 +2342,8 @@ function createSVG_2() {
 function createSVG_1() {  
 
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute('width', '45');
-    svg.setAttribute('height', '45');
+    svg.setAttribute('width', defaultSize);
+    svg.setAttribute('height', defaultSize);
 
     
         // =========== //
@@ -2297,9 +2352,9 @@ function createSVG_1() {
 
 
     let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle1.setAttribute('cx', 22.5);
-    circle1.setAttribute('cy', 22.5);
-    circle1.setAttribute('r', '3');
+    circle1.setAttribute('cx', defaultMetade);
+    circle1.setAttribute('cy', defaultMetade);
+    circle1.setAttribute('r', default3);
     circle1.setAttribute('fill', 'black');
     svg.appendChild(circle1);
     
@@ -2312,8 +2367,8 @@ function createSVG_1() {
 function createSVG_0() {  
     
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute('width', '45');
-    svg.setAttribute('height', '45');
+    svg.setAttribute('width', defaultSize);
+    svg.setAttribute('height', defaultSize);
 
 
     return svg;
