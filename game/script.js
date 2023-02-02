@@ -185,8 +185,8 @@ class Player {
                 var piece = shop.pop();                
                 this.hand.push(piece);
                 this.add_piece_svg_to_hand_div(piece.piece_div);
-                update_status_window_all();
             }
+            update_status_window_all();
             if(debugMode){
                 console.log(this.name+"-buy: "+piece.string());
             }
@@ -367,11 +367,15 @@ class Player {
         }
     }
     play_piece(position, side = right){
+
+        console.log(`${this.name}: chosen piece ${position}`); // debug?
+
         if(this.hand[position].playable[side] === yes_rotate) {
             this.hand[position].rotate();
         }
 
         if(this.hand[position].playable[side] === yes) {
+            
             if(side == left) { // jogar na ponta esquerda da mesa
                 // this.set_left(position);
                 var piece = remove_piece(this.hand, position);
@@ -762,19 +766,24 @@ function bot_strategy(){
 
             for(let position = 0; position < current_player.hand.length; position++){
                 for(let side = 0; side < current_player.hand[position].playable.length; side++){
-                    if((current_player.hand[position].playable[side] == true && current_player.hand[position].sum() > highest_sum)){
+                    
+                    if((current_player.hand[position].playable[side] >= yes && current_player.hand[position].sum() > highest_sum)){
+                        // console.log(`found: ${position}|${side}`);
                         highest_sum = current_player.hand[position].sum();
                         highest_sum_position = position;
                         highest_sum_side = side;
+                        // [breaking-here]
+                    } else {
+                        // console.log(`checked: ${position}|${side}`);
                     }
                 }
             }
             
-            if (debugMode){
+            // if (debugMode){
                 console.log("highest_sum: "+highest_sum); // debug
                 console.log("highest_sum_position: "+highest_sum_position); // debug
                 console.log("highest_sum_side: "+highest_sum_side); // debug
-            }
+            // }
 
             current_player.play_piece(highest_sum_position, highest_sum_side); // debug
 
@@ -926,7 +935,9 @@ function game_over(winner){
     player_list = new Array();
     player_list[player1] = new Player("Player1", "Jogador", "player1HandInner"); // objeto que representa o jogador
     player_list[player2] = new Player("Player2", "Bot", "player2HandInner"); // objeto que representa o BOT
+
     
+
 ////////////////////////////////////////
 
 //Usar a função de exibição de mensagem quando ocorre uma jogada inválida:
@@ -1016,6 +1027,19 @@ let gameComponentsList = {
 };
 
 
+/**
+ * Executa uma função após um determinado tempo
+ * 
+ * Parâmetros de entrada <função, tempo>
+ * 
+ * Função: qualquer função a ser executada, sem parâmetros de entrada
+ * 
+ * tempo: Um valor <int> em ms
+ */
+function sleepFor(sleepDuration){
+    var now = new Date().getTime();
+    while(new Date().getTime() < now + sleepDuration){}
+}
 
 
 /** Seleção da table para utilizar de referência de inserçãp */
@@ -1421,7 +1445,7 @@ function drag(piece) {
 function addToTable (side) {
 
 
-    id = parseInt(masterPiece.id.slice(6), 10);
+    let id = parseInt(masterPiece.id.slice(6), 10);
 
     if (current_player.hand[id].value[left] == current_player.hand[id].value[right]){
         masterPiece.setAttribute('class', 'piece UsableRectangleH');
@@ -1450,8 +1474,8 @@ function drop(side){ // [drop_event]
     } */
 
     
-    if(human_play(side)){
-        return false;
+    if(human_play(side) === false){
+        return false; // se a jogada for invalida
     }
 
     bot_play();
@@ -1518,7 +1542,7 @@ function createTablePieceWP (value1, value2){
 
 
 /** Apaga o menu de seleção de modo de jogo */
-function deleteModeMenu ()
+function hideModeMenu ()
 {  
     let menu = document.querySelector('#menu');
     menu.style.display = "none";
@@ -1540,20 +1564,85 @@ function displayGame (){
     }
 }
 
+/** Mostra o menu de seleção de modo de jogo */
+function showModeMenu ()
+{  
+    let menu = document.querySelector('#menu');
+    menu.style.display = "flex";
+}
+
+function prevCard (card){
+    let id = parseInt(card.id.slice(10), 10);
+    let grand = document.getElementById ('howToPlay')
+
+    if (id != 1){ // Se pode voltar
+        grand.classList.toggle('classNone');
+        grand[id-1].classList.toggle('classNone');
+        console.log('dsa');
+    }
+
+    else {
+        console.error ('Não tem mais cards para tras');
+        return;
+    }
+}
+
+
+function nextCard (card){
+    let id = parseInt(card.id.slice(10), 10);
+    let grand = document.getElementById ('howToPlay')
+
+    if (id < grand.length){ // Se pode avançar
+        grand.classList.toggle('classNone');
+        grand[id+1].classList.toggle('classNone');
+    }
+    
+    else {
+        console.error ('Não tem mais cards para frente');
+        return;
+    }
+}
+
+function returnToMenu (){
+    displayHowToPlay ();
+    showModeMenu ()
+}
+
+function displayHowToPlay (){
+    document.getElementById('howToPlay').classList.toggle('classNone');
+}
+
 
 /** Inicializa o jogo mostrando elementos necessários e deletando desnecessários */
 function initGame (mode){
-    deleteModeMenu ();
-    displayGame ();
-    // createCard ()
-    // game(mode);
-    reset_game(mode);
+    
+    hideModeMenu ();
 
-    if (mode === "Bot vs Bot")
-    {
-        dualBot = true;
+    switch(mode){
+        case 0: // Player vs Bot
+
+            displayGame ();
+            reset_game(mode);
+
+            break;
+
+        case 1: // Bot vs Bot
+
+            displayGame ();
+            reset_game(mode);
+            dualBot = true;
+
+            break;
+
+        case 2: // Como jogar
+            
+            // howToPlay();
+            displayHowToPlay ();
+            break;
     }
 
+    // createCard ()
+    // game(mode);
 }
 
 
@@ -2274,7 +2363,7 @@ function players_cannot_play(){
     }
 }
 
-function reset_match(dificulty_mode = "hard"){ // issue: not called yet, call it on call it on displayOverlayMatchOff()
+function reset_match(){ // issue: not called yet, call it on call it on displayOverlayMatchOff()
 
     turn_counter = 0;
 
@@ -2305,9 +2394,10 @@ function reset_match(dificulty_mode = "hard"){ // issue: not called yet, call it
     update_status_window_all();
 
     if(current_player.input_type === "Bot" && botInit){
-        bot_strategy(); // Bot faz primeira jogada
-        change_player();
-        everyone_update_all();
+        bot_play(); // Bot faz primeira jogada
+        // bot_strategy(); // Bot faz primeira jogada
+        // change_player();
+        // everyone_update_all();
     }
 }
 
@@ -2361,6 +2451,7 @@ function block_everyone_not_playing(){
     for(let i = 0; i < player_list.length; i++){
         if(player_list[i] == current_player){
             console.log(`${player_list[i].name} IS current_player`);
+            player_list[i].update_all();
             
         } else {
             console.log(`${player_list[i].name} NOT current_player`);
