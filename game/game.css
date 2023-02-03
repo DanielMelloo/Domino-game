@@ -1,5 +1,24 @@
 :root {
 
+
+    /* ======= */
+    /* Numbers */
+    /* ======= */
+
+    --defaultSize: 45px;
+    --default2xSize: calc(var(--defaultSize)*2);
+
+    --defaultCardStatsSize: 20vw;
+    --marginCard: 20px;
+
+    --defaultTipCardSizeW: 60vw;
+    --defaultTipCardSizeH: 60vh;
+
+    --fontSize: x-large;
+    --fontSize2: x-large;
+    --fontSize3: xx-large;
+    
+
     /* ====== */
     /* Colors */
     /* ====== */
@@ -11,30 +30,142 @@
     --color5: #3B0944;
 
     --pieceColor: white;
+
+
+    /* ===== */
+    /* Geral */
+    /* ===== */
+
+
+    --display: flex;
 }
 
-* {
+*{
     font-family: acumin-pro, system-ui, sans-serif;
 }
 
 html{
-    min-height: 100%;
-    
+    min-height: 2.520px;
+    max-width: 2520px;
+    scroll-behavior: smooth;
 }
-  
+
 body{
+    /* min-height: 100%; */
     margin: 0;
     padding: 0;
+
+    width: 2520px;
+    width: auto;
     
-    /* >>> Não <<< Poder se Movimentar pelo tabuleiro */
-    /* width: 200vw;
-    height: 200vh; */
+    /* overflow: auto; */
+    /* width: 100%;
+    height: 100%; */
+}
+
+.main{
+
+    height: 100vh;
+    max-width: 200vw;
+    width: auto;
+
+    /* width:100%; */
+    /* width: 100vw; */
+    
+    /* min-width: 100vw;  */
+    /* max-width: 2520px; */
+ 
 
     
-    /* >>> Não <<< Poder se Movimentar pelo tabuleiro */
+    /* height: auto; */
 
-    width: unset;
-    height: unset;
+    display: flex;
+
+    align-items: center;
+    
+    justify-content: center;
+
+    background: radial-gradient(circle, var(--color1) 0%, var(--color2)  70%, var(--color3) 100%);
+
+    overflow: auto;
+    /* overflow-X: scroll;  */
+}
+
+
+#table {
+    /* background-color: blue; */
+    width: auto;
+    height: auto;
+    max-width: 100%;
+
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    vertical-align: middle;
+
+    justify-content: center;
+
+    margin: 90px;
+    
+    
+}
+
+.menu {
+    display: flex;
+
+    
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    left: 10px;
+    height: 100%;
+
+    z-index: 22;
+}
+
+#menu{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100vw;
+    height: 100vh;
+
+    z-index: 22;    
+
+}
+
+#menu button {
+
+    font-size: var(--defaultSize);
+    padding: 30px;
+    margin: 20px;
+    color: black; 
+
+    background: rgba( 255, 255, 255, 0.25 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 0px );
+    -webkit-backdrop-filter: blur( 0px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+
+    cursor: pointer;
+}
+
+.piece {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--pieceColor);
+
+    border: 2px solid black;
+    border-radius:  5px;
+
+    margin: 0.5px;
 }
 
 .handbox{
@@ -78,6 +209,7 @@ body{
     
     
     justify-content: center;
+    align-items: center;
     border-radius: 5px;
 }
 
@@ -87,375 +219,452 @@ body{
     background: white;
     border-radius:  5px;
     border: solid black 2px;
+
+    max-height: 92px;
+
+    transition: 2s
 }
 
 
 
-.main{
-    
-    background-color: green;
-
-    /* >>> Não <<< Poder se Movimentar pelo tabuleiro */
-    width: 100vw;
-    height: 100vh;
-    
-    
-    /* Poder se Movimentar pelo tabuleiro */
-    /* width: 100%; 
-    height: 100%; */
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: radial-gradient(circle, var(--color1) 0%, var(--color2)  70%, var(--color3) 100%);
-    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-}
-
-.table {
 
 
-    display: grid;
-    
-    grid-template-columns: repeat(17, 94px);
-    grid-template-rows: repeat(7,94px);
-    /*grid-template-columns: repeat(17, 1fr);*/
-   /* grid-template-rows: repeat(7, 1fr); */
 
-    grid-column-gap: 2px;
-    grid-row-gap: 2px;
-
-    justify-content: center;
-
-}
-
-.verticalBox{
-    border-color: black;
-    border-style: solid;
-    border:6px;
-    display: flex;
-}
-
-.rectangleLeft{
-    width: 50%;
-    height: 100%;
-    
-    
-}
-
-.rectangleRight{
-    
-    width: 50%;
-    height: 100%;
-    
-}
-
-.RectangleDown{    
-    
-    width: 100%;
-    height: 50%;
-   
-}
-
-.RectangleUp{    
-    width: 100%;
-    height: 50%;
-
-}
-
-.svgImage {
-    /* position: absolute; */
-    width: auto;
-    height: auto;
-}
-
-.verticalBox .UsableRectangleH{
-    overflow: hidden;
-    border-radius: 2px;
-    /* border: 3px solid black; */    
-    /* position: relative; */
-}
 
 .UsableRectangleW{
-    width: 100%;
-    height: 50%;
-    border-width: 3px;
-    display: flex;
+    height: var(--default2xSize);
+    height: var(--defaultSize);
+
     flex-direction: row;
-    
 }
 
 .UsableRectangleH{
-    width: 50%;
-    height: 100%;
-    border-width: 3px;
-    display:flex ;
+    height: var(--default2xSize);
+    width: var(--defaultSize);
+    
     flex-direction: column;
 }
 
-.horizontalBox .UsableRectangleW{
-    
-    background: white;
-    border-radius:  5px;
-    border: solid black 2px;
-    max-width: 90px;
 
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.verticalBox .UsableRectangleH{
-    
-    background: white;
-    border-radius:  5px;
-    border: solid black 2px;
-    max-height: 90px;
 
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.sideLeft{
-    /* height: 100%;
-    width: 50%; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    /* padding:0 0 1px 0; */
-    border-top: solid black 1px;
-    /* border-right: solid black 1px; */
-
-    rotate: 90deg;
- 
-}
-
-.sideRight{
-    /* height: 100%;
-    width: 50%; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-
-    /* padding: 0 1px 0 0; */
-    border-bottom: solid black 1px;
-    /* border-left: solid black 1px; */
-
-    rotate: 90deg;
-}
 
 .sideUp {
-    /* height: 50%;
-    width: 100%; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: var(--defaultSize);
+    height: var(--defaultSize);
+    max-width: var(--defaultSize);
+    max-height: var(--defaultSize);
 
     border-bottom: solid black 1px;
-    /* border-right: solid black 1px; */
-    
-    /* rotate: 90deg; */
 }
 
 .sideDown {
-    /* height: 50%;
-    width: 100%; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: var(--defaultSize);
+    height: var(--defaultSize);
+    max-width: var(--defaultSize);
+    max-height: var(--defaultSize);
 
     border-top: solid black 1px;
-    /* border-left: solid black 1px; */
-    
-    /* rotate: 90deg; */
 }
 
-.gamepiece{
-    position: absolute;
-    top:600px;
-    left: 800px;
-    background-color: whitesmoke;
-    border-radius: 5px;
-    border: solid 2px;
-    width: 49px;
-    height: 96px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-}
+.sideLeft{
+    width: var(--defaultSize);
+    height: var(--defaultSize);
+    max-width: var(--defaultSize);
+    max-height: var(--defaultSize);
 
-.pieceside1{
-width:45px;
-height: 45px;
+    border-top: solid black 1px;
 
-}
-
-.pieceside2{
-width:45px;
-height: 45px;
-
-
-}
-
-.rotate {
     rotate: 90deg;
-    padding: auto;
 }
 
-.whitesquare{
-    height: 92px;
-    width: 45px;
-    background-color: whitesmoke;
-}
- 
+.sideRight{
+    width: var(--defaultSize);
+    height: var(--defaultSize);
+    max-width: var(--defaultSize);
+    max-height: var(--defaultSize);
 
-/* #pieceRec3{
-    rotate: 180deg;
-    rotate: 90deg; 
-} */
+    border-bottom: solid black 1px;
 
-#menu{
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    width: 100vw;
-    height: 100vh;
-
-    z-index: 22;    
-
-}
-
-#menu button {
-
-    font-size: 45px;
-    padding: 30px;
-    margin: 20px;
-    color: black; 
-
-    background: rgba( 255, 255, 255, 0.25 );
-    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-    backdrop-filter: blur( 0px );
-    -webkit-backdrop-filter: blur( 0px );
-    border-radius: 10px;
-    border: 1px solid rgba( 255, 255, 255, 0.18 );
-
-    cursor: pointer;
+    rotate: 90deg;
 }
 
 
 
 
-
-
-
-
-
-
-
-/* Init Game */
-
-.classNone {
-    display: none;
-}
 
 
 .hand .handSlot .sideLeft, .hand .handSlot .sideRight{
     rotate: unset;
 }
 
-.sideDown {
-    max-width: 50vw;
+.hand .playable {
+
+    margin-bottom: 25px;
+
+    color: var(--pieceColor);
+    box-shadow: 0 5px 15px rgba(145, 92, 182, .4);
+
 }
 
+
+
+#dropArea{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: row;
+
+}
+
+
+.dropAreaInner{
+    width: 100vw;
+    width: 50vw;
+    
+    /* background-color: black; */
+
+    z-index: 1;
+}   
+
+
+
+.card{
+    position: fixed;
+    top: 0;
+    display: grid;
+    place-items: center;
+
+    width: 100vw;
+    height: 100vh;
+
+    z-index: 40;
+
+
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.cardInner{
+    color: var(--color1);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 45vw;
+    height: 45vh;
+
+
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.cardInner h1 {
+    margin:20px;
+    justify-content: center;
+    text-align: center;
+    
+    font-size: 4vh; 
+}
+
+.cardInner button {
+    color: var(--color1);
+    background-color: transparent;
+
+    justify-content: center;
+    text-align: center;
+    
+    font-size: 4vh;
+
+    margin-top: 2vh;
+    padding: 3vh; 
+    border-radius: 3vh; 
+
+    border: var(--color1) solid;
+    
+
+    cursor: pointer;
+
+}
+
+
+
+.cardStats {
+    position: fixed;
+    right: 0;
+    top: 0;
+
+    margin: var(--marginCard);
 
     
-#div1 { grid-area: 4 / 9 / 5 / 10; }
-#div2 { grid-area: 4 / 10 / 5 / 11; }
-#div3 { grid-area: 4 / 11 / 5 / 12; }
-#div4 { grid-area: 4 / 12 / 5 / 13; }
-#div5 { grid-area: 5 / 12 / 6 / 13; }
-#div6 { grid-area: 6 / 12 / 7 / 13; }
-#div7 { grid-area: 7 / 12 / 8 / 13; }
-#div8 { grid-area: 7 / 13 / 8 / 14; }
-#div9 { grid-area: 7 / 14 / 8 / 15; }
-#div10 { grid-area: 7 / 15 / 8 / 16; }
-#div11 { grid-area: 7 / 16 / 8 / 17; }
-#div12 { grid-area: 7 / 17 / 8 / 18; }
-#div13 { grid-area: 6 / 17 / 7 / 18; }
-#div14 { grid-area: 5 / 17 / 6 / 18; }
-#div15 { grid-area: 4 / 17 / 5 / 18; }
-#div16 { grid-area: 3 / 17 / 4 / 18; }
-#div17 { grid-area: 2 / 17 / 3 / 18; }
-#div18 { grid-area: 1 / 17 / 2 / 18; }
-#div19 { grid-area: 1 / 16 / 2 / 17; }
-#div20 { grid-area: 1 / 15 / 2 / 16; }
-#div21 { grid-area: 1 / 14 / 2 / 15; }
-#div22 { grid-area: 2 / 14 / 3 / 15; }
-#div23 { grid-area: 3 / 14 / 4 / 15; }
-#div24 { grid-area: 4 / 14 / 5 / 15; }
-#div25 { grid-area: 5 / 14 / 6 / 15; }
-#div26 { grid-area: 5 / 15 / 6 / 16; }
-#div27 { grid-area: 4 / 15 / 5 / 16; }
-#div28 { grid-area: 3 / 15 / 4 / 16; }
-#div29 { grid-area: 4 / 8 / 5 / 9; }
-#div30 { grid-area: 4 / 7 / 5 / 8; }
-#div31 { grid-area: 4 / 6 / 5 / 7; }
-#div32 { grid-area: 5 / 6 / 6 / 7; }
-#div33 { grid-area: 6 / 6 / 7 / 7; }
-#div34 { grid-area: 7 / 6 / 8 / 7; }
-#div35 { grid-area: 7 / 5 / 8 / 6; }
-#div36 { grid-area: 7 / 4 / 8 / 5; }
-#div37 { grid-area: 7 / 3 / 8 / 4; }
-#div38 { grid-area: 7 / 2 / 8 / 3; }
-#div39 { grid-area: 7 / 1 / 8 / 2; }
-#div40 { grid-area: 6 / 1 / 7 / 2; }
-#div41 { grid-area: 5 / 1 / 6 / 2; }
-#div42 { grid-area: 4 / 1 / 5 / 2; }
-#div43 { grid-area: 3 / 1 / 4 / 2; }
-#div44 { grid-area: 2 / 1 / 3 / 2; }
-#div45 { grid-area: 1 / 1 / 2 / 2; }
-#div46 { grid-area: 1 / 2 / 2 / 3; }
-#div47 { grid-area: 1 / 3 / 2 / 4; }
-#div48 { grid-area: 1 / 4 / 2 / 5; }
-#div49 { grid-area: 2 / 4 / 3 / 5; }
-#div50 { grid-area: 3 / 4 / 4 / 5; }
-#div51 { grid-area: 4 / 4 / 5 / 5; }
-#div52 { grid-area: 5 / 4 / 6 / 5; }
-#div53 { grid-area: 5 / 3 / 6 / 4; }
-#div54 { grid-area: 4 / 3 / 5 / 4; }
-#div55 { grid-area: 3 / 3 / 4 / 4; }
+    width: var(--defaultCardStatsSize);
+    height: auto; 
+    /* height: 20vh; */
+
+    color: var(--color1);
 
 
-.facedown {
-    /* hide the content of facedown piece */
-    content: "";
-    /* add a facedown image for the piece */
-    background-image: url(facedown-piece.png);
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+
+    padding: 20px;
 }
 
-/* hide the pieces that are not in the game */
-.remaining-0 .whitesquare {
+.cardStats h1{
+    font-size: var(--fontSize2);
+}
+
+
+.howToPlay{
+    position: fixed;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 20;
+}
+
+.howToPlayInner{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    width: var(--defaultTipCardSizeW);
+    height: var(--defaultTipCardSizeH);
+
+    color: var(--color1);
+
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.tipsText{
+    margin-top: 5rem;
+}
+
+.tipsText h1 {
+    margin: 2rem;
+    font-size: var(--fontSize2);
+    text-align: center;
+}
+
+
+
+
+.buyable {
+    position: fixed;
+    right: 0;
+    top: 0;
+    margin: var(--marginCard);
+
+    width: auto;
+    height: 100vh;
+
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+
+    z-index: 100;
+}
+
+#buyableInner {
+    height: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+} 
+
+#pieceRef{
+
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+}
+
+        
+
+
+#pieceRefInner {
+
+    margin: var(--marginCard);
+
+    width: var(--defaultSize);
+    height: var(--default2xSize);
+
+
+    background-color: var(--pieceColor);
+
+    border-radius:  5px;
+    border: solid black 2px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#pieceRefInner h1{
+
+    color: var(--color5);
+
+    font-size: var(--fontSize3);
+}
+
+
+
+#drawPieceBtn{
+
+    margin: 20px;
+    padding: 10px;
+
+
+    font-size: var(--fontSize);
+    color: var(--color1);
+
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+
+    border-radius: 25px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+
+    cursor: pointer;
+
+}
+  
+.buttonConteiner{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    
+}
+
+.btnDefalt{
+
+    margin: var(--marginCard);
+    padding: calc(var(--marginCard)/2);
+
+    width:auto;
+
+    font-size: var(--fontSize);
+    color: var(--color1);
+
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+
+    border-radius: 25px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+
+    cursor: pointer;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.classNone {
     display: none;
 }
-/* show the remaining pieces */
-.remaining-1 .whitesquare,
-.remaining-2 .whitesquare,
-.remaining-3 .whitesquare,
-.remaining-4 .whitesquare,
-.remaining-5 .whitesquare,
-.remaining-6 .whitesquare,
-.remaining-7 .whitesquare {
-display: block;
-}
-.hide-opponent-hand {
-    display: none;
+
+
+
+
+/* Mobile View */
+@media screen and (max-width: 899px) {
+    :root{
+        --defaultSize: 30px;
+        --default2xSize: calc(var(--defaultSize)*2);
+
+
+        --defaultCardStatsSize: 15vw;
+        --marginCard: 10px;
+        --defaultMargin-top: 15vh;
+        --defaultWidth: 10vh;
+        
+        --defaultTipCardSizeW: 80vw;
+        --defaultTipCardSizeH: 40vh;
+    
+        
+        --fontSize: small;
+        --fontSize2: smaller;
+        --fontSize3: x-large;
+
+    }
+
+    .statsMobileMode {
+        left: 0;
+        margin-top: var(--defaultMargin-top);
+        /* width: var(--defaultWidth); */
+    }
+    
+    .buyableMobileMode{
+        height: unset;
+        margin-top: var(--defaultMargin-top);
+        /* width: var(--defaultWidth); */
+    }
+    
+    .buyableMobileModeInner{
+        top:0;
+    }
 }
