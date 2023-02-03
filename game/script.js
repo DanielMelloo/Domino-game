@@ -406,6 +406,7 @@ class Player {
         
         
         turn_counter++;
+        console.log(`>>>> current turn: ${turn_counter} <<<<`);
         update_status_window_all();
         // updateByTurn(turn_counter);
         // updateByMove(shop.length);
@@ -514,6 +515,7 @@ class Player {
 // functions:
 ////////////////////////////////////////
 
+/* // funciona, porém predefinida
 function generate_pile(pile) { // gera a pilha inicial de peças. 
     
     // let svgs = document.getElementById("template_values_svg").children;
@@ -523,6 +525,22 @@ function generate_pile(pile) { // gera a pilha inicial de peças.
     }
     for(let i = 0; i <= 6; i++){
         for(let j = i; j <= 6; j++){
+            if(!(i === j)){
+                pile.push(new Piece(i,j));
+            }
+        }
+    }
+} */
+
+function generate_pile(pile, min = 0, max = 6) { // gera a pilha inicial de peças. 
+    
+    // let svgs = document.getElementById("template_values_svg").children;
+
+    for(let i = min; i <= max; i++){
+        pile.push(new Piece(i,i));
+    }
+    for(let i = min; i <= max; i++){
+        for(let j = i; j <= max; j++){
             if(!(i === j)){
                 pile.push(new Piece(i,j));
             }
@@ -863,7 +881,7 @@ function match_over(){
             console.warn("Empate?(sei la...)");
         }
     } else {
-        console.log(">>> Next-Turn <<<");
+        // console.log(">>> Next-Turn <<<");
         return false;
     }
 
@@ -936,8 +954,6 @@ function game_over(winner){
     player_list = new Array();
     player_list[player1] = new Player("Player1", "Jogador", "player1HandInner"); // objeto que representa o jogador
     player_list[player2] = new Player("Player2", "Bot", "player2HandInner"); // objeto que representa o BOT
-
-    
 
 ////////////////////////////////////////
 
@@ -1548,7 +1564,7 @@ function drop(side){ // [drop_event]
         return false; // se a jogada for invalida
     }
 
-    bot_play();
+    bot_play(1000);
 
     console.log("drop() function: [end reached]");
 
@@ -2480,8 +2496,8 @@ function draw_piece_button(){ // compra uma peça para o jogador humano pelo bot
     }
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+function sleep(ms){ 
+    return new Promise(resolve => setTimeout(resolve, ms));;
 }
 
 function update_status_window_all(){
@@ -2535,14 +2551,14 @@ function human_play(side){
     return true;
 }
 
-function bot_play(){
+async function bot_play(delay){
     while(true){
 
         // verifica se o Bot pode jogar
         do{
             if(current_player.can_play){
                 // Bot faz sua jogada
-                sleep(2000);
+                await sleep(delay);
                 bot_strategy();
                 break;
             } else {
@@ -2569,6 +2585,11 @@ function bot_play(){
             console.log("bot playing again");
         }
     }
+}
+
+async function delay_test(delay = 4000){
+    await sleep(delay);
+    console.log(`waiting for ${delay}`);
 }
 
 // function player_vs_bot_flow(){
