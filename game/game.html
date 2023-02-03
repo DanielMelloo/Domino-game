@@ -8,14 +8,27 @@
     <title>Dominó</title>
     <link rel="icon" href="/assets/dominologo.svg" type="image/x-icon">
     <!-- <script type="text/javascript" src="script.js"></script> -->
+
 </head>
 <body>
+    <!--------------------------------------------------------- Graph --------------------------------------------------------->
+    
+    
+    <div class="classNone" id="graphBox">
+        
+        <div id="line-chart"></div>
+        
+            
+    </div>
 
+    <!-- <canvas id="canvasGraph"></canvas> -->
+
+    <!-- <div id="vis_div" style="height: 400px; width: 600px;"></div> -->
 
     <!--------------------------------------------------------- How to play --------------------------------------------------------->
     
-    
 
+    
     <div class="howToPlay classNone" id="howToPlay">
             
         <div class="howToPlayInner" id="howToPlay#1">
@@ -160,7 +173,7 @@
             Jogador vs Bot
         </button>
 
-        <button type="button" class="play-button" id="Bot vs Bot" onclick='initGame (1)'>
+        <button type="button" class="play-button" id="Bot vs Bot" onclick='initGame(1)'>
             Bot vs Bot
         </button>
 
@@ -236,8 +249,13 @@
 
     </div>
 
+    <div class="gameStats classNone" id="gameStats">
+        <h1> opponente jogando... </h1>
+    </div>
 
+    
     <!-------------------------------------------------------------- Peças Restantes ------------------------------------------------------>
+
 
 
     <div class="buyableMobileMode buyable classNone" id="buyable">
@@ -286,17 +304,13 @@
         </div>
     </div>
 
+    <!------------------------------------------------------------- Overlays End --------------------------------------------------------->
     
     
-    <!-------------------------------------------------------------- Overlays End --------------------------------------------------------->
-
-
-
-
-    <!-- <button id="reset">Reset example</button> -->
-    <!-- <script type="text/javascript" src="script.js"></script> -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <main>
     <script src="script.js" defer></script>
-    <!-- <script src="../game/backend.js" defer></script> -->
 
+ 
 </body>
 </html>

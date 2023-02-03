@@ -1,5 +1,13 @@
 // http://127.0.0.1:5500/game%20copy/gamecopy.html
 
+
+// google.load("visualization", "1", {packages:["corechart"]});
+// google.setOnLoadCallback(drawCharts);
+
+
+google.charts.load('current', {'packages':['corechart']});
+
+
 /* search keywords:
 
     - issues:
@@ -54,10 +62,11 @@ class Piece {
         // this.piece_div = generate_piece_svg(value_left, value_right);
         this.piece_div = generateHandPiece(value_left, value_right);
         // this.onluSvgs = 
-        this.piece_div.setAttribute('class', 'handSlot'); 
+        this.piece_div.setAttribute('class', 'handSlot');
         // this.piece_div.setAttribute('id', '');
         this.piece_div.setAttribute('ondragstart', 'drag(this)');
         // this.piece_div.setAttribute('onclick', 'check_playable_onclick()');
+        this.owner;
 
     }
     string(){ // (W.I.P)
@@ -124,7 +133,9 @@ class Piece {
             this.piece_div.setAttribute('draggable', 'true');
             this.piece_div.classList.add('left');
             this.piece_div.classList.remove('right');
-            this.piece_div.classList.add('playable');
+            if(this.owner.input_type !== 'Bot'){
+                this.piece_div.classList.add('playable');
+            }
         }
 
         else if (this.check_playable(right)){
@@ -132,13 +143,17 @@ class Piece {
             // this.piece_div.setAttribute('ondragstart', 'drag(event)');
             this.piece_div.classList.add('right');
             this.piece_div.classList.remove('left');
-            this.piece_div.classList.add('playable');
+            if(this.owner.input_type !== 'Bot'){
+                this.piece_div.classList.add('playable');
+            }
         }
         
         else if (!(this.check_playable(right)) && !(this.check_playable(left))){
             this.piece_div.classList.remove('right');
             this.piece_div.classList.remove('left');
-            this.piece_div.classList.remove('playable');
+            if(this.owner.input_type !== 'Bot'){
+                this.piece_div.classList.remove('playable');
+            }
             this.piece_div.setAttribute('draggable', 'false');
         }
 
@@ -174,6 +189,7 @@ class Player {
         } */
         
         this.hand_div.appendChild(piece_div);
+        
 
     }
     draw_piece(quantity = 1) { // compra uma peça da pilha inicial
@@ -183,7 +199,8 @@ class Player {
                 return false;
             } 
             for(var i = 0; i < quantity; i++) {
-                var piece = shop.pop();                
+                var piece = shop.pop();
+                piece.owner = this;
                 this.hand.push(piece);
                 this.add_piece_svg_to_hand_div(piece.piece_div);
             }
@@ -312,7 +329,7 @@ class Player {
             }
 
         }
-
+        
         return true;
     }
     update_can_play() { // marca em uma variavel do objeto Player que ele tem pelo menos uma jogada possivel
@@ -352,13 +369,17 @@ class Player {
             this.hand[i].piece_div.classList.remove('left');
             this.hand[i].piece_div.classList.remove('playable');
         }
-        console.log(`blocking for: ${this.name}`);
+        if (debugMode){
+            console.log(`blocking for: ${this.name}`);
+        }
     }
     update_all(){
         this.update_playables();
         this.update_can_play();
         this.update_draggables();
-        console.log(`updating: ${this.name}`);
+        if (debugMode){
+            console.log(`updating: ${this.name}`);
+        }
     }
     hand_is_empty(){
         if(this.hand.length == 0){
@@ -369,7 +390,9 @@ class Player {
     }
     play_piece(position, side = right){
 
-        console.log(`${this.name}: chosen piece ${position}`); // debug?
+        if (debugMode){
+            console.log(`${this.name}: chosen piece ${position}`); // debug?
+        }
 
         if(this.hand[position].playable[side] === yes_rotate) {
             this.hand[position].rotate();
@@ -380,7 +403,9 @@ class Player {
             if(side == left) { // jogar na ponta esquerda da mesa
                 // this.set_left(position);
                 var piece = remove_piece(this.hand, position);
-                console.log("[Playing Piece "+position+"]");
+                if (debugMode){
+                    console.log("[Playing Piece "+position+"]");
+                }
                 table.unshift(piece);  
                 update_table(piece.value[left], piece.value[right], side);
                 piece.piece_div.remove();
@@ -389,7 +414,9 @@ class Player {
             } else if(side == right) { // jogar na ponta direita da mesa
                 // this.set_right(position);
                 var piece = remove_piece(this.hand, position);
-                console.log("[Playing Piece "+position+"]");
+                if (debugMode){
+                    console.log("[Playing Piece "+position+"]");
+                }
                 table.push(piece);
                 update_table(piece.value[left], piece.value[right], side);
                 piece.piece_div.remove();
@@ -400,13 +427,17 @@ class Player {
                 return false;
             }
         } else {
-            console.log("unexpected error: Player.play_piece()");
+            if (debugMode){
+                console.log("unexpected error: Player.play_piece()");
+            }
             return false;
         }
         
         
         turn_counter++;
-        console.log(`>>>> current turn: ${turn_counter} <<<<`);
+        if (debugMode){
+            console.log(`>>>> current turn: ${turn_counter} <<<<`);
+        }
         update_status_window_all();
         // updateByTurn(turn_counter);
         // updateByMove(shop.length);
@@ -721,7 +752,6 @@ function going_first() {
     } */
 
     
-    console.log("First: "+winner.name);
     if (debugMode){
         console.log("First: "+winner.name);
     }
@@ -755,7 +785,9 @@ function change_player(){
         }
     }
 
-    console.log("changing to: "+next_player.name+"");
+    if (debugMode){
+        console.log("changing to: "+next_player.name+"");
+    }
     current_player = next_player;
 
     everyone_update_all();
@@ -798,11 +830,11 @@ function bot_strategy(){
                 }
             }
             
-            // if (debugMode){
+            if (debugMode){
                 console.log("highest_sum: "+highest_sum); // debug
                 console.log("highest_sum_position: "+highest_sum_position); // debug
                 console.log("highest_sum_side: "+highest_sum_side); // debug
-            // }
+            }
 
             current_player.play_piece(highest_sum_position, highest_sum_side); // debug
 
@@ -837,7 +869,7 @@ function bot_strategy(){
 
     }
 }
-function check_shop_empty(){
+function shop_is_empty(){
     if(shop.length === empty){
         return true;
     } else {
@@ -857,7 +889,9 @@ function match_over(){
         var winner = player_list[player1];
         var loser = player_list[player2];
         over = true;
-        console.log("hand-empty: "+winner.name);
+        if (debugMode){
+            console.log("hand-empty: "+winner.name);
+        }
     } else if(player_list[player2].hand_is_empty()){
         // Player 2 win
         var winner = player_list[player2];
@@ -905,7 +939,7 @@ function match_over(){
         // alert(">>>> Match-Winner: ["+winner.name+"] <<<<"+"\n"+"added points: "+points);    
     }
     
-    reset_match();
+    // init_match();
 
     return true;
 }
@@ -949,11 +983,14 @@ function game_over(winner){
 
     hand_size = 7; // quantidade inicial de peças
     player_name = "Jogador1";
+
+    shop = new Array();
+    table = new Array();
     
     // criando players.
     player_list = new Array();
-    player_list[player1] = new Player("Player1", "Jogador", "player1HandInner"); // objeto que representa o jogador
-    player_list[player2] = new Player("Player2", "Bot", "player2HandInner"); // objeto que representa o BOT
+    // player_list[player1] = new Player("Player1", "Jogador", "player1HandInner"); // objeto que representa o jogador
+    // player_list[player2] = new Player("Player2", "Bot", "player2HandInner"); // objeto que representa o BOT
 
 ////////////////////////////////////////
 
@@ -1041,6 +1078,8 @@ let gameComponentsList = {
     '.cardStats': 1,
     '.buyable': 1,
     '.buyableInner': 1,
+    '#graphBox': 1,
+    // 'gameStats': 1,
     // '.horizontalBox': 29,
     // '.verticalBox': 26,
     // '.UsableRectangleW': 55,
@@ -1060,6 +1099,77 @@ const default11 = (defaultSize*11)/45
 const default12 = (defaultSize*4)/15
 const defaultMetade = defaultSize/2 // 22.5
 const default34 = (defaultSize*34)/45
+
+let ar = [
+    ['Year', 'Jogador', 'Bot'],
+]
+
+let graphOptions = {
+    title: 'Número de peças',
+    backgroundColor: 'transparent',
+    colors: ['#68b2f8', '#651f71'],
+    fontName: 'Open Sans',
+    focusTarget: 'category',
+    tooltip:{textStyle:{
+        // color:,
+        fontSize: 15
+        }
+    },
+    titleTextStyle: {
+        color: '#68b2f8',
+        fontSize: 15
+    },
+    chartArea: {
+        left: 30,
+        top: 20,
+        right:20,
+
+        width: '100%',
+        height: '70%'
+    },
+    hAxis: {
+        showTextEvery: 1,
+        textStyle: {
+            color: '#68b2f8',
+            fontSize: 15
+        },
+        baselineColor: 'transparent',
+        gridlines: {
+            color: 'transparent',
+            multiple: 1,
+        }
+    },
+    vAxis: {
+        // minValue: 0,
+        // maxValue: 5,
+        baselineColor: '#DDD',
+        gridlines: {
+            color: '#68b2f8',
+        },
+        textStyle: {
+        
+            color: '#68b2f8',     
+            fontSize: 15
+        },
+        baselineColor: 'transparent',
+        gridlines: {
+            color: 'transparent',
+            multiple: 1,
+        }
+    },
+    legend: {
+        position: 'bottom',
+        textStyle: {
+            fontSize: 15,
+            color: '#68b2f8',
+        }
+    },
+    // animation: {
+    //     duration: 1200,
+    //     easing: 'out',
+    //         // startup: true
+    // }
+};
     
 
 /** Seleção da table para utilizar de referência de inserção */
@@ -1067,7 +1177,7 @@ let containerTable = document.getElementById('table');
 
 
 /** Seleção da table para utilizar de referência de inserção */
-let containerHand = document.getElementById('player1HandInner');
+let player1Hand = document.getElementById('player1HandInner');
 
 
 /** Seleção da table para utilizar de referência de inserção */ 
@@ -1217,6 +1327,44 @@ function createTablePieceWP (value1, value2){
 // ========== //
 
 
+
+
+
+
+
+
+
+
+function drawChart() {
+
+    let data = google.visualization.arrayToDataTable(ar);
+  
+    let chart = new google.visualization.LineChart(document.getElementById('line-chart'));
+  
+    chart.draw(data, graphOptions);
+}
+
+
+
+
+function removePlayable (){
+    player1Hand.classList.remove ('play')
+}
+
+
+function minimalMaxRandomize(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); 
+}
+
+
+function reloadGraph (actualTurn){
+    ar.push ([actualTurn, player1Hand.children.length, player2Hand.children.length])
+    drawChart()
+}
+
+
 /**
  * Funções que devem ser atualizadas a cada turno
  * 
@@ -1228,6 +1376,11 @@ function createTablePieceWP (value1, value2){
  */
 function updateByTurn (actualTurn = 1){
     turnsStats (actualTurn);
+    reloadGraph (actualTurn)
+
+    // opponent_playing_warning_on()
+    // opponent_playing_warning_off()
+    
 }
 
 
@@ -1373,7 +1526,7 @@ function displayOverlayMatchOn (player = 'unknown player', score = '0x1337'){
         // ==== //
 
 
-        btn.setAttribute ('onclick', 'continueGame ()')
+        btn.setAttribute ('onclick', 'alert("will reset match");') // (...) use this button to reset_match
         btn.textContent = 'Continue'
         
         cardText.textContent =`O vencedor desse round é ${player} com um total de ${score} pontos`;
@@ -1564,9 +1717,12 @@ function drop(side){ // [drop_event]
         return false; // se a jogada for invalida
     }
 
-    bot_play(1000);
+    bot_play(minimalMaxRandomize(1000, 3000));
 
-    console.log("drop() function: [end reached]");
+
+    if (debugMode){
+        console.log("drop() function: [end reached]");
+    }
 
     return true;
 }
@@ -1688,21 +1844,24 @@ function displayHowToPlay (){
 function initGame (mode){
     
     hideModeMenu ();
+    
 
     switch(mode){
         case 0: // Player vs Bot
 
             displayGame ();
-            reset_game(mode);
+
+            init_match();
+            // reset_game(mode);
 
             break;
 
         case 1: // Bot vs Bot
-
             displayGame ();
-            reset_game(mode);
-            dualBot = true;
+            bvb_flow();
 
+            // reset_game(mode);
+            dualBot = true;
             break;
 
         case 2: // Como jogar
@@ -2051,12 +2210,6 @@ function generateHandPiece (value1, value2){
 
     return parentPiece;
 }
-
-
-// ========== //
-// SVG Create //
-// ========== //
-
 
 /** Cria SVG da peça 6 */
 function createSVG_6() {  
@@ -2427,16 +2580,18 @@ function players_cannot_play(){
     // player_list[player1].update_all();
     // player_list[player2].update_all();
     everyone_update_all();
-    if(((player_list[player1].can_play === false) && (player_list[player2].can_play === false)) && (check_shop_empty() === true)){
+    if(((player_list[player1].can_play === false) && (player_list[player2].can_play === false)) && (shop_is_empty() === true)){
         return true;
     } else {
         return false;
     }
 }
 
-function reset_match(){ // issue: not called yet, call it on call it on displayOverlayMatchOff()
 
-    turn_counter = 0;
+
+function reset_match(){ // (...)  codigo precisa ser refeito apos ser segregado do init_match 
+
+    turn_counter = 1;
 
     clear_table();
 
@@ -2476,7 +2631,7 @@ function reset_game(mode){ // issue: not called yet, call it on displayOverlayGa
     
     player_list[player1].reset_score();
     player_list[player2].reset_score();
-    reset_match(mode);
+    init_match(mode);
 
 }
 
@@ -2518,14 +2673,20 @@ function clear_table(){
 
 function block_everyone_not_playing(){
     
-    console.log("blocking everyone not playing");
+    if (debugMode){
+        console.log("blocking everyone not playing");
+    }
     for(let i = 0; i < player_list.length; i++){
         if(player_list[i] == current_player){
-            console.log(`${player_list[i].name} IS current_player`);
+            if (debugMode){
+                console.log(`${player_list[i].name} IS current_player`);
+            }
             player_list[i].update_all();
             
         } else {
-            console.log(`${player_list[i].name} NOT current_player`);
+            if (debugMode){
+                console.log(`${player_list[i].name} NOT current_player`);
+            }
             player_list[i].block_all_draggables();
         }
     }
@@ -2541,7 +2702,9 @@ function human_play(side){
 
     // verifica se ganhou a partida
     if(match_over()){
-        console.log("[match-over-reached!]");
+        if (debugMode){
+            console.log("[match-over-reached!]");
+        }
         return false;
     }
 
@@ -2567,7 +2730,7 @@ async function bot_play(delay){
                 everyone_update_all();
                 // current_player.update_all();
             }
-        }while((current_player.can_play === false) && (check_shop_empty() === false));
+        }while((current_player.can_play === false) && (shop_is_empty() === false));
         
         // verifica se ganhou a partida
         if(match_over()){
@@ -2578,18 +2741,93 @@ async function bot_play(delay){
         // muda de volta para o Jogador humano e atualiza status dos jogadores
         change_player();
 
-        if(current_player.can_play){
+        /* if(current_player.can_play){
             break;
         } else {
             change_player();
             console.log("bot playing again");
+        } */
+        
+        if(current_player.can_play === false && shop_is_empty() === true){
+            change_player();
+            console.log("bot playing again");
+        } else {
+            break;
         }
+
     }
 }
 
-async function delay_test(delay = 4000){
-    await sleep(delay);
-    console.log(`waiting for ${delay}`);
+function opponent_playing_warning_toggle(){
+    let stats = document.getElementById('gameStats');
+    console.log (stats)
+
+    stats.classList.toggle('classNone');
+
+    console.log (stats)
+    // document.getElementById('gameStats').classList.remove('classNone')
+}
+
+function opponent_playing_warning_on(){
+    document.getElementById('gameStats').classList.remove('classNone');
+}
+
+function opponent_playing_warning_off(){
+    document.getElementById('gameStats').classList.add('classNone');
+}
+
+function init_match(){ // issue: not called yet, call it on call it on displayOverlayMatchOff()
+
+    hideModeMenu();
+
+    // gerando as peças do shop.
+    generate_pile(shop);
+    shuffle_pile(shop);
+    
+    player_list[player1] = new Player("Player", "Jogador", "player1HandInner"); // objeto que representa o jogador
+    player_list[player2] = new Player("Bot", "Bot", "player2HandInner"); // objeto que representa o BOT
+
+    //comprando peças.
+    player_list[player1].draw_piece(hand_size); 
+    player_list[player2].draw_piece(hand_size);
+
+    // update para janela de status:
+    update_status_window_all();
+    
+    // decidindo qual jogador joga primeiro.
+    current_player = going_first();
+    update_status_window_all();
+
+    if(current_player.input_type === "Bot" && botInit){
+        bot_play(); // Bot faz primeira jogada
+    }
+}
+
+function bvb_flow(){
+    
+    hideModeMenu();
+
+    // gerando as peças do shop.
+    generate_pile(shop);
+    shuffle_pile(shop);
+    
+    player_list[player1] = new Player("Bot-1", "Bot", "player1HandInner"); // objeto que representa o jogador
+    player_list[player2] = new Player("Bot-2", "Bot", "player2HandInner"); // objeto que representa o BOT
+
+    //comprando peças.
+    player_list[player1].draw_piece(hand_size); 
+    player_list[player2].draw_piece(hand_size);
+
+    // update para janela de status:
+    update_status_window_all();
+    
+    // decidindo qual jogador joga primeiro.
+    current_player = going_first();
+    update_status_window_all();
+
+    bot_play(); // Bot faz primeira jogada
+
+    // (...) precisa criar o loop da partida
 }
 
 // function player_vs_bot_flow(){

@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
 :root {
 
 
@@ -401,6 +403,36 @@ body{
 }
 
 
+.gameStats{
+    display: flex;
+    position: fixed;
+    left: 0;
+    top: 0;
+
+
+    margin: var(--marginCard);
+
+    
+    width: var(--defaultCardStatsSize);
+    height: auto; 
+    /* height: 20vh; */
+
+    color: var(--color1);
+
+
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+
+    padding: 20px;
+}
+
+.gameStats h1 {
+    font-size: var(--fontSize2);
+}
 
 .cardStats {
     position: fixed;
@@ -430,7 +462,6 @@ body{
 .cardStats h1{
     font-size: var(--fontSize2);
 }
-
 
 .howToPlay{
     position: fixed;
@@ -603,12 +634,44 @@ body{
 
 }
 
+#vis_div{
+    z-index: 5000;
+
+}
 
 
+#graphBox{
 
+    position: fixed;
+    left: 0;
+    bottom: 0;
 
+    margin: var(--marginCard);
 
+    width: auto;
+    height: auto; 
+    /* height: 20vh; */
+    
+    color: var(--color1);
 
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+
+    padding: 20px;
+    
+    z-index: 50;
+}
+
+#line-chart{
+    width: var(--defaultCardStatsSize);
+    height: 25vh;
+
+    
+}
 
 
 
@@ -631,8 +694,8 @@ body{
 
 
 /* Mobile View */
-@media screen and (max-width: 899px) {
-    :root{
+@media screen and (max-width: 680px) {
+    /* :root{
         --defaultSize: 30px;
         --default2xSize: calc(var(--defaultSize)*2);
 
@@ -650,7 +713,7 @@ body{
         --fontSize2: smaller;
         --fontSize3: x-large;
 
-    }
+    } */
 
     .statsMobileMode {
         left: 0;
@@ -668,3 +731,34 @@ body{
         top:0;
     }
 }
+
+
+
+
+
+/* ************************** */
+
+/* #opponent_playing_warning {
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    margin: var(--marginCard);
+
+    
+    width: var(--defaultCardStatsSize);
+    height: auto; 
+    height: 20vh;
+
+    color: var(--color1);
+
+
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+
+    padding: 20px;
+} */
