@@ -23,10 +23,10 @@ google.charts.load('current', {'packages':['corechart']});
 // Debug Variables //
 // =============== //
 
-let debugMode = false;
+let debugMode = true;
 let botDrag = false; // Só da pra usar quando o debug mode esta ativo
 let botInit = true;
-let dualBot = false;
+// let dualBot = false;
 
 ////////////////////////////////////////
 // Consts:
@@ -45,8 +45,154 @@ const empty = 0;
 ////////////////////////////////////////
 
 ////////////////////////////////////////
+// variaveis:
+////////////////////////////////////////
+    
+let piece_min_value_limit = 0;
+let piece_max_value_limit = 6;
+
+
+////////////////////////////////////////
+
+////////////////////////////////////////
+// Daniel Variables
+////////////////////////////////////////
+
+
+/** Componentes que deverão aparecer após iniciar o game
+ * 
+ *  Elementos dever ser dispostos na forma <'classe': quantidade> 
+ * */
+let gameComponentsList = {
+    '.handbox': 2,
+    '.cardStats': 1,
+    '.buyable': 1,
+    '.buyableInner': 1,
+    '#graphBox': 1,
+    // 'gameStats': 1,
+    // '.horizontalBox': 29,
+    // '.verticalBox': 26,
+    // '.UsableRectangleW': 55,
+    // '.UsableRectangleH': 55,
+};
+
+
+// ===================================================== //
+// |         Tamanho da peça (definida no css)         | //
+// ===================================================== //
+
+
+const defaultSize = getComputedStyle(document.documentElement).getPropertyValue('--defaultSize').slice(1,3);
+
+const default3 = defaultSize/15
+const default11 = (defaultSize*11)/45
+const default12 = (defaultSize*4)/15
+const defaultMetade = defaultSize/2 // 22.5
+const default34 = (defaultSize*34)/45
+
+let gameData = [
+    ['Turno', 'Jogador', 'Bot'],
+]
+
+let graphOptions = {
+    title: 'Número de peças',
+    backgroundColor: 'transparent',
+    colors: ['#68b2f8', '#651f71'],
+    fontName: 'Open Sans',
+    focusTarget: 'category',
+    tooltip:{textStyle:{
+        // color:,
+        fontSize: 15
+        }
+    },
+    titleTextStyle: {
+        color: '#68b2f8',
+        fontSize: 15
+    },
+    chartArea: {
+        left: 30,
+        top: 20,
+        right:20,
+
+        width: '100%',
+        height: '70%'
+    },
+    hAxis: {
+        showTextEvery: 1,
+        textStyle: {
+            color: '#68b2f8',
+            fontSize: 15
+        },
+        baselineColor: 'transparent',
+        gridlines: {
+            color: 'transparent',
+            multiple: 1,
+        }
+    },
+    vAxis: {
+        // minValue: 0,
+        // maxValue: 5,
+        baselineColor: '#DDD',
+        gridlines: {
+            color: '#68b2f8',
+        },
+        textStyle: {
+        
+            color: '#68b2f8',     
+            fontSize: 15
+        },
+        baselineColor: 'transparent',
+        gridlines: {
+            color: 'transparent',
+            multiple: 1,
+        }
+    },
+    legend: {
+        position: 'bottom',
+        textStyle: {
+            fontSize: 15,
+            color: '#68b2f8',
+        }
+    },
+    // animation: {
+    //     duration: 1200,
+    //     easing: 'out',
+    //         // startup: true
+    // }
+};
+    
+
+/** Seleção da table para utilizar de referência de inserção */
+let containerTable = document.getElementById('table'); 
+
+
+/** Seleção da table para utilizar de referência de inserção */
+let player1Hand = document.getElementById('player1HandInner');
+
+
+/** Seleção da table para utilizar de referência de inserção */ 
+let player2Hand = document.getElementById ('player2HandInner');
+
+
+// ====== //
+// Cheats //
+// ====== //
+
+
+let cheats = [
+    'genetate20pieces ()',
+    'createCard ()',
+    'drawPieceCurrentPlayer ()',
+    'updateTableSP ()',
+    'updateTableWP ()',
+    'createTablePieceWP()',
+];
+
+
+////////////////////////////////////////
 // classes:
 ////////////////////////////////////////
+
 
 // classe das peças
 class Piece {
@@ -194,10 +340,10 @@ class Player {
     }
     draw_piece(quantity = 1) { // compra uma peça da pilha inicial
         if(quantity <= shop.length){
-            if(this.can_play){
-                alert('já tem peças jogaveis')
+            /* if(this.can_play){
+                alert('já tem peças jogaveis');
                 return false;
-            } 
+            } */
             for(var i = 0; i < quantity; i++) {
                 var piece = shop.pop();
                 piece.owner = this;
@@ -210,7 +356,7 @@ class Player {
             }
             return true;
         } else {
-            alert ('Tá sem peça ja')
+            alert ('Shop vazio!')
             console.log("error: not enough pieces!");
             return false;
         }
@@ -316,7 +462,7 @@ class Player {
             return false;
         }
         if (debugMode){
-            console.log(">>>> [Updating-Playables: "+this.name+"] <<<<");
+            // console.log(">>>> [Updating-Playables: "+this.name+"] <<<<");
         }
         for(let i = 0; i < this.hand.length; i++) {
             this.hand[i].update_playable();
@@ -628,8 +774,7 @@ function shuffle_pile(pile) {
         pile[j] = temp;
     }
 }
-function draw_piece(pile, player, quantity = 1) { // passa uma peça da pilha de compra para o jogador (ou BOT)
-    
+function draw_piece(pile, player, quantity = 1) { // passa uma peça da pilha de compra para o jogador (ou BOT)  
     for(let i = quantity; i > 0; i--){
         let tmp = pile.pop()
         player.hand.push(tmp)
@@ -755,6 +900,7 @@ function going_first() {
     if (debugMode){
         console.log("First: "+winner.name);
     }
+    
 
     return winner;
 }
@@ -889,9 +1035,10 @@ function match_over(){
         var winner = player_list[player1];
         var loser = player_list[player2];
         over = true;
-        if (debugMode){
+        /* if (debugMode){
             console.log("hand-empty: "+winner.name);
-        }
+        } */
+        console.log("hand-empty: "+winner.name);
     } else if(player_list[player2].hand_is_empty()){
         // Player 2 win
         var winner = player_list[player2];
@@ -979,7 +1126,9 @@ function game_over(winner){
     let shop; // objeto que representa a pilha de compra
     let current_player;
     let dificulty_mode = "hard";
+    let bot_default_delay = 1000;
     let turn_counter = 1;
+    
 
     hand_size = 7; // quantidade inicial de peças
     player_name = "Jogador1";
@@ -1069,134 +1218,7 @@ playButton.addEventListener("click", function() {
 /**  */
 
 
-/** Componentes que deverão aparecer após iniciar o game
- * 
- *  Elementos dever ser dispostos na forma <'classe': quantidade> 
- * */
-let gameComponentsList = {
-    '.handbox': 2,
-    '.cardStats': 1,
-    '.buyable': 1,
-    '.buyableInner': 1,
-    '#graphBox': 1,
-    // 'gameStats': 1,
-    // '.horizontalBox': 29,
-    // '.verticalBox': 26,
-    // '.UsableRectangleW': 55,
-    // '.UsableRectangleH': 55,
-};
 
-
-// ===================================================== //
-// |         Tamanho da peça (definida no css)         | //
-// ===================================================== //
-
-
-const defaultSize = getComputedStyle(document.documentElement).getPropertyValue('--defaultSize').slice(1,3);
-
-const default3 = defaultSize/15
-const default11 = (defaultSize*11)/45
-const default12 = (defaultSize*4)/15
-const defaultMetade = defaultSize/2 // 22.5
-const default34 = (defaultSize*34)/45
-
-let ar = [
-    ['Year', 'Jogador', 'Bot'],
-]
-
-let graphOptions = {
-    title: 'Número de peças',
-    backgroundColor: 'transparent',
-    colors: ['#68b2f8', '#651f71'],
-    fontName: 'Open Sans',
-    focusTarget: 'category',
-    tooltip:{textStyle:{
-        // color:,
-        fontSize: 15
-        }
-    },
-    titleTextStyle: {
-        color: '#68b2f8',
-        fontSize: 15
-    },
-    chartArea: {
-        left: 30,
-        top: 20,
-        right:20,
-
-        width: '100%',
-        height: '70%'
-    },
-    hAxis: {
-        showTextEvery: 1,
-        textStyle: {
-            color: '#68b2f8',
-            fontSize: 15
-        },
-        baselineColor: 'transparent',
-        gridlines: {
-            color: 'transparent',
-            multiple: 1,
-        }
-    },
-    vAxis: {
-        // minValue: 0,
-        // maxValue: 5,
-        baselineColor: '#DDD',
-        gridlines: {
-            color: '#68b2f8',
-        },
-        textStyle: {
-        
-            color: '#68b2f8',     
-            fontSize: 15
-        },
-        baselineColor: 'transparent',
-        gridlines: {
-            color: 'transparent',
-            multiple: 1,
-        }
-    },
-    legend: {
-        position: 'bottom',
-        textStyle: {
-            fontSize: 15,
-            color: '#68b2f8',
-        }
-    },
-    // animation: {
-    //     duration: 1200,
-    //     easing: 'out',
-    //         // startup: true
-    // }
-};
-    
-
-/** Seleção da table para utilizar de referência de inserção */
-let containerTable = document.getElementById('table'); 
-
-
-/** Seleção da table para utilizar de referência de inserção */
-let player1Hand = document.getElementById('player1HandInner');
-
-
-/** Seleção da table para utilizar de referência de inserção */ 
-let player2Hand = document.getElementById ('player2HandInner');
-
-
-// ====== //
-// Cheats //
-// ====== //
-
-
-let cheats = [
-    'genetate20pieces ()',
-    'createCard ()',
-    'drawPieceCurrentPlayer ()',
-    'updateTableSP ()',
-    'updateTableWP ()',
-    'createTablePieceWP()',
-];
 
 
 /**
@@ -1332,12 +1354,9 @@ function createTablePieceWP (value1, value2){
 
 
 
-
-
-
 function drawChart() {
 
-    let data = google.visualization.arrayToDataTable(ar);
+    let data = google.visualization.arrayToDataTable(gameData);
   
     let chart = new google.visualization.LineChart(document.getElementById('line-chart'));
   
@@ -1348,7 +1367,7 @@ function drawChart() {
 
 
 function removePlayable (){
-    player1Hand.classList.remove ('play')
+    player1Hand.classList.remove ('playable')
 }
 
 
@@ -1360,7 +1379,7 @@ function minimalMaxRandomize(min, max) {
 
 
 function reloadGraph (actualTurn){
-    ar.push ([actualTurn, player1Hand.children.length, player2Hand.children.length])
+    gameData.push ([actualTurn, player1Hand.children.length, player2Hand.children.length])
     drawChart()
 }
 
@@ -1526,7 +1545,7 @@ function displayOverlayMatchOn (player = 'unknown player', score = '0x1337'){
         // ==== //
 
 
-        btn.setAttribute ('onclick', 'alert("will reset match");') // (...) use this button to reset_match
+        btn.setAttribute ('onclick', 'reset_match();') // (...) use this button to reset_match
         btn.textContent = 'Continue'
         
         cardText.textContent =`O vencedor desse round é ${player} com um total de ${score} pontos`;
@@ -1717,7 +1736,11 @@ function drop(side){ // [drop_event]
         return false; // se a jogada for invalida
     }
 
-    bot_play(minimalMaxRandomize(1000, 3000));
+    
+    opponent_playing_warning_on();
+    // bot_play(minimalMaxRandomize(1000, 3000));
+    bot_play(bot_default_delay);
+    opponent_playing_warning_off();
 
 
     if (debugMode){
@@ -1828,8 +1851,13 @@ function nextCard (btn){
 
 
 /** Retorna ao menu inicial */
-function returnToMenu (){
+function returnToMenuByHowToPlay (){
     displayHowToPlay ();
+    showModeMenu ()
+}
+
+function returnToMenuByOptions (){
+    displayOptionsMenu ();
     showModeMenu ()
 }
 
@@ -1837,6 +1865,10 @@ function returnToMenu (){
 /** Mostra a aba de como jogar o dominó */
 function displayHowToPlay (){
     document.getElementById('howToPlay').classList.toggle('classNone');
+}
+
+function displayOptionsMenu() {
+    document.getElementById('options').classList.toggle('classNone');
 }
 
 
@@ -1853,15 +1885,15 @@ function initGame (mode){
 
             init_match();
             // reset_game(mode);
-
+            game_mode = "pvb";
             break;
 
         case 1: // Bot vs Bot
             displayGame ();
             bvb_flow();
-
             // reset_game(mode);
-            dualBot = true;
+            // dualBot = true;
+            game_mode = "bvb";
             break;
 
         case 2: // Como jogar
@@ -1869,6 +1901,12 @@ function initGame (mode){
             // howToPlay();
             displayHowToPlay ();
             break;
+        
+        case 3:
+
+            displayOptionsMenu();
+
+            break
     }
 
     // createCard ()
@@ -2587,9 +2625,44 @@ function players_cannot_play(){
     }
 }
 
+function reset_match(){
+    alert("will reset match");
 
+    // reset turn counter
+    turn_counter = 1;
 
-function reset_match(){ // (...)  codigo precisa ser refeito apos ser segregado do init_match 
+    //  close match_win_window
+    displayOverlayMatchOff();
+    //  clear hands
+    for(let i = 0; i < player_list.length; i++){
+        player_list[i].clear_hand();
+    }
+    //  clear table
+    clear_table();
+    //  clear shop
+    clear_shop();
+    //  regen shop
+    generate_shop();
+    //  redraw pieces
+    for(let i = 0; i < player_list.length; i++){
+        player_list[i].draw_piece(hand_size);
+    }
+    //  reselect going first
+    current_player = going_first();
+
+    // if bot, make the first move (?)
+    if(current_player.input_type === "Bot" && botInit){
+        bot_play(); // Bot faz primeira jogada
+    }
+
+    //  update visuals
+    update_status_window_all();
+
+    gameData.clear()
+    reloadGraph (1)
+}
+
+/* function reset_match(){ //  versão antiga (...)  codigo precisa ser refeito após ser segregado do init_match 
 
     turn_counter = 1;
 
@@ -2598,7 +2671,7 @@ function reset_match(){ // (...)  codigo precisa ser refeito apos ser segregado 
     shop = new Array();
 
     // gerando as peças do shop.
-    generate_pile(shop);
+    generate_pile(shop, piece_min_value_limit, piece_max_value_limit);
     shuffle_pile(shop);
 
     for(let player of player_list){
@@ -2625,7 +2698,7 @@ function reset_match(){ // (...)  codigo precisa ser refeito apos ser segregado 
         // change_player();
         // everyone_update_all();
     }
-}
+} */
 
 function reset_game(mode){ // issue: not called yet, call it on displayOverlayGameOff()
     
@@ -2646,9 +2719,21 @@ function everyone_update_all(){
 }
 
 function draw_piece_button(){ // compra uma peça para o jogador humano pelo botão.
-    if(player_list[player1].draw_piece(1)){
-        everyone_update_all();
+    if(shop_is_empty()){
+        console.log("shop already empty");
+        change_player();
+        bot_play();
+        return false;
     }
+    
+    if(player_list[player1].can_play){
+        alert('já tem peças jogaveis');
+        return false;
+    }
+    player_list[player1].draw_piece(1);
+    everyone_update_all();
+
+    return true;
 }
 
 function sleep(ms){ 
@@ -2669,6 +2754,19 @@ function clear_table(){
     }
 
     table = new Array();
+}
+
+function clear_shop(){
+    shop = new Array();
+}
+
+// já usa as variaveis globais para configurar o valor limite maximo e minimo para as peças
+function generate_shop(){
+    generate_pile(shop, piece_min_value_limit, piece_max_value_limit);
+}
+
+function shuffle_shop(){
+
 }
 
 function block_everyone_not_playing(){
@@ -2765,15 +2863,16 @@ function opponent_playing_warning_toggle(){
     stats.classList.toggle('classNone');
 
     console.log (stats)
-    // document.getElementById('gameStats').classList.remove('classNone')
 }
 
 function opponent_playing_warning_on(){
-    document.getElementById('gameStats').classList.remove('classNone');
+    // document.getElementById('gameStats').classList.remove('classNone');
+    document.getElementById('gameStats').style.display = "\0"
 }
 
 function opponent_playing_warning_off(){
-    document.getElementById('gameStats').classList.add('classNone');
+    // document.getElementById('gameStats').classList.add('classNone');
+    document.getElementById('gameStats').style.display = "none"
 }
 
 function init_match(){ // issue: not called yet, call it on call it on displayOverlayMatchOff()
@@ -2781,7 +2880,7 @@ function init_match(){ // issue: not called yet, call it on call it on displayOv
     hideModeMenu();
 
     // gerando as peças do shop.
-    generate_pile(shop);
+    generate_shop();
     shuffle_pile(shop);
     
     player_list[player1] = new Player("Player", "Jogador", "player1HandInner"); // objeto que representa o jogador
@@ -2829,6 +2928,8 @@ function bvb_flow(){
 
     // (...) precisa criar o loop da partida
 }
+
+
 
 // function player_vs_bot_flow(){
     
