@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="game.css">
     <title>Dominó</title>
-    <!-- <link rel="icon" href="../assets/dominologo.svg" type="image" sizes="16x16"> -->
+    <link rel="icon" href="../assets/dominologo.svg" type="image" sizes="16x16">
     <!-- <script type="text/javascript" src="script.js"></script> -->
 
 </head>
@@ -42,15 +42,15 @@
             
             <div class="buttonConteiner">
 
-                <button class="btnDefalt" onclick="prevCard (this)">
+                <button class="allowHoverButton btnDefalt" onclick="prevCard (this)">
                     Anterior
                 </button>
 
-                <button class="btnDefalt" onclick="returnToMenuByHowToPlay ()">
+                <button class="allowHoverButton btnDefalt" onclick="returnToMenuByHowToPlay ()">
                     Voltar ao menu anterior
                 </button>
     
-                <button class="btnDefalt" onclick="nextCard (this)">
+                <button class="allowHoverButton btnDefalt" onclick="nextCard (this)">
                     Próximo
                 </button>
 
@@ -69,15 +69,15 @@
             
             <div class="buttonConteiner">
 
-                <button class="btnDefalt" onclick="prevCard (this)">
+                <button class="allowHoverButton btnDefalt" onclick="prevCard (this)">
                     Anterior
                 </button>
 
-                <button class="btnDefalt" onclick="returnToMenu ()">
+                <button class="allowHoverButton btnDefalt" onclick="returnToMenu ()">
                     Voltar ao menu anterior
                 </button>
     
-                <button class="btnDefalt" onclick="nextCard (this)">
+                <button class="allowHoverButton btnDefalt" onclick="nextCard (this)">
                     Próximo
                 </button>
 
@@ -96,15 +96,15 @@
             
             <div class="buttonConteiner">
 
-                <button class="btnDefalt" onclick="prevCard (this)">
+                <button class="allowHoverButton btnDefalt" onclick="prevCard (this)">
                     Anterior
                 </button>
 
-                <button class="btnDefalt" onclick="returnToMenu ()">
+                <button class="allowHoverButton btnDefalt" onclick="returnToMenu ()">
                     Voltar ao menu anterior
                 </button>
     
-                <button class="btnDefalt" onclick="nextCard (this)">
+                <button class="allowHoverButton btnDefalt" onclick="nextCard (this)">
                     Próximo
                 </button>
 
@@ -123,15 +123,15 @@
             
             <div class="buttonConteiner">
 
-                <button class="btnDefalt" onclick="prevCard (this)">
+                <button class="allowHoverButton btnDefalt" onclick="prevCard (this)">
                     Anterior
                 </button>
 
-                <button class="btnDefalt" onclick="returnToMenu ()">
+                <button class="allowHoverButton btnDefalt" onclick="returnToMenu ()">
                     Voltar ao menu anterior
                 </button>
     
-                <button class="btnDefalt" onclick="nextCard (this)">
+                <button class="allowHoverButton btnDefalt" onclick="nextCard (this)">
                     Próximo
                 </button>
 
@@ -207,7 +207,7 @@
     </div>
 
 
-    <!-------------------------------------------------------------- valor nas peças ------------------------------------------------------>
+    <!-------------------------------------------------------------- options ------------------------------------------------------>
 
 
 
@@ -216,21 +216,40 @@
         <div class="optionsInner" id="optionMain">
 
             <div class="choices">
-                <button class="btnDefalt" onclick="returnToMenuByOptions ()">
-                    Voltar ao menu anterior
-                </button>
-                <button class="btnDefalt" onclick="returnToMenuByOptions ()">
-                    Voltar ao menu anterior
-                </button>
-                <button class="btnDefalt" onclick="returnToMenuByOptions ()">
-                    Voltar ao menu anterior
-                </button>
+
+                <div class="optionConteiner">
+
+                    <button class="optionBtn">
+                        Mínimo de peças
+                    </button>
+
+                    <select class="allowHoverButton inputValue optionBtn" required="required" name="minValue" id="minValue">
+
+                    </select>
+
+                    <input class="allowHoverButton optionBtn"id="minValueInput" type="submit" onclick="getDataForms ('minValue')" value="Submit"> 
+
+                </div>
+
+                <div class="optionConteiner ">
+
+                    <button class="optionBtn">
+                        Máximo de Peças
+                    </button>
+
+
+                    <select class="allowHoverButton inputValue optionBtn" required="required" name="maxValue" id="maxValue">
+                    </select>
+                    
+                    <input class="allowHoverButton optionBtn" id="minValueInput" type="submit" onclick="getDataForms ('maxValue')"value="Submit"> 
+
+                </div>
 
             </div>
 
-            <div class="buttonConteiner">
+            <div class="buttonConteinerW">
 
-                <button class="btnDefalt" onclick="returnToMenuByOptions ()">
+                <button class="allowHoverButton btnDefalt" onclick="returnToMenuByOptions ()">
                     Voltar ao menu anterior
                 </button>
 
@@ -351,6 +370,7 @@
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <main>
     <script src="script.js" defer></script>
+
 
  
 </body>

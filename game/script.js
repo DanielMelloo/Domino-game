@@ -1217,6 +1217,8 @@ playButton.addEventListener("click", function() {
 
 /**  */
 
+let possibilities = [0, 1, 2, 3, 4, 5, 6];
+
 
 
 
@@ -1350,6 +1352,79 @@ function createTablePieceWP (value1, value2){
 
 
 
+
+window.onload = function() {
+    let iterador = 0
+    
+    let minValue = document.getElementById("minValue");
+    let maxValue = document.getElementById("maxValue");
+
+    // var subjectSel = document.getElementById("subject");
+    // var topicSel = document.getElementById("topic");
+    // var chapterSel = document.getElementById("chapter");
+    // for (var x in subjectObject) {
+    //   subjectSel.options[subjectSel.options.length] = new Option(x, x);
+    // }
+
+    for (var x in possibilities) {
+
+        let min = new Option(x, x);
+        let max = new Option(x, x);
+
+        
+        minValue.options[minValue.options.length] = min;
+        maxValue.options[maxValue.options.length] = max;
+        
+        min.setAttribute('id', 'optionFormMin#' + iterador);
+        max.setAttribute('id', 'optionFormMax#' + iterador);
+
+        iterador += 1;
+    }
+}
+
+function getDataForms (form){
+
+    if (form == 'minValue'){
+        piece_min_value_limit = document.getElementById(form).value;
+
+        console.log (piece_min_value_limit)
+    }
+
+    else if (form == 'maxValue'){
+        piece_max_value_limit = document.getElementById(form).value;
+
+        console.log (piece_max_value_limit)
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function loadDefaultValueOptions() {
+    let listMin = document.getElementById ('optionFormMin#' + piece_min_value_limit)
+    let listMax = document.getElementById ('optionFormMax#' + piece_max_value_limit)
+
+    listMin.setAttribute ('selected', 'selected')
+    listMax.setAttribute ('selected', 'selected')
+}
 
 
 
@@ -1903,7 +1978,7 @@ function initGame (mode){
             break;
         
         case 3:
-
+            loadDefaultValueOptions()
             displayOptionsMenu();
 
             break
