@@ -46,7 +46,7 @@
                     Anterior
                 </button>
 
-                <button class="btnDefalt" onclick="returnToMenu ()">
+                <button class="btnDefalt" onclick="returnToMenuByHowToPlay ()">
                     Voltar ao menu anterior
                 </button>
     
@@ -177,14 +177,19 @@
             Bot vs Bot
         </button>
 
+
+
         <button type="button" class="play-button" id="Bot vs Bot" onclick='initGame (2)'>
             Como Jogar
+        </button>
+
+        <button type="button" class="play-button" id="opcoes" onclick='initGame (3)'>
+            Opções
         </button>
 
     </div>
 
     <!-------------------------------------------------------------- MenuInGame ----------------------------------------------------------->
-
 
 
     <div class="menu">
@@ -200,6 +205,42 @@
         </div> -->
 
     </div>
+
+
+    <!-------------------------------------------------------------- valor nas peças ------------------------------------------------------>
+
+
+
+    <div class="options classNone" id="options">
+            
+        <div class="optionsInner" id="optionMain">
+
+            <div class="choices">
+                <button class="btnDefalt" onclick="returnToMenuByOptions ()">
+                    Voltar ao menu anterior
+                </button>
+                <button class="btnDefalt" onclick="returnToMenuByOptions ()">
+                    Voltar ao menu anterior
+                </button>
+                <button class="btnDefalt" onclick="returnToMenuByOptions ()">
+                    Voltar ao menu anterior
+                </button>
+
+            </div>
+
+            <div class="buttonConteiner">
+
+                <button class="btnDefalt" onclick="returnToMenuByOptions ()">
+                    Voltar ao menu anterior
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
 
     <!------------------------------------------------------------ drop area ------------------------------------------------------------>
 
@@ -272,7 +313,7 @@
         
             </div>
 
-            <button id="drawPieceBtn" onclick="draw_piece_button()">
+            <button id="drawPieceBtn" onclick="draw_piece_button();">
                 Comprar
             </button>
         </div>

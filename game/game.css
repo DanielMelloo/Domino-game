@@ -507,8 +507,39 @@ body{
     text-align: center;
 }
 
+.options {
+    position: fixed;
+    top: 0;
 
+    width: 100%;
+    height: 100%;
 
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 20;
+}
+
+.optionsInner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    width: var(--defaultTipCardSizeW);
+    height: var(--defaultTipCardSizeH);
+
+    color: var(--color1);
+
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
 
 .buyable {
     position: fixed;
@@ -551,7 +582,10 @@ body{
     align-items: center;
 }
 
-        
+
+.choices {
+    height: 100%;
+}
 
 
 #pieceRefInner {
@@ -610,6 +644,8 @@ body{
     justify-content: center;
     width: 100%;
     
+    justify-self: end;
+    align-self: flex-end; 
 }
 
 .btnDefalt{
