@@ -1881,7 +1881,8 @@ function initGame (mode){
     switch(mode){
         case 0: // Player vs Bot
 
-            displayGame ();
+            displayGame();
+            hideModeMenu();
 
             init_match();
             // reset_game(mode);
@@ -1889,7 +1890,9 @@ function initGame (mode){
             break;
 
         case 1: // Bot vs Bot
-            displayGame ();
+            displayGame();
+            hideModeMenu();
+
             bvb_flow();
             // reset_game(mode);
             // dualBot = true;
@@ -2877,8 +2880,6 @@ function opponent_playing_warning_off(){
 
 function init_match(){ // issue: not called yet, call it on call it on displayOverlayMatchOff()
 
-    hideModeMenu();
-
     // gerando as peças do shop.
     generate_shop();
     shuffle_pile(shop);
@@ -2903,8 +2904,6 @@ function init_match(){ // issue: not called yet, call it on call it on displayOv
 }
 
 function bvb_flow(){
-    
-    hideModeMenu();
 
     // gerando as peças do shop.
     generate_pile(shop);
@@ -2914,16 +2913,17 @@ function bvb_flow(){
     player_list[player2] = new Player("Bot-2", "Bot", "player2HandInner"); // objeto que representa o BOT
 
     //comprando peças.
-    player_list[player1].draw_piece(hand_size); 
-    player_list[player2].draw_piece(hand_size);
+    for(let i = 0; i < player_list.length; i++){
+        player_list[i].draw_piece(hand_size);     
+    }
 
-    // update para janela de status:
-    update_status_window_all();
     
     // decidindo qual jogador joga primeiro.
     current_player = going_first();
+    
+    // update para janela de status:
     update_status_window_all();
-
+    
     bot_play(); // Bot faz primeira jogada
 
     // (...) precisa criar o loop da partida
