@@ -45,7 +45,7 @@ const empty = 0;
 ////////////////////////////////////////
 
 ////////////////////////////////////////
-// variaveis:
+// variáveis:
 ////////////////////////////////////////
     
 let piece_min_value_limit = 0;
@@ -69,6 +69,7 @@ let gameComponentsList = {
     '.buyable': 1,
     '.buyableInner': 1,
     '#graphBox': 1,
+    '#colpaseGraphBtn': 1,
     // 'gameStats': 1,
     // '.horizontalBox': 29,
     // '.verticalBox': 26,
@@ -83,6 +84,7 @@ let gameComponentsList = {
 
 
 const defaultSize = getComputedStyle(document.documentElement).getPropertyValue('--defaultSize').slice(1,3);
+
 
 const default3 = defaultSize/15
 const default11 = (defaultSize*11)/45
@@ -1399,10 +1401,17 @@ function getDataForms (form){
 
 
 
+function resetGameData (){
+
+    gameData = [
+        ['Turno', 'Jogador', 'Bot'],
+    ]
+}
 
 
-
-
+function displayGraph (){
+    
+}
 
 
 
@@ -2733,7 +2742,7 @@ function reset_match(){
     //  update visuals
     update_status_window_all();
 
-    gameData.clear()
+    resetGameData ()
     reloadGraph (1)
 }
 

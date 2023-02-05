@@ -8,22 +8,48 @@
     <title>Dominó</title>
     <link rel="icon" href="../assets/dominologo.svg" type="image" sizes="16x16">
     <!-- <script type="text/javascript" src="script.js"></script> -->
+    <style>
+
+    </style>
 
 </head>
 <body>
     <!--------------------------------------------------------- Graph --------------------------------------------------------->
     
     
-    <div class="classNone" id="graphBox">
-        
-        <div id="line-chart"></div>
-        
+
+
+    <div id="graphBoxOuter">
+
+        <button class="allowHoverButton optionBtn classNone" onclick="displayGraph()" id="colpaseGraphBtn">
+            \/
+        </button>
+
+        <div class="classNone" id="graphBox">
             
+            <div id="line-chart"></div>
+                
+        </div>
     </div>
+
 
     <!-- <canvas id="canvasGraph"></canvas> -->
 
     <!-- <div id="vis_div" style="height: 400px; width: 600px;"></div> -->
+
+
+    <!-------------------------------------------------------------- Colapse praph -------------------------------------------------------->
+
+
+<!-- 
+    <div>
+        <button class="optionBtn">
+        button
+        </button>
+    </div> -->
+
+
+
 
     <!--------------------------------------------------------- How to play --------------------------------------------------------->
     
@@ -220,28 +246,40 @@
                 <div class="optionConteiner">
 
                     <button class="optionBtn">
-                        Mínimo de peças
+                        Valor mínimo das peças
                     </button>
 
                     <select class="allowHoverButton inputValue optionBtn" required="required" name="minValue" id="minValue">
 
                     </select>
 
-                    <input class="allowHoverButton optionBtn"id="minValueInput" type="submit" onclick="getDataForms ('minValue')" value="Submit"> 
+                    <input  
+                        class="allowHoverButton optionBtn" 
+                        id="minValueInput" 
+                        type="submit" o
+                        nclick="getDataForms ('minValue')" 
+                        value="Confirmar"
+                    > 
 
                 </div>
 
                 <div class="optionConteiner ">
 
                     <button class="optionBtn">
-                        Máximo de Peças
+                        Valor máximo das peças
                     </button>
 
 
                     <select class="allowHoverButton inputValue optionBtn" required="required" name="maxValue" id="maxValue">
                     </select>
                     
-                    <input class="allowHoverButton optionBtn" id="minValueInput" type="submit" onclick="getDataForms ('maxValue')"value="Submit"> 
+                    <input 
+                        class="allowHoverButton optionBtn" 
+                        id="minValueInput" 
+                        type="submit" 
+                        onclick="getDataForms ('maxValue')"
+                        value="Confirmar"
+                    > 
 
                 </div>
 
