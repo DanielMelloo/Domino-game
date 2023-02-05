@@ -25,3 +25,9 @@
 [ ] Checar bugs do bot vs bot
 
 [ ] (Resetar dicas ao sair delas)
+
+[ ] bug detectado !!!! Shop vazio n deixa jogar com poucas peças
+
+[ ] mudar o minimo quebra os svgs que contem 0
+
+[ ] resetar grafico ao resetar partida

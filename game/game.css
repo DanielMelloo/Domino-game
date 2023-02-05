@@ -584,7 +584,14 @@ body{
 
 
 .choices {
+    /* margin: var(--marginCard); */
     height: 100%;
+    width: 100%;
+
+    /* align-items: start; */
+    /* display: none; */
+
+    overflow: auto;
 }
 
 
@@ -643,9 +650,16 @@ body{
     align-items: center;
     justify-content: center;
     width: 100%;
-    
-    justify-self: end;
-    align-self: flex-end; 
+}
+
+.optionConteiner{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:center;
+    justify-content: space-around;
+    width: 100%;
+
 }
 
 .btnDefalt{
@@ -668,6 +682,27 @@ body{
 
     cursor: pointer;
 
+}
+
+.optionBtn {
+
+    margin: var(--marginCard) 0 var(--marginCard) 0;
+    /* margin-left: 100px; */
+    padding: calc(var(--marginCard)/2);
+
+    width:auto;
+
+    font-size: var(--fontSize);
+    color: var(--color1);
+
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+
+    border-radius: 25px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    
 }
 
 #vis_div{
@@ -712,9 +747,81 @@ body{
 
 
 
+/* Hover*/
+.allowHoverButton:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
 
 
 
+
+
+
+
+/* Select */
+
+.inputValue {
+    min-width: 20px;
+    /* width: 5vw; */
+}
+
+.inputValue option {
+    background-color: #3b5e9b;
+    justify-items: center;
+    align-items: center;
+}
+
+
+/* #minValue{
+}
+
+#minValueInput{
+    
+}
+
+#maxValue{
+
+}
+
+#maxValueInput{
+
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(5, 5, 5, 0.4);
+    border-radius:  50px;
+  
+  }
+  
+  .choices::-webkit-scrollbar-track {
+    background: var(--color1);
+  
+  }
+  
+  ::-webkit-scrollbar-thumb:hover{
+    background: var(--color2);
+  
+  }
 
 
 
@@ -767,8 +874,6 @@ body{
         top:0;
     }
 }
-
-
 
 
 
