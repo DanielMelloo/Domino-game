@@ -1,0 +1,17 @@
+
+
+
+
+
+<svg height="200" width="200">
+  <line 
+    x1="0" y1="0" 
+    x2="100" y2="200" 
+    style="stroke:#68b2f8;stroke-width:3" />
+
+  <line 
+    x1="100" y1="200" 
+    x2="200" y2="0" 
+    style="stroke:#68b2f8;stroke-width:3" />
+
+</svg>

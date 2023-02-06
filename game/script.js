@@ -52,6 +52,9 @@ let piece_min_value_limit = 0;
 let piece_max_value_limit = 6;
 
 
+
+
+
 ////////////////////////////////////////
 
 ////////////////////////////////////////
@@ -84,7 +87,6 @@ let gameComponentsList = {
 
 
 const defaultSize = getComputedStyle(document.documentElement).getPropertyValue('--defaultSize').slice(1,3);
-
 
 const default3 = defaultSize/15
 const default11 = (defaultSize*11)/45
@@ -159,7 +161,7 @@ let graphOptions = {
     // animation: {
     //     duration: 1200,
     //     easing: 'out',
-    //         // startup: true
+    //         startup: true
     // }
 };
     
@@ -351,6 +353,7 @@ class Player {
                 piece.owner = this;
                 this.hand.push(piece);
                 this.add_piece_svg_to_hand_div(piece.piece_div);
+                console.log(`${this.name}: buying piece`);
             }
             update_status_window_all();
             if(debugMode){
@@ -878,7 +881,7 @@ function going_first() {
     }
     
     winner.hand[winner_position].update_playable(); // marca somente a peça ganhadora como jogavel.
-    winner.update_can_play();
+    winner.can_play = true; // (...)
     winner.hand[winner_position].piece_div.setAttribute('id', 'slotId' + winner_position); // marca o indice da peça na mão como id do svg da peça
     if(winner.input_type === "Bot" && !(debugMode && botDrag)){ // transforma em não arrastavel se pertencer ao bot 
         winner.hand[winner_position].piece_div.setAttribute('draggable', 'false');     
@@ -1026,42 +1029,40 @@ function shop_is_empty(){
 }
 function match_over(){
     
-    let over = false;
+    let over_flag = false;
 
-    // player_list[player1].update_all();
-    // player_list[player2].update_all();
     everyone_update_all();
 
-    if(player_list[player1].hand_is_empty()){
-        // Player 1 win
+    if(player_list[player1].hand_is_empty()){ // Player 1 mão vazia,  Player 1 ganha.
         var winner = player_list[player1];
         var loser = player_list[player2];
-        over = true;
-        /* if (debugMode){
-            console.log("hand-empty: "+winner.name);
-        } */
-        console.log("hand-empty: "+winner.name);
-    } else if(player_list[player2].hand_is_empty()){
-        // Player 2 win
-        var winner = player_list[player2];
-        var loser = player_list[player1];
-        over = true;
+        over_flag = true;
         console.log("hand-empty: "+winner.name);
 
-    } else if(players_cannot_play()){
+    } else if(player_list[player2].hand_is_empty()){ // Player 2 mão vazia,  Player 2 ganha.
+        var winner = player_list[player2];
+        var loser = player_list[player1];
+        over_flag = true;
+        console.log("hand-empty: "+winner.name);
+
+    } else if(players_cannot_play()){ // shop va
         // test who wins...
-        if((player_list[player1].hand_sum()) < (player_list[player2].hand_sum())){
-            // Player 1 win.
+        if((player_list[player1].hand_sum()) < (player_list[player2].hand_sum())){ // Player 1 menor valor total em mãos, Player 1 ganha.
+            
             var winner = player_list[player1];
             var loser = player_list[player2];
-            over = true;
-        } else if((player_list[player2].hand_sum()) < (player_list[player1].hand_sum())) {
-            // Player 2 win.
+            
+            over_flag = true;
+
+        } else if((player_list[player2].hand_sum()) < (player_list[player1].hand_sum())){ // Player 2 menor valor total em mãos, Player 2 ganha.
+            
             var winner = player_list[player2];
             var loser = player_list[player1];
-            over = true;
+
+            over_flag = true;
+
         } else {
-            console.warn("Empate?(sei la...)");
+            console.log("Empate?(sei lá... não deveria tá acontecendo...)");
         }
     } else {
         // console.log(">>> Next-Turn <<<");
@@ -1093,7 +1094,25 @@ function match_over(){
     return true;
 }
 function game_over(winner){
-    for(let player of player_list){ // passa por todos os jogadores
+
+    if(winner.score >= 100){ // verifica se o jogador tem 100 pontos ou mais
+        // mostra a tela de vitória do jogo
+        displayOverlayGameOn(winner.name, winner.score);
+        
+        if(debugMode){
+            console.log(">>> Winner: "+player.name+" <<<");
+        }
+        return true;
+
+    } else {
+        if(debugMode){
+            console.log(">>> Next-Match <<<");
+        }
+        return false;
+
+    }
+    
+    /* for(let player of player_list){ // passa por todos os jogadores
         if(player.score >= 100){ // verifica se o jogador tem 100 pontos ou mais
             // mostra a tela de vitória do jogo
             displayOverlayGameOn(winner.name, winner.score);
@@ -1110,7 +1129,7 @@ function game_over(winner){
             return false;
 
         }
-    }          
+    } */
 }
 
 ////////////////////////////////////////
@@ -1132,7 +1151,7 @@ function game_over(winner){
     let turn_counter = 1;
     
 
-    hand_size = 7; // quantidade inicial de peças
+    hand_size = piece_max_value_limit + 1; // quantidade inicial de peças
     player_name = "Jogador1";
 
     shop = new Array();
@@ -1218,11 +1237,6 @@ playButton.addEventListener("click", function() {
 
 
 /**  */
-
-let possibilities = [0, 1, 2, 3, 4, 5, 6];
-
-
-
 
 
 /**
@@ -1356,47 +1370,252 @@ function createTablePieceWP (value1, value2){
 
 
 window.onload = function() {
-    let iterador = 0
-    
-    let minValue = document.getElementById("minValue");
-    let maxValue = document.getElementById("maxValue");
 
+    //   generateForms (0, 7, 7)
+      initForms ()
+
+
+  
+    
     // var subjectSel = document.getElementById("subject");
     // var topicSel = document.getElementById("topic");
     // var chapterSel = document.getElementById("chapter");
     // for (var x in subjectObject) {
     //   subjectSel.options[subjectSel.options.length] = new Option(x, x);
     // }
+}
 
-    for (var x in possibilities) {
+function initForms (){
 
-        let min = new Option(x, x);
-        let max = new Option(x, x);
+    generateFormMin (piece_max_value_limit)
+    generateFormMax (piece_min_value_limit)
+    generateFormHand (piece_max_value_limit+1)
+    // let iterador = 0
 
+    // let possibilities = setPossibilities ();
+    
+    // let minValue = document.getElementById("minValue");
+    // let maxValue = document.getElementById("maxValue");
+    // let handLimit = document.getElementById("qtdHandPieces");
+
+
+    // for (let x in possibilities) {
+    //     let y = parseInt(x, 10)
+
+    //     let minOption = new Option(y, y);
+    //     let maxOption = new Option(y, y);
+    //     let handOption = new Option(y+1, y+1);
+
+    //     if (x >= 0 && x < 6){
+    //         minValue.options[minValue.options.length] = minOption;
+    //     }
+
+    //     if(x >= 1){
+    //         maxValue.options[maxValue.options.length] = maxOption;
+    //     }
         
-        minValue.options[minValue.options.length] = min;
-        maxValue.options[maxValue.options.length] = max;
+    //     handLimit.options[handLimit.options.length] = handOption;
         
-        min.setAttribute('id', 'optionFormMin#' + iterador);
-        max.setAttribute('id', 'optionFormMax#' + iterador);
+    //     minOption.setAttribute('id', 'optionFormMin#' + iterador);
+    //     maxOption.setAttribute('id', 'optionFormMax#' + iterador);
+    //     handOption.setAttribute('id', 'optionFormHandLimit#' + (iterador + 1));
 
-        iterador += 1;
+    //     iterador += 1;
+    // }
+}
+
+function initArrayInRange(min, max){
+    let array = [];
+
+    for (let i = min; i <= max; i++){
+        array.push(i);
+    }
+
+    return array;
+}
+
+function resetOptions (id){
+    document.getElementById(id).innerHTML = '';
+}
+
+function generateFormMin (max){
+
+    let possibilitiesMin = initArrayInRange(0, max-2);
+
+    let minValue = document.getElementById("minValue");
+    
+    resetOptions ('minValue');
+
+    for (x of possibilitiesMin) {
+        
+        let y = parseInt(x, 10);
+        let minOption = new Option(y, y);
+
+        minValue.options[minValue.options.length] = minOption;
+        
+        minOption.setAttribute('id', 'optionFormMin#' + x);
+    }
+
+''
+}
+
+function generateFormMax (min){
+
+    let possibilitiesMax = initArrayInRange(min+2, 6);
+    
+    let maxValue = document.getElementById("maxValue");
+
+    resetOptions ('maxValue');
+    
+    for (x of possibilitiesMax) {
+
+        let y = parseInt(x, 10);
+        let maxOption = new Option(y, y);
+
+        maxValue.options[maxValue.options.length] = maxOption;
+
+        maxOption.setAttribute('id', 'optionFormMax#' + x);
     }
 }
 
-function getDataForms (form){
+function generateFormHand (hand){
+    let possibilitiesHand = initArrayInRange(2, hand);
+    let handLimit = document.getElementById("qtdHandPieces");
 
-    if (form == 'minValue'){
-        piece_min_value_limit = document.getElementById(form).value;
+    resetOptions ('qtdHandPieces');
 
-        console.log (piece_min_value_limit)
+    for (x of possibilitiesHand) {
+        
+        let y = parseInt(x, 10);
+        let handOption = new Option(y, y);
+
+        handLimit.options[handLimit.options.length] = handOption;
+
+        handOption.setAttribute('id', 'optionFormHandLimit#' + x);
+    }
+}
+
+
+
+function generateForms (min, max, hand){
+
+    generateFormMin (max);
+
+    generateFormHand (hand);
+}
+
+
+let formContent = [
+    ['minValue', piece_min_value_limit],
+    ['maxValue', piece_max_value_limit],
+    ['qtdHandPieces', hand_size],
+]
+
+function loadSelectedMin (input){
+
+    let obj = document.getElementById ('optionFormMin#' + 0);
+
+    
+    for (let i = 0; i <= input ; i++) {
+        
+        let j = document.getElementById ('optionFormMin#' + i);
+
+        if (j == null){
+            break;
+        }
+        
+        obj = j;
+
+    }
+    obj.setAttribute ('selected', 'selected');
+}
+
+function loadSelectedHand (input){
+
+    let obj = document.getElementById ('optionFormHandLimit#' + input);
+
+    obj.setAttribute ('selected', 'selected');
+}
+
+function getDataForms (){
+
+    let form = []
+    
+    // ========= //
+    // Init form //
+    // ========= //
+
+    for (obj of formContent){
+        let insertValue = parseInt(document.getElementById(obj[0]).value, 10)
+        
+        form.push( [obj[0], insertValue])
+    }
+    
+    let handInterval = form[1][1] - form[0][1]
+    let handLimitSize = handInterval + 1
+    console.log('Daniel Log - getDataForms -  handLimitSize',  handLimitSize);
+    
+    generateForms (form[0][1], form[1][1], handLimitSize)
+
+    
+    loadSelectedMin (form[0][1])
+    loadSelectedHand (handLimitSize)        
+
+
+
+    
+    // =================== //
+    // Min Max Value Block //
+    // =================== //
+
+    if ( form[0][1] > form[1][1] ) {    // Min > Max value error
+        alert('O valor mínimo não pode ser maior que o valor máximo');
+        return;
     }
 
-    else if (form == 'maxValue'){
-        piece_max_value_limit = document.getElementById(form).value;
-
-        console.log (piece_max_value_limit)
+    else if(form[1][1] == form[0][1]){  // Min == Max value error
+        alert('O valor mínimo não pode ser igual ao valor máximo');
+        return;
     }
+
+    else {                              // Min value without error
+
+        piece_min_value_limit = form[0][1];
+        piece_max_value_limit = form[1][1];
+    }   
+
+    // =============== //
+    // Hand Size Block //
+    // =============== //
+
+    // if (handInterval == 1) {
+    //     alert('A quantidade de peças na mão não pode ser maior que ' + form[2][1] + ' pois com essa');
+    //     return;
+    // }
+
+    // if ( form[2][1] > handLimitSize ){   // Hand size error
+    //     alert('A quantidade de peças na mão não pode ser maior que ' + handLimitSize);
+    //     return;
+    // }
+    
+    // else {                              // Hand size without error
+        hand_size = form[2][1];
+    // }
+
+
+    
+}
+
+
+
+function setPossibilities (){
+    let possibilities = [];
+
+    for (let i = 0; i <= piece_max_value_limit; i++){
+        possibilities.push(i);
+    }
+
+    return possibilities;
 }
 
 
@@ -1410,30 +1629,36 @@ function resetGameData (){
 
 
 function displayGraph (){
+    let btn = document.getElementById('graphBoxOuter');
+    let graph =  document.getElementById('line-chart');
     
+    btn.classList.toggle('showGraph')
+    graph.classList.toggle('displayGraphInner')
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function loadDefaultValueOptions() {
-    let listMin = document.getElementById ('optionFormMin#' + piece_min_value_limit)
-    let listMax = document.getElementById ('optionFormMax#' + piece_max_value_limit)
+    let listMin = document.getElementById ('optionFormMin#' + piece_min_value_limit);
+    let listMax = document.getElementById ('optionFormMax#' + piece_max_value_limit);
+    let listHand = document.getElementById ('optionFormHandLimit#' + hand_size);
 
-    listMin.setAttribute ('selected', 'selected')
-    listMax.setAttribute ('selected', 'selected')
+    listMin.setAttribute ('selected', 'selected');
+    listMax.setAttribute ('selected', 'selected');
+    listHand.setAttribute ('selected', 'selected');
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1673,8 +1898,8 @@ function displayOverlayGameOn (player = 'unkn0wn pl4yer', score = '0x1337'){
         // ==== //
 
 
-        btn.setAttribute ('onclick', 'resetGame ()')
-        btn.textContent = 'Continue'
+        btn.setAttribute ('onclick', 'reset_game();');
+        btn.textContent = 'Continue';
         
         cardText.textContent =`O vencedor do jogo é ${player} com um total de ${score} pontos`;
 
@@ -1808,24 +2033,18 @@ function drag(piece) {
 
 /** Executa movimentação da peça no back e no front */
 function drop(side){ // [drop_event]
-    
-    /* // sistema drag & drop
-    let masterPiece_id = parseInt(masterPiece.id.slice(6));
-    if(player_list[player1].play_piece(masterPiece_id, side) === false){
-        return false;
-    } */
 
-    
+    // coloca a peça arrastada na mesa
     if(human_play(side) === false){
-        return false; // se a jogada for invalida
+        return false; // se a jogada for invalida ou o jogo tiver terminado aborta o resto da execução
     }
 
+    // muda de turno (para o bot) & atualiza os status do jogo
+    change_player();
     
-    opponent_playing_warning_on();
-    // bot_play(minimalMaxRandomize(1000, 3000));
-    bot_play(bot_default_delay);
-    opponent_playing_warning_off();
-
+    opponent_playing_warning_on(); // (...) broken!
+    bot_play(bot_default_delay); // bot faz sua jogada e muda de volta para o player.
+    opponent_playing_warning_off(); // (...) broken!
 
     if (debugMode){
         console.log("drop() function: [end reached]");
@@ -1966,16 +2185,15 @@ function initGame (mode){
         case 0: // Player vs Bot
 
             displayGame();
-            hideModeMenu();
 
-            init_match();
+            pvb_flow();
             // reset_game(mode);
             game_mode = "pvb";
             break;
 
         case 1: // Bot vs Bot
+    
             displayGame();
-            hideModeMenu();
 
             bvb_flow();
             // reset_game(mode);
@@ -1985,8 +2203,7 @@ function initGame (mode){
 
         case 2: // Como jogar
             
-            // howToPlay();
-            displayHowToPlay ();
+            displayHowToPlay();
             break;
         
         case 3:
@@ -2713,7 +2930,7 @@ function players_cannot_play(){
 }
 
 function reset_match(){
-    alert("will reset match");
+    // alert("will reset match");
 
     // reset turn counter
     turn_counter = 1;
@@ -2759,7 +2976,7 @@ function reset_match(){
 
     // gerando as peças do shop.
     generate_pile(shop, piece_min_value_limit, piece_max_value_limit);
-    shuffle_pile(shop);
+    shuffle_shop();
 
     for(let player of player_list){
         player.clear_hand();
@@ -2787,12 +3004,11 @@ function reset_match(){
     }
 } */
 
-function reset_game(mode){ // issue: not called yet, call it on displayOverlayGameOff()
-    
-    player_list[player1].reset_score();
-    player_list[player2].reset_score();
-    init_match(mode);
-
+function reset_game(mode){ // chamada pelo botão gerado no "displayOverlayGameOff()"
+    for(let i = 0; i < player_list.length; i++){
+        player_list[i].reset_score();
+    }
+    reset_match();
 }
 
 function everyone_update_all(){
@@ -2853,7 +3069,8 @@ function generate_shop(){
 }
 
 function shuffle_shop(){
-
+    shuffle_pile(shop);
+    return true;
 }
 
 function block_everyone_not_playing(){
@@ -2881,8 +3098,10 @@ function human_play(side){
     
     // sistema drag & drop
     let masterPiece_id = parseInt(masterPiece.id.slice(6));
+
+    // se a jogada for invalida sera desconsiderada
     if(player_list[player1].play_piece(masterPiece_id, side) === false){
-        return false;
+        return false; 
     }
 
     // verifica se ganhou a partida
@@ -2890,57 +3109,70 @@ function human_play(side){
         if (debugMode){
             console.log("[match-over-reached!]");
         }
-        return false;
+        return false; // se 
     }
-
-    // muda de turno (para o bot) & atualiza os status do jogo
-    change_player();
-
+    
     return true;
 }
 
-async function bot_play(delay){
-    while(true){
-
-        // verifica se o Bot pode jogar
+async function bot_play(delay){ // (...) broken
+    
+    opponent_playing_warning_on(); // (...) broken!
+    let repeat_play;
+    do {
+        /* // verifica se o Bot pode jogar
         do{
             if(current_player.can_play){
                 // Bot faz sua jogada
                 await sleep(delay);
                 bot_strategy();
                 break;
-            } else {
+            } else if(current_player.can_play === false) {
                 // Bot compra peça até poder jogar ou até não poder mais comprar
                 current_player.draw_piece(1);
                 everyone_update_all();
-                // current_player.update_all();
             }
-        }while((current_player.can_play === false) && (shop_is_empty() === false));
+        }while((current_player.can_play === false) && (shop_is_empty() === false)); */
         
-        // verifica se ganhou a partida
+        // verifica se o bot precisa & pode comprar
+        while((current_player.can_play === false) && (shop_is_empty() === false)){
+            // Bot compra peça até poder jogar ou até não poder mais comprar
+            current_player.draw_piece(1);
+            everyone_update_all();
+        }
+
+        // verifica se o bot pode jogar.
+        if(current_player.can_play){
+            // Bot faz sua jogada
+            await sleep(delay);
+            bot_strategy();
+            everyone_update_all();
+        }
+
+        // verifica se alguém ganhou a rodada.
         if(match_over()){
             console.log("match-over-reached");
-            return true;
+            opponent_playing_warning_off(); // (...) broken!
+            return false;
         }
 
-        // muda de volta para o Jogador humano e atualiza status dos jogadores
+        // passa a vez para o proximo jogador.
         change_player();
-
-        /* if(current_player.can_play){
-            break;
-        } else {
-            change_player();
-            console.log("bot playing again");
-        } */
         
-        if(current_player.can_play === false && shop_is_empty() === true){
+        
+        current_player.update_can_play;
+        if(current_player.can_play === false && shop_is_empty() === true){ // verifica se o proximo jogador pode jogar
+            // se o proximo jogador não puder jogar então esse toma a vez de volta e tenta jogar de novo.
+            repeat_play = true;
             change_player();
             console.log("bot playing again");
         } else {
-            break;
+            // se o proximo jogador puder jogar então termina sua jogada
+            repeat_play = false;            
         }
-
-    }
+        
+    }while(repeat_play);
+    opponent_playing_warning_off(); // (...) broken!
 }
 
 function opponent_playing_warning_toggle(){
@@ -2962,11 +3194,11 @@ function opponent_playing_warning_off(){
     document.getElementById('gameStats').style.display = "none"
 }
 
-function init_match(){ // issue: not called yet, call it on call it on displayOverlayMatchOff()
+function pvb_flow(){ // 
 
-    // gerando as peças do shop.
+    // gerando e embaralhando as peças do shop.
     generate_shop();
-    shuffle_pile(shop);
+    shuffle_shop();
     
     player_list[player1] = new Player("Player", "Jogador", "player1HandInner"); // objeto que representa o jogador
     player_list[player2] = new Player("Bot", "Bot", "player2HandInner"); // objeto que representa o BOT
@@ -2975,11 +3207,11 @@ function init_match(){ // issue: not called yet, call it on call it on displayOv
     player_list[player1].draw_piece(hand_size); 
     player_list[player2].draw_piece(hand_size);
 
-    // update para janela de status:
-    update_status_window_all();
     
     // decidindo qual jogador joga primeiro.
     current_player = going_first();
+    
+    // update para janela de status:
     update_status_window_all();
 
     if(current_player.input_type === "Bot" && botInit){
@@ -2991,7 +3223,7 @@ function bvb_flow(){
 
     // gerando as peças do shop.
     generate_pile(shop);
-    shuffle_pile(shop);
+    shuffle_shop();
     
     player_list[player1] = new Player("Bot-1", "Bot", "player1HandInner"); // objeto que representa o jogador
     player_list[player2] = new Player("Bot-2", "Bot", "player2HandInner"); // objeto que representa o BOT
@@ -3012,6 +3244,7 @@ function bvb_flow(){
 
     // (...) precisa criar o loop da partida
 }
+
 
 
 

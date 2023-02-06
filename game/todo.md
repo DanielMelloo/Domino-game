@@ -4,30 +4,23 @@
 
 [ ] inserir função de movimentação da hand do bot
 
-[ ] colocar o delay na jogada do bot
-
-[ ] Inserir como jogar
-
-[ ] Quais peças da pra jogar no debug mode
-
-[ ] Reiniciar game
-
-[ ] gameloop correto
-
 [ ] drag no mobile
 
 [ ] Fazer hand com scroll no mobile
 
 [ ] fazer table com scroll
 
-[ ] há vezes que o bot começa jogando 2 peças
+[ ] mudar o minimo quebra os svgs que contem 0 {
+     utilizar intervalo entre minimo e maximo como hand size
 
-[ ] Checar bugs do bot vs bot
+     [ ] definir apenas um botao de sumit
+     
+}
 
-[ ] (Resetar dicas ao sair delas)
+[ ] permitir litas apenas com o tamanho certo para jogar
 
-[ ] bug detectado !!!! Shop vazio n deixa jogar com poucas peças
+[ ] deve indicar uma curva que mostra os pontos de cada um a cada rodada para uma partida.
 
-[ ] mudar o minimo quebra os svgs que contem 0
+[ ] deve indicar quantas partidas cada um venceu.
 
-[ ] resetar grafico ao resetar partida
+[ ] svg de seta igual a da hub em cima do gráfico

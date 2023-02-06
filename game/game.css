@@ -13,12 +13,18 @@
     --defaultCardStatsSize: 20vw;
     --marginCard: 20px;
 
-    --defaultTipCardSizeW: 60vw;
+    --defaultTipCardSizeW: 50em;
     --defaultTipCardSizeH: 60vh;
 
     --fontSize: x-large;
     --fontSize2: x-large;
     --fontSize3: xx-large;
+
+    --animation-time: 1s;
+
+    --margin-btn: 1em;
+
+    --btn-time: 1s;
     
 
     /* ====== */
@@ -587,11 +593,12 @@ body{
     /* margin: var(--marginCard); */
     height: 100%;
     width: 100%;
-
-    /* align-items: start; */
-    /* display: none; */
-
     overflow: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: start;
 }
 
 
@@ -657,9 +664,9 @@ body{
     flex-direction: row;
     align-items: center;
     justify-content:center;
-    justify-content: space-around;
-    width: 100%;
+    justify-content: space-between;
 
+    width: 100%;
 }
 
 .btnDefalt{
@@ -705,10 +712,16 @@ body{
     
 }
 
-#vis_div{
-    z-index: 5000;
+.optionConteiner .optionBtn {
+    margin-left: var(--margin-btn);
 
 }
+
+.optionConteiner .inputValue {
+    margin-right: var(--margin-btn);
+
+}
+
 
 
 #graphBox{
@@ -718,8 +731,8 @@ body{
     box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
     backdrop-filter: blur( 9px );
     -webkit-backdrop-filter: blur( 9px );
-    border-radius: 10px;
     border: 1px solid rgba( 255, 255, 255, 0.18 );
+    border-radius: 10px;
 }
 
 #graphBoxOuter{
@@ -740,13 +753,11 @@ body{
 #line-chart{
     width: var(--defaultCardStatsSize);
     height: 25vh;
-
-    
 }
 
-#graphShow{
+/* #graphShow{
 
-}
+} */
 
 
 
@@ -758,9 +769,6 @@ body{
     background-color: rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
-
-
-
 
 
 
@@ -779,27 +787,29 @@ body{
 }
 
 
-/* #minValue{
+/* GraphBox Animation */
+
+
+.showGraph > button{
+    rotate: -180deg;
 }
 
-#minValueInput{
-    
+#colpaseGraphBtn{
+    transition: var(--btn-time);
 }
 
-#maxValue{
-
+#line-chart{ 
+    transition: width var(--animation-time), height var(--animation-time);
 }
 
-#maxValueInput{
+.showGraph #line-chart{
+    width: 0;
+    height: 0;
+}
 
-} */
-
-
-
-
-
-
-
+#graphBox {
+    overflow: hidden;
+}
 
 
 
@@ -816,17 +826,17 @@ body{
   ::-webkit-scrollbar-thumb {
     background-color: rgba(5, 5, 5, 0.4);
     border-radius:  50px;
-  
+    z-index: 101;
+
   }
   
   .choices::-webkit-scrollbar-track {
     background: var(--color1);
-  
+
   }
   
   ::-webkit-scrollbar-thumb:hover{
     background: var(--color2);
-  
   }
 
 
@@ -844,7 +854,7 @@ body{
 
 /* Mobile View */
 @media screen and (max-width: 680px) {
-    /* :root{
+    :root{
         --defaultSize: 30px;
         --default2xSize: calc(var(--defaultSize)*2);
 
@@ -862,7 +872,11 @@ body{
         --fontSize2: smaller;
         --fontSize3: x-large;
 
-    } */
+        --margin-btn: 1em; 
+
+    }
+
+
 
     .statsMobileMode {
         left: 0;

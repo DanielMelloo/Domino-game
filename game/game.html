@@ -17,38 +17,36 @@
     <!--------------------------------------------------------- Graph --------------------------------------------------------->
     
     
+    <div class="showGraph" id="graphBoxOuter">
 
-
-    <div id="graphBoxOuter">
-
-        <button class="allowHoverButton optionBtn classNone" onclick="displayGraph()" id="colpaseGraphBtn">
-            \/
+        <button 
+            class="allowHoverButton optionBtn classNone" 
+            onclick="displayGraph()" 
+            id="colpaseGraphBtn">
+            <svg height="20" width="30">
+                <line 
+                  x1="0" y1="0" 
+                  x2="15" y2="20" 
+                  style="stroke:#68b2f8;stroke-width:3" />
+              
+                <line 
+                  x1="15" y1="20" 
+                  x2="30" y2="0" 
+                  style="stroke:#68b2f8;stroke-width:3" />
+              
+              </svg>
+              
         </button>
 
         <div class="classNone" id="graphBox">
             
-            <div id="line-chart"></div>
+            <div class="displayGraphInner" id="line-chart"></div>
                 
         </div>
     </div>
 
 
     <!-- <canvas id="canvasGraph"></canvas> -->
-
-    <!-- <div id="vis_div" style="height: 400px; width: 600px;"></div> -->
-
-
-    <!-------------------------------------------------------------- Colapse praph -------------------------------------------------------->
-
-
-<!-- 
-    <div>
-        <button class="optionBtn">
-        button
-        </button>
-    </div> -->
-
-
 
 
     <!--------------------------------------------------------- How to play --------------------------------------------------------->
@@ -249,17 +247,13 @@
                         Valor mínimo das peças
                     </button>
 
-                    <select class="allowHoverButton inputValue optionBtn" required="required" name="minValue" id="minValue">
-
+                    <select 
+                        class="allowHoverButton inputValue optionBtn" 
+                        onchange="getDataForms ()"
+                        required="required" 
+                        name="minValue" 
+                        id="minValue">
                     </select>
-
-                    <input  
-                        class="allowHoverButton optionBtn" 
-                        id="minValueInput" 
-                        type="submit" o
-                        nclick="getDataForms ('minValue')" 
-                        value="Confirmar"
-                    > 
 
                 </div>
 
@@ -270,20 +264,44 @@
                     </button>
 
 
-                    <select class="allowHoverButton inputValue optionBtn" required="required" name="maxValue" id="maxValue">
+                    <select 
+                        class="allowHoverButton inputValue optionBtn" 
+                        onchange="getDataForms ()"
+                        required="required" 
+                        name="maxValue" 
+                        id="maxValue">
                     </select>
-                    
-                    <input 
-                        class="allowHoverButton optionBtn" 
-                        id="minValueInput" 
-                        type="submit" 
-                        onclick="getDataForms ('maxValue')"
-                        value="Confirmar"
-                    > 
+
+                </div>
+
+                <div class="optionConteiner">
+
+                    <button class="optionBtn">
+                        Quantidade de peças na mão
+                    </button>
+
+
+                    <select 
+                        class="allowHoverButton inputValue optionBtn" 
+                        onchange="getDataForms ()"
+                        required="required" 
+                        name="qtdHandPieces" 
+                        id="qtdHandPieces">
+                    </select>
 
                 </div>
 
             </div>
+
+            <!-- <div class="summitBtn">
+                <input 
+                class="allowHoverButton optionBtn"
+                type="submit" 
+                id=""  
+                onclick="getDataForms ()"
+                value="Confirmar"
+            > 
+            </div> -->
 
             <div class="buttonConteinerW">
 
