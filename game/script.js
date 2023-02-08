@@ -906,6 +906,7 @@ function going_first() {
         console.log("First: "+winner.name);
     }
     
+    current_player = winner;
 
     return winner;
 }
@@ -1072,7 +1073,7 @@ function match_over(){
     let points = loser.hand_sum();
     winner.add_score(points);
     
-    if(game_over(winner)){ 
+    if(game_over(winner)){
         return true;
     }
     
@@ -1096,12 +1097,14 @@ function match_over(){
 function game_over(winner){
 
     if(winner.score >= 100){ // verifica se o jogador tem 100 pontos ou mais
+        
         // mostra a tela de vitória do jogo
         displayOverlayGameOn(winner.name, winner.score);
         
         if(debugMode){
             console.log(">>> Winner: "+player.name+" <<<");
         }
+        game_over_flag = false;
         return true;
 
     } else {
@@ -1149,6 +1152,7 @@ function game_over(winner){
     let dificulty_mode = "hard";
     let bot_default_delay = 1000;
     let turn_counter = 1;
+    let game_over_flag = false;
     
 
     hand_size = piece_max_value_limit + 1; // quantidade inicial de peças
@@ -2093,7 +2097,7 @@ function hideModeMenu ()
 
 
 /** Mostra Componentes que devem aparecer após iniciar o game */
-function displayGame (){
+function displayGame(){
 
     for (let obj in gameComponentsList) {   
 
@@ -2178,7 +2182,7 @@ function displayOptionsMenu() {
 /** Inicializa o jogo mostrando elementos necessários e deletando desnecessários */
 function initGame (mode){
     
-    hideModeMenu ();
+    hideModeMenu();
     
 
     switch(mode){
@@ -3065,6 +3069,7 @@ function clear_shop(){
 
 // já usa as variaveis globais para configurar o valor limite maximo e minimo para as peças
 function generate_shop(){
+    shop = new Array();
     generate_pile(shop, piece_min_value_limit, piece_max_value_limit);
 }
 
@@ -3115,11 +3120,24 @@ function human_play(side){
     return true;
 }
 
-async function bot_play(delay){ // (...) broken
+/**
+ * faz jogada se puder.
+ * se não puder jogar, compra peça.
+ * se não puder jogar nem comprar, passa vez.
+ * 
+ * depois de jogar, verifica se a rodada ou se a partida acabou.
+ * se acabou, interrompe o ciclo e adiciona os pontos do vencedor da rodada, ou declara quem é o vencedor da partida.
+ * 
+ * se conseguiu fazer sua jogada & o jogo não acabou, então verifica se o proximo jogador pode jogar.
+ * se o proximo jogador não pode jogar, então esse jogador joga de novo
+*/
+async function bot_play(delay = bot_default_delay){ // (...) broken
     
+
     opponent_playing_warning_on(); // (...) broken!
     let repeat_play;
     do {
+       
         /* // verifica se o Bot pode jogar
         do{
             if(current_player.can_play){
@@ -3132,7 +3150,8 @@ async function bot_play(delay){ // (...) broken
                 current_player.draw_piece(1);
                 everyone_update_all();
             }
-        }while((current_player.can_play === false) && (shop_is_empty() === false)); */
+        }while((current_player.can_play === false) && (shop_is_empty() === false)); 
+        */
         
         // verifica se o bot precisa & pode comprar
         while((current_player.can_play === false) && (shop_is_empty() === false)){
@@ -3173,6 +3192,7 @@ async function bot_play(delay){ // (...) broken
         
     }while(repeat_play);
     opponent_playing_warning_off(); // (...) broken!
+    return true;
 }
 
 function opponent_playing_warning_toggle(){
@@ -3181,20 +3201,26 @@ function opponent_playing_warning_toggle(){
 
     stats.classList.toggle('classNone');
 
-    console.log (stats)
+    console.log (stats);
 }
 
 function opponent_playing_warning_on(){
     // document.getElementById('gameStats').classList.remove('classNone');
-    document.getElementById('gameStats').style.display = "\0"
+    let warning = document.getElementById('gameStats');
+    warning.style.display = "";
+
+    return warning.style.display;
 }
 
 function opponent_playing_warning_off(){
     // document.getElementById('gameStats').classList.add('classNone');
-    document.getElementById('gameStats').style.display = "none"
+    let warning = document.getElementById('gameStats');
+    warning.style.display = "none";
+
+    return warning.style.display;
 }
 
-function pvb_flow(){ // 
+function pvb_flow(){
 
     // gerando e embaralhando as peças do shop.
     generate_shop();
@@ -3219,12 +3245,13 @@ function pvb_flow(){ //
     }
 }
 
-function bvb_flow(){
+async function bvb_flow(){
 
     // gerando as peças do shop.
-    generate_pile(shop);
+    generate_shop();
     shuffle_shop();
     
+    // gerando os bots.
     player_list[player1] = new Player("Bot-1", "Bot", "player1HandInner"); // objeto que representa o jogador
     player_list[player2] = new Player("Bot-2", "Bot", "player2HandInner"); // objeto que representa o BOT
 
@@ -3240,12 +3267,41 @@ function bvb_flow(){
     // update para janela de status:
     update_status_window_all();
     
-    bot_play(); // Bot faz primeira jogada
+    // loop que faz a primeira jogada.
+    await bot_play();    
+    // loop que faz as jogadas subsequentes.
+    while(game_over_flag === false){ // loop da partida.
+        while(await bot_play()); // loop da rodada.
+    }
+    
 
-    // (...) precisa criar o loop da partida
+    // (...) precisa colocar o back_to_menu() como resposta para a tela de game-over.
 }
 
+function back_to_menu(){
+    hide_game_back();
+    show_main_menu_back();
+}
 
+function hide_game_back(){
+
+    for(let obj in gameComponentsList){
+
+        let k = document.querySelectorAll(obj);    
+
+        for(let i = 0; i < gameComponentsList[obj]; i++ ){    
+            k[i].classList.add('classNone');
+        }
+    }
+
+}
+
+function show_main_menu_back(){
+
+    let menu = document.querySelector('#menu');
+    menu.style.display = "";
+
+}
 
 
 // function player_vs_bot_flow(){
