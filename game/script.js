@@ -8,6 +8,17 @@
 google.charts.load('current', {'packages':['corechart']});
 
 
+const element = document.querySelector("#main");
+
+element.addEventListener('wheel', (event) => {
+  event.preventDefault();
+
+  element.scrollBy({
+    left: event.deltaY < 0 ? -30 : 30,
+    
+  });
+});
+
 /* search keywords:
 
     - issues:
@@ -42,6 +53,7 @@ const yes = 1;
 const yes_rotate = 2;
 const empty = 0; 
 
+
 ////////////////////////////////////////
 
 ////////////////////////////////////////
@@ -50,8 +62,6 @@ const empty = 0;
     
 let piece_min_value_limit = 0;
 let piece_max_value_limit = 6;
-
-
 
 
 
@@ -69,10 +79,11 @@ let piece_max_value_limit = 6;
 let gameComponentsList = {
     '.handbox': 2,
     '.cardStats': 1,
-    '.buyable': 1,
-    '.buyableInner': 1,
     '#graphBox': 1,
     '#colpaseGraphBtn': 1,
+    '.buyableBox': 1.
+    // '.buyable': 1,
+    // '.buyableInner': 1,
     // 'gameStats': 1,
     // '.horizontalBox': 29,
     // '.verticalBox': 26,
@@ -1151,11 +1162,16 @@ function game_over(winner){
     let table; // objeto que representa o grupo de peças na mesa
     let shop; // objeto que representa a pilha de compra
     let current_player;
-    let dificulty_mode = "hard";
+    let dificulty_mode = "easy";
+    // let dificulty_mode = "hard";
+    // let bot_default_delay = 100;
+    // let bot_default_delay = 500;
+    // let bot_default_delay = 750;
     let bot_default_delay = 1000;
     let turn_counter = 1;
     let game_over_flag = false;
     
+    document.getElementById('displayBotSpeed').innerHTML = bot_default_delay
 
     hand_size = piece_max_value_limit + 1; // quantidade inicial de peças
     player_name = "Jogador1";
@@ -1201,7 +1217,7 @@ function game_over(winner){
 //     }
 // });
 
-/* // Daniel
+/* 
 const hand = document.querySelector("#hand");
 hand.addEventListener("click", selectPiece);
 hand.addEventListener("dragstart", dragPiece);
@@ -1222,7 +1238,7 @@ function play_game() {
     }
 }
 
-console.log("daniellllllllllllllll")
+
 const playButton = document.querySelector("#play-button");
 playButton.addEventListener("click", function() {
     const result = confirm("Vamos começar a jogar?");
@@ -1374,60 +1390,18 @@ function createTablePieceWP (value1, value2){
 
 
 
+// ========== //
+// Init Lista //
+// ========== //
 
 window.onload = function() {
-
-    //   generateForms (0, 7, 7)
-      initForms ()
-
-
-  
-    
-    // var subjectSel = document.getElementById("subject");
-    // var topicSel = document.getElementById("topic");
-    // var chapterSel = document.getElementById("chapter");
-    // for (var x in subjectObject) {
-    //   subjectSel.options[subjectSel.options.length] = new Option(x, x);
-    // }
+    initForms ()
 }
 
 function initForms (){
-
     generateFormMin (piece_max_value_limit)
     generateFormMax (piece_min_value_limit)
     generateFormHand (piece_max_value_limit+1)
-    // let iterador = 0
-
-    // let possibilities = setPossibilities ();
-    
-    // let minValue = document.getElementById("minValue");
-    // let maxValue = document.getElementById("maxValue");
-    // let handLimit = document.getElementById("qtdHandPieces");
-
-
-    // for (let x in possibilities) {
-    //     let y = parseInt(x, 10)
-
-    //     let minOption = new Option(y, y);
-    //     let maxOption = new Option(y, y);
-    //     let handOption = new Option(y+1, y+1);
-
-    //     if (x >= 0 && x < 6){
-    //         minValue.options[minValue.options.length] = minOption;
-    //     }
-
-    //     if(x >= 1){
-    //         maxValue.options[maxValue.options.length] = maxOption;
-    //     }
-        
-    //     handLimit.options[handLimit.options.length] = handOption;
-        
-    //     minOption.setAttribute('id', 'optionFormMin#' + iterador);
-    //     maxOption.setAttribute('id', 'optionFormMax#' + iterador);
-    //     handOption.setAttribute('id', 'optionFormHandLimit#' + (iterador + 1));
-
-    //     iterador += 1;
-    // }
 }
 
 function initArrayInRange(min, max){
@@ -1461,8 +1435,6 @@ function generateFormMin (max){
         
         minOption.setAttribute('id', 'optionFormMin#' + x);
     }
-
-''
 }
 
 function generateFormMax (min){
@@ -1501,15 +1473,12 @@ function generateFormHand (hand){
     }
 }
 
-
-
 function generateForms (min, max, hand){
 
     generateFormMin (max);
 
     generateFormHand (hand);
 }
-
 
 let formContent = [
     ['minValue', piece_min_value_limit],
@@ -1533,6 +1502,7 @@ function loadSelectedMin (input){
         obj = j;
 
     }
+
     obj.setAttribute ('selected', 'selected');
 }
 
@@ -1559,15 +1529,14 @@ function getDataForms (){
     
     let handInterval = form[1][1] - form[0][1]
     let handLimitSize = handInterval + 1
-    console.log('Daniel Log - getDataForms -  handLimitSize',  handLimitSize);
+    form[2][1] = handLimitSize
     
     generateForms (form[0][1], form[1][1], handLimitSize)
-
     
     loadSelectedMin (form[0][1])
     loadSelectedHand (handLimitSize)        
-
-
+    
+    console.log('Daniel Log - getDataForms -  handLimitSize',  handLimitSize);
 
     
     // =================== //
@@ -1590,29 +1559,8 @@ function getDataForms (){
         piece_max_value_limit = form[1][1];
     }   
 
-    // =============== //
-    // Hand Size Block //
-    // =============== //
-
-    // if (handInterval == 1) {
-    //     alert('A quantidade de peças na mão não pode ser maior que ' + form[2][1] + ' pois com essa');
-    //     return;
-    // }
-
-    // if ( form[2][1] > handLimitSize ){   // Hand size error
-    //     alert('A quantidade de peças na mão não pode ser maior que ' + handLimitSize);
-    //     return;
-    // }
-    
-    // else {                              // Hand size without error
-        hand_size = form[2][1];
-    // }
-
-
-    
+    hand_size = form[2][1];
 }
-
-
 
 function setPossibilities (){
     let possibilities = [];
@@ -1624,15 +1572,12 @@ function setPossibilities (){
     return possibilities;
 }
 
-
-
 function resetGameData (){
 
     gameData = [
         ['Turno', 'Jogador', 'Bot'],
     ]
 }
-
 
 function displayGraph (){
     let btn = document.getElementById('graphBoxOuter');
@@ -1642,8 +1587,8 @@ function displayGraph (){
     graph.classList.toggle('displayGraphInner')
 }
 
-
 function loadDefaultValueOptions() {
+
     let listMin = document.getElementById ('optionFormMin#' + piece_min_value_limit);
     let listMax = document.getElementById ('optionFormMax#' + piece_max_value_limit);
     let listHand = document.getElementById ('optionFormHandLimit#' + hand_size);
@@ -1653,6 +1598,26 @@ function loadDefaultValueOptions() {
     listHand.setAttribute ('selected', 'selected');
 }
 
+function attHandLimit () {
+    hand_size = document.getElementById('qtdHandPieces').value
+}
+
+
+// todo
+
+// não deixar o valor máximo ser menor do que o mínimo
+// não deixar o valor mínimo ser maior que o valor máximo
+// não deixar o intervalo entre o valor mínimo e o valor máximo > 2
+// não deixar a mão ser maior que valor máximo + 1
+
+
+// nas próprias listas está apenas o intervalo que é possível e permitido utilizar, 
+// e atualizando o valor das listas a cada valor inserido nelas
+
+
+// ========= //
+// End Lista //
+// ========= //
 
 
 
@@ -1660,6 +1625,9 @@ function loadDefaultValueOptions() {
 
 
 
+function difficultMode(){
+    let difficult = document.getElementById('difficultMode').value
+}
 
 
 
@@ -1667,7 +1635,21 @@ function loadDefaultValueOptions() {
 
 
 
+function botSpeed(){
+    let speed = parseInt((document.getElementById('botSpeed').value), 10)
 
+    document.getElementById('displayBotSpeed').innerHTML = speed
+
+    if (speed == 0){
+        bot_default_delay = 1;
+    }
+
+    else {
+        bot_default_delay = speed;
+    }
+    
+
+}
 
 function drawChart() {
 
@@ -1677,9 +1659,6 @@ function drawChart() {
   
     chart.draw(data, graphOptions);
 }
-
-
-
 
 function removePlayable (){
     player1Hand.classList.remove ('playable')
@@ -1904,7 +1883,7 @@ function displayOverlayGameOn (player = 'unkn0wn pl4yer', score = '0x1337'){
         // ==== //
 
 
-        btn.setAttribute ('onclick', 'back_to_main_menu();');
+        btn.setAttribute ('onclick', 'reset_game();');
         btn.textContent = 'Voltar ao Menu';
         
         cardText.textContent =`O vencedor do jogo é ${player} com um total de ${score} pontos`;
@@ -2038,7 +2017,7 @@ function drag(piece) {
 
 
 /** Executa movimentação da peça no back e no front */
-function drop(side){ // [drop_event]
+async function drop(side){ // [drop_event]
 
     // coloca a peça arrastada na mesa
     if(human_play(side) === false){
@@ -2049,7 +2028,7 @@ function drop(side){ // [drop_event]
     change_player();
     
     opponent_playing_warning_on(); // (...) broken!
-    bot_play(bot_default_delay); // bot faz sua jogada e muda de volta para o player.
+    await bot_play(bot_default_delay); // bot faz sua jogada e muda de volta para o player.
     opponent_playing_warning_off(); // (...) broken!
 
     if (debugMode){
@@ -2182,7 +2161,7 @@ function displayOptionsMenu() {
 
 
 /** Inicializa o jogo mostrando elementos necessários e deletando desnecessários */
-function initGame (mode){
+function initGame(mode){
     
     hideModeMenu();
     
@@ -2212,8 +2191,8 @@ function initGame (mode){
             displayHowToPlay();
             break;
         
-        case 3:
-            loadDefaultValueOptions()
+        case 3: // Opçoes
+            loadDefaultValueOptions();
             displayOptionsMenu();
 
             break
@@ -2935,7 +2914,7 @@ function players_cannot_play(){
     }
 }
 
-function reset_match(){
+async function reset_match(){
     // alert("will reset match");
 
     // reset turn counter
@@ -2962,14 +2941,24 @@ function reset_match(){
 
     // if bot, make the first move (?)
     if(current_player.input_type === "Bot" && botInit){
-        bot_play(); // Bot faz primeira jogada
+        opponent_playing_warning_on();
+        await bot_play(); // Bot faz primeira jogada
+        opponent_playing_warning_off();
     }
+
+    
 
     //  update visuals
     update_status_window_all();
 
-    resetGameData ()
-    reloadGraph (1)
+    resetGameData();
+    reloadGraph(1);
+
+    
+    if(game_mode === "bvb"){
+        bvb_flow_second();   
+    }
+
 }
 
 /* function reset_match(){ //  versão antiga (...)  codigo precisa ser refeito após ser segregado do init_match 
@@ -3010,11 +2999,16 @@ function reset_match(){
     }
 } */
 
-function reset_game(mode){ // chamada pelo botão gerado no "displayOverlayGameOff()"
-    for(let i = 0; i < player_list.length; i++){
+function reset_game(){ // chamada pelo botão gerado no "displayOverlayGameOn()"
+    /* for(let i = 0; i < player_list.length; i++){
         player_list[i].reset_score();
     }
-    reset_match();
+    reset_match(); */
+    
+    clear_table();
+    back_to_main_menu();
+    displayOverlayGameOff();
+
 }
 
 function everyone_update_all(){
@@ -3027,11 +3021,13 @@ function everyone_update_all(){
     return true;
 }
 
-function draw_piece_button(){ // compra uma peça para o jogador humano pelo botão.
+async function draw_piece_button(){ // compra uma peça para o jogador humano pelo botão.
     if(shop_is_empty()){
         console.log("shop already empty");
         change_player();
-        bot_play();
+        opponent_playing_warning_on();
+        await bot_play();
+        opponent_playing_warning_off();
         return false;
     }
     
@@ -3135,8 +3131,9 @@ function human_play(side){
 */
 async function bot_play(delay = bot_default_delay){ // (...) broken
     
+    
 
-    opponent_playing_warning_on(); // (...) broken!
+    // opponent_playing_warning_on(); // (...) broken!
     let repeat_play;
     do {
        
@@ -3173,7 +3170,8 @@ async function bot_play(delay = bot_default_delay){ // (...) broken
         // verifica se alguém ganhou a rodada.
         if(match_over()){
             console.log("match-over-reached");
-            opponent_playing_warning_off(); // (...) broken!
+            // opponent_playing_warning_off(); // (...) broken!
+            
             return false;
         }
 
@@ -3193,7 +3191,9 @@ async function bot_play(delay = bot_default_delay){ // (...) broken
         }
         
     }while(repeat_play);
-    opponent_playing_warning_off(); // (...) broken!
+    // opponent_playing_warning_off(); // (...) broken!
+
+    
     return true;
 }
 
@@ -3209,8 +3209,11 @@ function opponent_playing_warning_toggle(){
 function opponent_playing_warning_on(){
     // document.getElementById('gameStats').classList.remove('classNone');
     let warning = document.getElementById('gameStats');
-    warning.style.display = "";
+    warning.style.display = "block";
 
+    console.error("TRIGGER 1 ON!!!!!! <<<<<");
+    console.log(warning.style.display);
+    console.error("TRIGGER 2 ON!!!!!! <<<<<");
     return warning.style.display;
 }
 
@@ -3219,10 +3222,14 @@ function opponent_playing_warning_off(){
     let warning = document.getElementById('gameStats');
     warning.style.display = "none";
 
+    console.error("WARNING OFF!!!!!! <<<<<");
+
     return warning.style.display;
+
+    
 }
 
-function pvb_flow(){
+async function pvb_flow(){
 
     // gerando e embaralhando as peças do shop.
     generate_shop();
@@ -3243,7 +3250,9 @@ function pvb_flow(){
     update_status_window_all();
 
     if(current_player.input_type === "Bot" && botInit){
-        bot_play(); // Bot faz primeira jogada
+        opponent_playing_warning_on();
+        await bot_play(); // Bot faz primeira jogada
+        opponent_playing_warning_off();
     }
 }
 
@@ -3254,8 +3263,8 @@ async function bvb_flow(){
     shuffle_shop();
     
     // gerando os bots.
-    player_list[player1] = new Player("Bot-1", "Bot", "player1HandInner"); // objeto que representa o jogador
-    player_list[player2] = new Player("Bot-2", "Bot", "player2HandInner"); // objeto que representa o BOT
+    player_list[player1] = new Player("Bot-1", "Bot", "player1HandInner"); // objeto que representa o BOT-1
+    player_list[player2] = new Player("Bot-2", "Bot", "player2HandInner"); // objeto que representa o BOT-2
 
     //comprando peças.
     for(let i = 0; i < player_list.length; i++){
@@ -3277,10 +3286,16 @@ async function bvb_flow(){
         while(await bot_play()); // loop da rodada.
     } */
     
-    while(await bot_play()); // loop da rodada.
+    while(await bot_play()); // loop da rodada. // (...) broken! [next]
 
-    // (...) precisa colocar o back_to_menu() como resposta para a tela de game-over.
+    // (...) reconfigurar o reset_match() para acomodar segunda rodada do bvb
 }
+
+async function bvb_flow_second(){
+    while(await bot_play()); // loop da rodada. // (...) broken! [next]
+}
+
+
 
 function back_to_main_menu(){
     hide_game_back();

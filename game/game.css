@@ -99,6 +99,11 @@ body{
     /* overflow-X: scroll;  */
 }
 
+.tableOuter {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+}
 
 #table {
     /* background-color: blue; */
@@ -398,7 +403,7 @@ body{
     font-size: 4vh;
 
     margin-top: 2vh;
-    padding: 3vh; 
+    padding: 4vh; 
     border-radius: 3vh; 
 
     border: var(--color1) solid;
@@ -450,7 +455,6 @@ body{
     
     width: var(--defaultCardStatsSize);
     height: auto; 
-    /* height: 20vh; */
 
     color: var(--color1);
 
@@ -491,7 +495,7 @@ body{
     justify-content: space-between;
 
     width: var(--defaultTipCardSizeW);
-    height: var(--defaultTipCardSizeH);
+    min-height: var(--defaultTipCardSizeH);
 
     color: var(--color1);
 
@@ -503,14 +507,23 @@ body{
     border: 1px solid rgba( 255, 255, 255, 0.18 );
 }
 
-.tipsText{
-    margin-top: 5rem;
-}
+/* .tipsText{
+    height;
+} */
 
 .tipsText h1 {
     margin: 2rem;
     font-size: var(--fontSize2);
     text-align: center;
+    color: black;
+    font-family: 'Division One', sans-serif;
+}
+
+.tipsText h2 {
+    margin: 2rem;
+    font-size: var(--fontSize2);
+    text-align: center;
+
 }
 
 .options {
@@ -536,6 +549,32 @@ body{
 
     width: var(--defaultTipCardSizeW);
     height: var(--defaultTipCardSizeH);
+
+    color: var(--color1);
+
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.buyableBox{
+
+    position: fixed;
+    right: 0;
+    bottom: 0;
+
+    width: auto;
+    height: auto;
+
+    margin: var(--marginCard);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
     color: var(--color1);
 
@@ -652,11 +691,13 @@ body{
 }
   
 .buttonConteiner{
+    
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     width: 100%;
+    margin: 1rem    
 }
 
 .optionConteiner{
@@ -722,6 +763,52 @@ body{
 
 }
 
+.glassType {
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+
+    border-radius: 25px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.slider {
+    -webkit-appearance: none; 
+    appearance: none;
+    width: 100%; 
+    height: 25px; 
+    outline: none; 
+    align-self: center;
+
+    margin: var(--margin-btn);
+}
+  
+  
+  /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; 
+    appearance: none;
+
+    width: 25px; 
+    height: 25px;
+
+    background-color: var(--color1);
+
+    border-radius: 50%;
+    
+    cursor: pointer;
+}
+  
+.slider::-moz-range-thumb {
+    width: 25px; 
+    height: 25px;
+    background-color: var(--color1);
+
+    border-radius: 50%;
+    
+    cursor: pointer;
+}
 
 
 #graphBox{
@@ -820,24 +907,23 @@ body{
 
 ::-webkit-scrollbar {
     width: 10px;
-    border-radius: 10px;
-  }
+}
   
-  ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background-color: rgba(5, 5, 5, 0.4);
     border-radius:  50px;
     z-index: 101;
 
-  }
+}
   
-  .choices::-webkit-scrollbar-track {
+.choices::-webkit-scrollbar-track {
     background: var(--color1);
+    border-radius:  50px;
+}
 
-  }
-  
-  ::-webkit-scrollbar-thumb:hover{
+::-webkit-scrollbar-thumb:hover{
     background: var(--color2);
-  }
+}
 
 
 

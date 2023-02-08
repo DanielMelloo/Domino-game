@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="game.css">
+    <link href="https://fonts.cdnfonts.com/css/division-one" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/bagiqutrial" rel="stylesheet">
     <title>Dominó</title>
     <link rel="icon" href="../assets/dominologo.svg" type="image" sizes="16x16">
     <!-- <script type="text/javascript" src="script.js"></script> -->
@@ -58,9 +60,22 @@
         <div class="howToPlayInner" id="howToPlay#1">
 
             <div class="tipsText">
+                <h2>
+                    Selecione o Modo de Jogo. Você pode jogar sozinho contra um bot ou contra um outro jogador localmente.                                                                                                                                                                                                 
+                </h2>
+                
                 <h1>
-                    Coé mano kkkkkk é dominó kkkk tu n sabe jogar dominó?
+                    JOGADOR VS BOT
                 </h1>
+
+                <h2>
+                    Neste modo você irá jogar contra o computador. Você ou ele podem começar, dependendo de quem estiver com o duplo-seis.
+                </h2>
+                <h2>
+                    A mão na parte inferior é sua. Se for a sua vez, clique e arraste a peça desejada para a direção onde você quer jogar no tabuleiro. A peça será alocada automaticamente no último espaço
+                </h2>
+
+            
             </div>
             
             
@@ -85,9 +100,12 @@
         <div class="howToPlayInner classNone" id="howToPlay#2">
 
             <div class="tipsText">
-                <h1>
-                    NADA A DECLARAR1
-                </h1>
+                <h2>
+                    disponível na região do tabuleiro que você deseja jogar, desde que seja uma jogada válida.
+                </h2>
+                <h2>
+                    Caso não seja possível fazer uma jogada, você pode comprar do banco, que está localizado no canto direito da tela. Basta clicar em "Comprar" e uma peça restante aleatória irá aparecer em sua mão. O número indica quantas peças ainda restam no banco.
+                </h2>
             </div>
             
             
@@ -97,7 +115,7 @@
                     Anterior
                 </button>
 
-                <button class="allowHoverButton btnDefalt" onclick="returnToMenu ()">
+                <button class="allowHoverButton btnDefalt" onclick="returnToMenuByHowToPlay ()">
                     Voltar ao menu anterior
                 </button>
     
@@ -113,7 +131,7 @@
 
             <div class="tipsText">
                 <h1>
-                    NADA A DECLARAR2
+                    BOT VS BOT
                 </h1>
             </div>
             
@@ -124,7 +142,7 @@
                     Anterior
                 </button>
 
-                <button class="allowHoverButton btnDefalt" onclick="returnToMenu ()">
+                <button class="allowHoverButton btnDefalt" onclick="returnToMenuByHowToPlay ()">
                     Voltar ao menu anterior
                 </button>
     
@@ -140,7 +158,7 @@
 
             <div class="tipsText">
                 <h1>
-                    NADA A DECLARAR3
+                    JOGADOR VS JOGADOR
                 </h1>
             </div>
             
@@ -151,7 +169,7 @@
                     Anterior
                 </button>
 
-                <button class="allowHoverButton btnDefalt" onclick="returnToMenu ()">
+                <button class="allowHoverButton btnDefalt" onclick="returnToMenuByHowToPlay ()">
                     Voltar ao menu anterior
                 </button>
     
@@ -283,13 +301,68 @@
 
                     <select 
                         class="allowHoverButton inputValue optionBtn" 
-                        onchange="getDataForms ()"
+                        onchange="attHandLimit ()"
                         required="required" 
                         name="qtdHandPieces" 
                         id="qtdHandPieces">
                     </select>
 
                 </div>
+
+                <div class="optionConteiner">
+
+                    <button class="optionBtn">
+                        Dificuldade
+                    </button>
+
+                    <select 
+                    class="allowHoverButton inputValue optionBtn" 
+                    onchange="difficultMode()"
+                    required="required" 
+                    name="difficultMode" 
+                    id="difficultMode">
+
+                    <option value="Easy">
+                        Easy
+                    </option>
+
+                    <option value="Hard">
+                        Hard
+                    </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="optionConteiner">
+
+                    
+                    <button class="optionBtn">
+                        Velocidade do bot (ms)
+                    </button>
+
+                    <div class="rightContent" style="display: flex;">
+        
+                        <button class="optionBtn" id="displayBotSpeed">
+                        </button> 
+    
+                        <input
+                            class="slider glassType allowHoverButton"
+                            type="range" 
+                            id="botSpeed" 
+                            name="vol" 
+                            min="0" 
+                            max="3000"
+                            step="100"
+                            value="1000"
+                            oninput="botSpeed()" 
+                            onchange="botSpeed()"
+                            >
+
+                    </div>
+
+                </div>  
 
             </div>
 
@@ -320,34 +393,35 @@
     <!------------------------------------------------------------ drop area ------------------------------------------------------------>
 
 
-    <!-- <div class="mainDrop" ondrop="drop(event)" ondragover="allowDrop(event)">
- -->
 
-         <div id="dropArea">
-            <div class="dropAreaInner" id="left" ondrop="drop(left)" ondragover="allowDrop(event)">
+        <div id="dropArea">
+        <div class="dropAreaInner" id="left" ondrop="drop(left)" ondragover="allowDrop(event)">
 
-            </div>
-
-            <div class="dropAreaInner" id="right" ondrop="drop(right)" ondragover="allowDrop(event)">
-
-            </div>
         </div>
 
-    <!-- </div> -->
+        <div class="dropAreaInner" id="right" ondrop="drop(right)" ondragover="allowDrop(event)">
+
+        </div>
+    </div>
+
 
 
 
     <!-------------------------------------------------------------- table -------------------------------------------------------------->
 
 
+        <div id="tableOuter" class="tableOuter">
 
-    <div class="main" id="main">
+            <div class="main" id="main">
 
-        <div id="table">
-
+                <div class="table" id="table">
+        
+                </div>
+        
+            </div>
+            
         </div>
 
-    </div>
 
     <!-------------------------------------------------------------- Overlays Init -------------------------------------------------------->
     
@@ -374,7 +448,7 @@
 
 
 
-    <div class="buyableMobileMode buyable classNone" id="buyable">
+    <!-- <div class="buyableMobileMode buyable classNone" id="buyable">
 
         <div class="buyableMobileModeInner buyableInner classNone" id="buyableInner">
 
@@ -393,10 +467,25 @@
             </button>
         </div>
 
+    </div> -->
+
+    <div class="buyableBox classNone" id="">
+        
+        <div id="pieceRef">
+    
+            <div id="pieceRefInner">
+                
+                <h1 id="restingPieces" ></h1>
+        
+            </div>
+    
+        </div>
+
+        <button id="drawPieceBtn" onclick="draw_piece_button();">
+            Comprar
+        </button>
 
     </div>
-
-
 
     <!-------------------------------------------------------------- MatchWinner ---------------------------------------------------------->
 
