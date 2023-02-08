@@ -324,10 +324,12 @@ class Player {
         this.score = 0;
         this.can_play;
         this.input_type = input_type; // guarda se o objeto Player é Humano ou Bot
+
+        this.hand_div.innerHTML = ""; // esvazia a div que representa a mão do jogador caso tenha alguma imagem residual.
     }
     add_piece_svg_to_hand_div(piece_div){ // ???
         
-        if (this.input_type == 'Bot'){
+        if(this.input_type == 'Bot'){
             if (!debugMode){
                 setUnview (piece_div)
             }
@@ -1902,8 +1904,8 @@ function displayOverlayGameOn (player = 'unkn0wn pl4yer', score = '0x1337'){
         // ==== //
 
 
-        btn.setAttribute ('onclick', 'reset_game();');
-        btn.textContent = 'Continue';
+        btn.setAttribute ('onclick', 'back_to_main_menu();');
+        btn.textContent = 'Voltar ao Menu';
         
         cardText.textContent =`O vencedor do jogo é ${player} com um total de ${score} pontos`;
 
@@ -3269,16 +3271,18 @@ async function bvb_flow(){
     
     // loop que faz a primeira jogada.
     await bot_play();    
-    // loop que faz as jogadas subsequentes.
-    while(game_over_flag === false){ // loop da partida.
-        while(await bot_play()); // loop da rodada.
-    }
     
+    // loop que faz as jogadas subsequentes.
+    /* while(game_over_flag === false){ // loop da partida.
+        while(await bot_play()); // loop da rodada.
+    } */
+    
+    while(await bot_play()); // loop da rodada.
 
     // (...) precisa colocar o back_to_menu() como resposta para a tela de game-over.
 }
 
-function back_to_menu(){
+function back_to_main_menu(){
     hide_game_back();
     show_main_menu_back();
 }
