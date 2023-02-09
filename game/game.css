@@ -253,10 +253,24 @@ body{
     transition: 2s
 }
 
+.undefinedPlayed{
+    background-color: rgba(245, 5, 245, 0.35)
+}
 
+.PlayerPlayed{
+    background-color: rgba(245, 5, 245, 0.35)
+}
+.BotPlayed{
+    background-color: rgba(29, 29, 218, 0.35);
+}
 
+.Bot-1Played {
+    background-color: rgba(245, 5, 245, 0.35)
+}
 
-
+.Bot-2Played {
+    background-color: rgba(29, 29, 218, 0.35);
+}
 
 
 .UsableRectangleW{

@@ -572,7 +572,7 @@ class Player {
                     console.log("[Playing Piece "+position+"]");
                 }
                 table.unshift(piece);  
-                update_table(piece.value[left], piece.value[right], side);
+                update_table(piece.value[left], piece.value[right], side, current_player.name);
                 piece.piece_div.remove();
                 // console.log(piece.value[left]);
                 // console.log(piece.value[right]);
@@ -583,9 +583,9 @@ class Player {
                     console.log("[Playing Piece "+position+"]");
                 }
                 table.push(piece);
-                update_table(piece.value[left], piece.value[right], side);
+                update_table(piece.value[left], piece.value[right], side, current_player.name);
                 piece.piece_div.remove();
-                // console.log(piece.value[left]);
+                // console.log(piece.value[left]); 
                 // console.log(piece.value[right]);
             } else {
                 console.log("error: invalid play!");
@@ -2925,9 +2925,11 @@ function createSVG_0() {
 // |        Gabriel-Begin        | //  
 // =============================== //
 
-function update_table(value1, value2, side){ // [Gabriel(adaptação)]
+function update_table(value1, value2, side, player){ // [Gabriel(adaptação)]
 
     let piece = create_table_piece(value1, value2);
+
+    piece.classList.add(player + 'Played')
 
     if (side === left){
         containerTable.prepend (piece);
