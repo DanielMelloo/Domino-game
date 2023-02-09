@@ -45,6 +45,7 @@
             <div class="displayGraphInner" id="line-chart"></div>
                 
         </div>
+        
     </div>
 
 
@@ -131,8 +132,19 @@
 
             <div class="tipsText">
                 <h1>
-                    BOT VS BOT
+                    BOT x BOT
                 </h1>
+                <h2>
+                    Neste modo dois bots se enfrentarão de uma forma aleatória. Você pode alterar os parâmetros da partida, como a velocidade de jogada dos bots. Durante a partida você pode acompanhar a quantidade de peças na mão de cada um, e quem está ganhando em tempo real através de uma tela no canto inferior esquerdo, que pode ser mostrada ou escondida clicando na seta. 
+
+                </h2>
+                <h1>
+                    Vitória
+                </h1>
+                <h2>
+                    O jogador com maior número de pontos é o vencedor da partida. O valor setado como padrão são 100 pontos, mas pode ser alterado nas configurações.
+                </h2>
+                
             </div>
             
             
@@ -158,8 +170,19 @@
 
             <div class="tipsText">
                 <h1>
-                    JOGADOR VS JOGADOR
+                   Contagem de Pontos
                 </h1>
+                <h2>
+                    Ao final de cada rodada, ganha quem tiver esvaziado a mão ou tiver o menor valor somado entre as peças restantes em sua mão. Em ambos os casos, o vencedor recebe o valor da soma da mão do perdedor em pontos.
+                </h2>
+
+                 <h1>
+                    configurações
+                </h1>
+                <h2>
+                    Se quiser tornar o jogo mais interessante, você pode configurar uma série de parâmetros de jogo e personalizá-lo da forma que quiser. Entre elas a quantidade de peças na mão, a dificuldade, a velocidade de jogada do bot em ms, bem como valores máximo e mínimo nas peças e o número de peças nas mãos.
+                <h2>
+                
             </div>
             
             
@@ -169,11 +192,11 @@
                     Anterior
                 </button>
 
-                <button class="allowHoverButton btnDefalt" onclick="returnToMenuByHowToPlay ()">
+                <button class="allowHoverButton btnDefalt"  onclick="returnToMenuByHowToPlay ()">
                     Voltar ao menu anterior
                 </button>
     
-                <button class="allowHoverButton btnDefalt" onclick="nextCard (this)">
+                <button class="allowHoverButton btnDefalt" hidden="hidden"  onclick="nextCard (this)">
                     Próximo
                 </button>
 
@@ -322,18 +345,17 @@
                     name="difficultMode" 
                     id="difficultMode">
 
-                    <option value="Easy">
+                    <option value="easy">
                         Easy
                     </option>
 
-                    <option value="Hard">
+                    <option value="hard">
                         Hard
                     </option>
 
                     </select>
 
                 </div>
-
 
                 <div class="optionConteiner">
 
@@ -351,7 +373,7 @@
                             class="slider glassType allowHoverButton"
                             type="range" 
                             id="botSpeed" 
-                            name="vol" 
+                            name="speed" 
                             min="0" 
                             max="3000"
                             step="100"
@@ -364,6 +386,53 @@
 
                 </div>  
 
+                <div class="optionConteiner">
+
+                    <button class="optionBtn">
+                        Pontos para vencer
+                    </button>
+
+                    <div class="divBtnsRow">
+                            
+                        <input
+                            class="glassType allowHoverButton textClr"
+                            style="margin:0 0 0 1em;font-size: large;width: 5em;height: 3em;"
+                            min=0 
+                            id="maxPoints" 
+                            type="number"
+                            value="100"
+                            onchange="getMaxPoints('maxPoints')"
+                        >
+
+                        <button style="margin:0 0 0 1em;padding:0.5em;" class="optionBtn allowHoverButton" onclick="subToInput('maxPoints')">
+                            <svg class="svgImg">
+                                <line 
+                                    x1="0" y1="50%" 
+                                    x2="100%" y2="50%" 
+                                />
+                            </svg>    
+                        </button>
+
+                        <button style="margin:0 0 0 0.1em;padding:0.5em;" class="optionBtn allowHoverButton" onclick="addToInput('maxPoints')">
+                            <svg class="svgImg" style="padding:0;">
+                                <line
+                                    x1="50%" y1="0" 
+                                    x2="50%" y2="100%" 
+                                />
+                            
+                                <line 
+                                    x1="0" y1="50%" 
+                                    x2="100%" y2="50%" 
+                                />
+                            </svg>    
+                        </button>
+
+                    </div>
+
+                    
+
+                </div>  
+                
             </div>
 
             <!-- <div class="summitBtn">
@@ -400,6 +469,7 @@
         </div>
 
         <div class="dropAreaInner" id="right" ondrop="drop(right)" ondragover="allowDrop(event)">
+            
 
         </div>
     </div>
@@ -434,8 +504,11 @@
     <div class="statsMobileMode cardStats classNone" id="">
 
         <h1 id="player1Stats" ></h1>
+        <!-- <h1 id="">player1 venceu 87^10x</h1> -->
         <h1 id="player2Stats" ></h1>
+        <!-- <h1>bot perdeu 87^10x</h1> -->
         <h1 id="turns" ></h1>
+        <h1 id="round_counter"></h1>
 
     </div>
 

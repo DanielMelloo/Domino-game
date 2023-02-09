@@ -1,4 +1,4 @@
-// http://127.0.0.1:5500/game%20copy/gamecopy.html
+http://127.0.0.1:5500/game/game.html
 
 
 // google.load("visualization", "1", {packages:["corechart"]});
@@ -333,6 +333,7 @@ class Player {
         this.hand = new Array();
         this.hand_div = document.getElementById(hand_div_id);
         this.score = 0;
+        this.round_wins = 0;
         this.can_play;
         this.input_type = input_type; // guarda se o objeto Player é Humano ou Bot
 
@@ -1085,6 +1086,8 @@ function match_over(){
 
     let points = loser.hand_sum();
     winner.add_score(points);
+    winner.round_wins++;
+    round_counter++;
     
     if(game_over(winner)){
         return true;
@@ -1109,7 +1112,7 @@ function match_over(){
 }
 function game_over(winner){
 
-    if(winner.score >= 100){ // verifica se o jogador tem 100 pontos ou mais
+    if(winner.score >= game_max_points){ // verifica se o jogador tem 100 pontos ou mais
         
         // mostra a tela de vitória do jogo
         displayOverlayGameOn(winner.name, winner.score);
@@ -1117,7 +1120,8 @@ function game_over(winner){
         if(debugMode){
             console.log(">>> Winner: "+player.name+" <<<");
         }
-        game_over_flag = false;
+        game_over_flag = false; // desnecessaria?
+        round_counter = 1;
         return true;
 
     } else {
@@ -1169,7 +1173,9 @@ function game_over(winner){
     // let bot_default_delay = 750;
     let bot_default_delay = 1000;
     let turn_counter = 1;
+    let round_counter = 1;
     let game_over_flag = false;
+    let game_max_points = 100; 
     
     document.getElementById('displayBotSpeed').innerHTML = bot_default_delay
 
@@ -1311,7 +1317,7 @@ function generate20pieces (){
 function createCard (){
     if (debugMode){
         updateByTurn ();
-        updateByMatches ();
+        updateByMatches();
     }
     else{
         console.error('Change debug mode to on to use this function!!!')
@@ -1621,19 +1627,39 @@ function attHandLimit () {
 
 
 
+function addToInput(input){
+    let atual = document.getElementById(input).value;
+    
+    let novo = atual - (-1); 
+    game_max_points = novo;
 
+    document.getElementById(input).value = novo;
+}
+  
+function subToInput(input){
+    let atual = document.getElementById(input).value;
+    if(atual > 0) {
+        let novo = atual - 1;
+        game_max_points = novo;
+        document.getElementById(input).value = novo;
+    }
+}
 
-
-
-function difficultMode(){
-    let difficult = document.getElementById('difficultMode').value
+function getMaxPoints(input) {
+    let points = document.getElementById(input).value;
+    
+    if (points > 0){
+        game_max_points = points;
+    }
 }
 
 
 
 
-
-
+function difficultMode(){
+    dificulty_mode = document.getElementById('difficultMode').value;
+    console.log('Daniel Log - difficultMode - dificulty_mode', dificulty_mode);
+}
 
 function botSpeed(){
     let speed = parseInt((document.getElementById('botSpeed').value), 10)
@@ -1687,7 +1713,7 @@ function reloadGraph (actualTurn){
  * 
  * Valor Default: 1
  */
-function updateByTurn (actualTurn = 1){
+function updateByTurn(actualTurn = 1){
     turnsStats (actualTurn);
     reloadGraph (actualTurn)
 
@@ -1722,14 +1748,20 @@ function updateByMove (remainingPieces = 14){
  * 
  * Valor Default: 'Player1', 0, 'Bot', 0
  */
-function updateByMatches (player1Name='Player1', player1Score=0, player2Name='Bot', player2Score=0){
+/* function updateByMatches (player1Name='Player1', player1Score=0, player2Name='Bot', player2Score=0){
     
     playerStats (player1Name, player1Score, 1);
     playerStats (player2Name, player2Score, 2);
 
+} */
+
+/* * função refatorada (2) ... */
+function updateByMatches(){
+    
+    playerStats(player_list[player1], 1);
+    playerStats(player_list[player2], 2);
+
 }
-
-
 /**
  * Atualiza pontuação do jogador no cardStats
  * 
@@ -1741,14 +1773,29 @@ function updateByMatches (player1Name='Player1', player1Score=0, player2Name='Bo
  * 
  * PlayerOrder: Qual jogador está sendo referenciado (1 ou 2)
  */
-function playerStats (playerName, playerScore, playerOrder) {
+
+/* nction playerStats(playerName, playerScore, playerOrder, player_round_wins = -1) {
 
     let playerStats = document.getElementById ('player'+ playerOrder + 'Stats'); // Nome: pontos
     
     playerStats.textContent = playerName + ': ' + playerScore + ' Pontos';
+    pl// ayerStats.textContent = `${playerName}:\n  Pontos: ${playerScore}\n  Rodadas ganhas: ${player_round_wins}`
 }
+ */
 
+/* * função refatorada... */
+function playerStats(player, playerOrder) {
 
+    let playerStats = document.getElementById('player'+ playerOrder + 'Stats'); // Nome: pontos
+    
+    // playerStats.textContent = playerName + ': ' + playerScore + ' Pontos';
+    playerStats.innerHTML = 
+    `${player.name}:<br>
+        Pontos da Rodada: ${player.score}<br>
+        Rodadas ganhas: ${player.round_wins}`;
+
+    // &nbsp
+}
 /**
  * Atualiza o turno no cardStats
  * 
@@ -2198,7 +2245,7 @@ function initGame(mode){
             break
     }
 
-    // createCard ()
+    // createCard (
     // game(mode);
 }
 
@@ -3009,6 +3056,9 @@ function reset_game(){ // chamada pelo botão gerado no "displayOverlayGameOn()"
     back_to_main_menu();
     displayOverlayGameOff();
 
+    turn_counter = 1;
+    round_counter = 1;
+
 }
 
 function everyone_update_all(){
@@ -3046,10 +3096,12 @@ function sleep(ms){
 }
 
 function update_status_window_all(){
+
     updateByTurn(turn_counter);
     updateByMove(shop.length);
-    updateByMatches(player_list[player1].name, player_list[player1].score, player_list[player2].name, player_list[player2].score);
-}
+
+    updateByMatches();
+    update_round_counter_visual();}
 
 function clear_table(){
     let table_div = document.getElementById("table");
@@ -3211,22 +3263,16 @@ function opponent_playing_warning_on(){
     let warning = document.getElementById('gameStats');
     warning.style.display = "block";
 
-    console.error("TRIGGER 1 ON!!!!!! <<<<<");
     console.log(warning.style.display);
-    console.error("TRIGGER 2 ON!!!!!! <<<<<");
     return warning.style.display;
 }
 
 function opponent_playing_warning_off(){
     // document.getElementById('gameStats').classList.add('classNone');
+    
     let warning = document.getElementById('gameStats');
     warning.style.display = "none";
-
-    console.error("WARNING OFF!!!!!! <<<<<");
-
     return warning.style.display;
-
-    
 }
 
 async function pvb_flow(){
@@ -3322,14 +3368,40 @@ function show_main_menu_back(){
 
 }
 
+function how_many_pieces_generated(min = 0, max = 6) { // gera a pilha inicial de peças. 
 
-// function player_vs_bot_flow(){
+    let result = 0;
+
+    for(let i = min; i <= max; i++){
+        result++;
+    }
+    for(let i = min; i <= max; i++){
+        for(let j = i; j <= max; j++){
+            if(!(i === j)){
+                result++;
+            }
+        }
+    }
+
+    return result;
+}
+
+
+function update_round_counter_visual(){
+    document.getElementById('round_counter').textContent = `Rodada: ${round_counter}`;
+
+}
+
+/* function updateByTurn(actualTurn = 1){
+    turnsStats (actualTurn);    
+} */
+
+/* function turnsStats (turn = 1){
+
+    let turns = document.getElementById ('turns');
     
-// }
-// function bot_vs_bot_flow(){
-
-// }
-
+    turns.textContent = 'Turno: ' + turn;
+} */
 // =============================== //
 // |        Gabriel-End          | //  
 // =============================== //
