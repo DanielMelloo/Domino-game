@@ -1091,3 +1091,37 @@ body{
 
     padding: 20px;
 } */
+
+
+/* Gabriel */
+
+#pause_bot_button{
+
+    position: fixed;
+    /* right: 0; */
+    left: 0;
+    bottom: 150px;
+
+    width: 150px;
+    height: 75px;
+
+    
+
+    font-size: large;
+
+    margin: var(--marginCard);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--color1);
+
+    background: rgba( 0, 0, 0, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 9px );
+    -webkit-backdrop-filter: blur( 9px );
+    border-radius: 20px;
+    border: 2px solid rgba( 255, 255, 255, 0.18 );
+}
