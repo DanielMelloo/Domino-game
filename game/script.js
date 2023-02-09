@@ -34,7 +34,7 @@ element.addEventListener('wheel', (event) => {
 // Debug Variables //
 // =============== //
 
-let debugMode = true;
+let debugMode = false;
 let botDrag = false; // Só da pra usar quando o debug mode esta ativo
 let botInit = true;
 // let dualBot = false;
@@ -43,7 +43,6 @@ let botInit = true;
 // Consts:
 ////////////////////////////////////////
 
-let masterPiece
 const left = 0;
 const right = 1;
 const player1 = 0;
@@ -53,17 +52,30 @@ const yes = 1;
 const yes_rotate = 2;
 const empty = 0; 
 
-
 ////////////////////////////////////////
 
 ////////////////////////////////////////
-// variáveis:
+// variáveis de configuração:
 ////////////////////////////////////////
-    
+
+let masterPiece;
+
 let piece_min_value_limit = 0;
 let piece_max_value_limit = 6;
 
+let dificulty_mode = "easy";
+let bot_default_delay = 1000;
+let view_bot_hand;
 
+let turn_counter = 1;
+let round_counter = 1;
+
+let game_over_flag = false;
+let game_max_points = 100;
+
+let pause_bot_flag = false;
+
+let hand_size; // quantidade inicial de peças
 
 ////////////////////////////////////////
 
@@ -342,8 +354,8 @@ class Player {
     add_piece_svg_to_hand_div(piece_div){ // ???
         
         if(this.input_type == 'Bot'){
-            if (!debugMode){
-                setUnview (piece_div)
+            if (view_bot_hand === false){
+                setUnview(piece_div);
             }
 
         }
@@ -1158,24 +1170,14 @@ function game_over(winner){
 // Main:
 ////////////////////////////////////////
 
-    // declaração
 
-    let hand_size; // quantidade inicial de peças
+// objetos iniciais o jogo
+
     let player_name;
     let player_list;
     let table; // objeto que representa o grupo de peças na mesa
     let shop; // objeto que representa a pilha de compra
     let current_player;
-    let dificulty_mode = "easy";
-    // let dificulty_mode = "hard";
-    // let bot_default_delay = 100;
-    // let bot_default_delay = 500;
-    // let bot_default_delay = 750;
-    let bot_default_delay = 1000;
-    let turn_counter = 1;
-    let round_counter = 1;
-    let game_over_flag = false;
-    let game_max_points = 100; 
     
     document.getElementById('displayBotSpeed').innerHTML = bot_default_delay
 
@@ -2074,6 +2076,7 @@ async function drop(side){ // [drop_event]
     // muda de turno (para o bot) & atualiza os status do jogo
     change_player();
     
+    // pause(pause_bot_flag);
     opponent_playing_warning_on(); // (...) broken!
     await bot_play(bot_default_delay); // bot faz sua jogada e muda de volta para o player.
     opponent_playing_warning_off(); // (...) broken!
@@ -2212,12 +2215,11 @@ function initGame(mode){
     
     hideModeMenu();
     
-
     switch(mode){
         case 0: // Player vs Bot
 
             displayGame();
-
+            view_bot_hand = false;
             pvb_flow();
             // reset_game(mode);
             game_mode = "pvb";
@@ -2226,11 +2228,12 @@ function initGame(mode){
         case 1: // Bot vs Bot
     
             displayGame();
-
+            view_bot_hand = true;
             bvb_flow();
             // reset_game(mode);
             // dualBot = true;
             game_mode = "bvb";
+            document.getElementById("pause_bot_button").style.display = "flex";
             break;
 
         case 2: // Como jogar
@@ -2242,7 +2245,7 @@ function initGame(mode){
             loadDefaultValueOptions();
             displayOptionsMenu();
 
-            break
+            break;
     }
 
     // createCard (
@@ -2990,6 +2993,7 @@ async function reset_match(){
 
     // if bot, make the first move (?)
     if(current_player.input_type === "Bot" && botInit){
+        // pause(pause_bot_flag);
         opponent_playing_warning_on();
         await bot_play(); // Bot faz primeira jogada
         opponent_playing_warning_off();
@@ -3077,6 +3081,7 @@ async function draw_piece_button(){ // compra uma peça para o jogador humano pe
     if(shop_is_empty()){
         console.log("shop already empty");
         change_player();
+        // pause(pause_bot_flag);
         opponent_playing_warning_on();
         await bot_play();
         opponent_playing_warning_off();
@@ -3185,9 +3190,6 @@ function human_play(side){
 */
 async function bot_play(delay = bot_default_delay){ // (...) broken
     
-    
-
-    // opponent_playing_warning_on(); // (...) broken!
     let repeat_play;
     do {
        
@@ -3298,6 +3300,7 @@ async function pvb_flow(){
     update_status_window_all();
 
     if(current_player.input_type === "Bot" && botInit){
+        // pause(pause_bot_flag);
         opponent_playing_warning_on();
         await bot_play(); // Bot faz primeira jogada
         opponent_playing_warning_off();
@@ -3343,11 +3346,10 @@ async function bvb_flow_second(){
     while(await bot_play()); // loop da rodada. // (...) broken! [next]
 }
 
-
-
 function back_to_main_menu(){
     hide_game_back();
     show_main_menu_back();
+    document.getElementById("pause_bot_button").style.display = "none";
 }
 
 function hide_game_back(){
@@ -3384,16 +3386,40 @@ function how_many_pieces_generated(min = 0, max = 6) { // gera a pilha inicial d
             }
         }
     }
-
     return result;
 }
-
 
 function update_round_counter_visual(){
     document.getElementById('round_counter').textContent = `Rodada: ${round_counter}`;
 
 }
 
+
+async function pause_bot_switch_button(){
+    
+    alert("Pausado!");
+
+    // switch(pause_bot_flag){
+    //     case false: // jogo rodando, clicar pausa o jogo
+    //         pause_bot_flag = true;
+    //         document.getElementById("pause_bot_button").textContent = "Continuar";
+    //         break;
+    //     case true: // jogo pausado, clicar continua o jogo
+    //         pause_bot_flag = false;
+    //         document.getElementById("pause_bot_button").textContent = "Parar";
+            
+    //         break;
+    // }
+
+    // alert(`pause-bot-state: ${pause_bot}`);
+    // id="pause_bot_button"
+
+} 
+
+
+/* async function pause(flag){
+    while(flag);
+} */
 /* function updateByTurn(actualTurn = 1){
     turnsStats (actualTurn);    
 } */
