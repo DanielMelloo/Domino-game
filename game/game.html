@@ -18,27 +18,41 @@
 <body>
     <!--------------------------------------------------------- Graph --------------------------------------------------------->
     
-    
+
     <div class="showGraph" id="graphBoxOuter">
 
-        <button 
-            class="allowHoverButton optionBtn classNone" 
-            onclick="displayGraph()" 
-            id="colpaseGraphBtn">
-            <svg height="20" width="30">
-                <line 
-                  x1="0" y1="0" 
-                  x2="15" y2="20" 
-                  style="stroke:#68b2f8;stroke-width:3" />
-              
-                <line 
-                  x1="15" y1="20" 
-                  x2="30" y2="0" 
-                  style="stroke:#68b2f8;stroke-width:3" />
-              
-              </svg>
-              
-        </button>
+        <div style="display: flex; flex-direction: row;">         
+            
+            <button 
+                class=" tooltipHover allowHoverButton optionBtn classNone" 
+                onclick="displayGraph()" 
+                id="colpaseGraphBtn">
+                <span id="hideText" class="tooltipGraphTextWithHide classNone">Esconder Gráfico</span>
+                <span id="showText" class="tooltipGraphTextWithShow">Mostrar Gráfico</span>
+                <svg height="20" width="30">
+                    <line 
+                    x1="0" y1="0" 
+                    x2="15" y2="20" 
+                    style="stroke:#68b2f8;stroke-width:3" />
+                
+                    <line 
+                    x1="15" y1="20" 
+                    x2="30" y2="0" 
+                    style="stroke:#68b2f8;stroke-width:3" />
+                
+                </svg>
+                
+            
+            </button>
+
+            <button class="btnDefalt allowHoverButton classNone" id="pause_bot_button" onclick="pause_bot_switch_button();">
+                Pausar
+            </button>
+
+        </div>
+
+
+
 
         <div class="classNone" id="graphBox">
             
@@ -62,7 +76,7 @@
 
             <div class="tipsText">
                 <h2>
-                    Selecione o Modo de Jogo. Você pode jogar sozinho contra um bot ou contra um outro jogador localmente.                                                                                                                                                                                                 
+                    Selecione o Modo de Jogo. Você pode jogar contra um bot ou como espectador em uma partida entre dois bots.                                                                                                                                                                                                 
                 </h2>
                 
                 <h1>
@@ -70,10 +84,10 @@
                 </h1>
 
                 <h2>
-                    Neste modo você irá jogar contra o computador. Você ou ele podem começar, dependendo de quem estiver com o duplo-seis.
+                    Neste modo você irá jogar contra o computador. Você ou ele podem começar, dependendo de quem estiver com a maior peça dupla. Caso contrário, quem obtiver a peça de maior soma inicia o jogo.
                 </h2>
                 <h2>
-                    A mão na parte inferior é sua. Se for a sua vez, clique e arraste a peça desejada para a direção onde você quer jogar no tabuleiro. A peça será alocada automaticamente no último espaço
+                    A mão na parte inferior é sua. Se for a sua vez, clique e arraste a peça desejada na direção onde você quer jogar no tabuleiro. A peça será alocada automaticamente no último espaço
                 </h2>
 
             
@@ -103,6 +117,13 @@
                 <h2>
                     Caso não seja possível fazer uma jogada, você pode comprar do banco, que está localizado no canto direito da tela. Basta clicar em "Comprar" e uma peça restante aleatória irá aparecer em sua mão. O número indica quantas peças ainda restam no banco.
                 </h2>
+
+                <h1>
+                    GRÁFICO
+                </h1>
+                <h2>
+                    Para visualizar o gráfico, basta clicar no botão com a seta, localizado no canto inferior esquerdo.
+                </h2>
             </div>
             
             
@@ -131,7 +152,7 @@
                     BOT x BOT
                 </h1>
                 <h2>
-                    Neste modo dois bots se enfrentarão de uma forma aleatória. Você pode alterar os parâmetros da partida, como a velocidade de jogada dos bots. Durante a partida você pode acompanhar a quantidade de peças na mão de cada um, e quem está ganhando em tempo real através de uma tela no canto inferior esquerdo, que pode ser mostrada ou escondida clicando na seta. 
+                    Neste modo dois bots se enfrentarão de uma forma aleatória. Você pode alterar os parâmetros da partida, como a velocidade de jogada dos bots. Durante a partida você pode acompanhar a quantidade de peças na mão de cada um, e quem está ganhando em tempo real através do GRÁfICO no canto inferior esquerdo, que pode ser mostrado ou escondido clicando na seta. 
 
                 </h2>
                 <h1>
@@ -176,8 +197,14 @@
                     configurações
                 </h1>
                 <h2>
-                    Se quiser tornar o jogo mais interessante, você pode configurar uma série de parâmetros de jogo e personalizá-lo da forma que quiser. Entre elas a quantidade de peças na mão, a dificuldade, a velocidade de jogada do bot em ms, bem como valores máximo e mínimo nas peças e o número de peças nas mãos.
+                    Se quiser tornar o jogo mais interessante, você pode configurar parâmetros do jogo e personalizá-lo da forma que quiser.
                 <h2>
+                <h1>
+                    Valores Mínimo e Máximo 
+                </h1>
+                <h2>
+                    Define o valor máximo e mínimo que poderão aparecer nas peças do jogo.
+                </h2>    
                 
             </div>
             
@@ -189,6 +216,50 @@
                 </button>
 
                 <button class="allowHoverButton btnDefalt"  onclick="returnToMenuByHowToPlay ()">
+                    Voltar ao menu anterior
+                </button>
+    
+                <button class="allowHoverButton btnDefalt"  onclick="nextCard (this)">
+                    Próximo
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="howToPlayInner classNone" id="howToPlay#5">
+
+            <div class="tipsText">
+                
+                <h1>
+                    Quantidade de peças
+                </h1>
+                <h2>
+                    Altera a quantidade inicial de peças na mão dos jogadores.
+                </h2>
+                <h1> 
+                    Dificuldade
+                </h1>
+                <h2>
+                    Altera a dificuldade do jogo. O bot será mais difícil de vencer e irá aprender e refinar seus movimentos a cada jogada.
+                </h2>
+                <h1>
+                    Velocidade do bot e Pontos para vencer
+                </h1>
+                <h2>
+                    Altera a velocidade com a qual o bot joga, as peças aparecem mais rápido ou devagar na tela. Lembrando que a contagem está em milissegundos. Você pode também alterar os pontos necessários para vencer o jogo.
+                </h2>
+                
+            </div>
+            
+            
+            <div class="buttonConteiner">
+
+                <button class="allowHoverButton btnDefalt" onclick="prevCard (this)">
+                    Anterior
+                </button>
+
+                <button class="allowHoverButton btnDefalt" onclick="returnToMenuByHowToPlay ()">
                     Voltar ao menu anterior
                 </button>
     
@@ -392,7 +463,7 @@
                             
                         <input
                             class="glassType allowHoverButton textClr"
-                            style="margin:0 0 0 1em;font-size: large;width: 5em;height: 3em;"
+                            style="margin:0 0 0 1em;font-size: x-large;width: 4em;height: 2em;padding: 0 0.5em 0 0.5em"
                             min=0 
                             id="maxPoints" 
                             type="number"
@@ -400,7 +471,7 @@
                             onchange="getMaxPoints('maxPoints')"
                         >
 
-                        <button style="margin:0 0 0 1em;padding:0.5em;" class="optionBtn allowHoverButton" onclick="subToInput('maxPoints')">
+                        <button style="margin:0 0 0 1em;padding:0 0.5em 0 0.5em;height: 2em;" class="optionBtn allowHoverButton" onclick="subToInput('maxPoints')">
                             <svg class="svgImg">
                                 <line 
                                     x1="0" y1="50%" 
@@ -409,7 +480,7 @@
                             </svg>    
                         </button>
 
-                        <button style="margin:0 0 0 0.1em;padding:0.5em;" class="optionBtn allowHoverButton" onclick="addToInput('maxPoints')">
+                        <button style="margin:0 0 0 0.1em;padding:0 0.5em 0 0.5em;height: 2em;" class="optionBtn allowHoverButton" onclick="addToInput('maxPoints')">
                             <svg class="svgImg" style="padding:0;">
                                 <line
                                     x1="50%" y1="0" 
@@ -430,16 +501,6 @@
                 </div>  
                 
             </div>
-
-            <!-- <div class="summitBtn">
-                <input 
-                class="allowHoverButton optionBtn"
-                type="submit" 
-                id=""  
-                onclick="getDataForms ()"
-                value="Confirmar"
-            > 
-            </div> -->
 
             <div class="buttonConteinerW">
 
@@ -469,8 +530,6 @@
 
         </div>
     </div>
-
-
 
 
     <!-------------------------------------------------------------- table -------------------------------------------------------------->
@@ -516,28 +575,6 @@
     <!-------------------------------------------------------------- Peças Restantes ------------------------------------------------------>
 
 
-
-    <!-- <div class="buyableMobileMode buyable classNone" id="buyable">
-
-        <div class="buyableMobileModeInner buyableInner classNone" id="buyableInner">
-
-            <div id="pieceRef">
-    
-                <div id="pieceRefInner">
-                    
-                    <h1 id="restingPieces" ></h1>
-            
-                </div>
-        
-            </div>
-
-            <button id="drawPieceBtn" onclick="draw_piece_button();">
-                Comprar
-            </button>
-        </div>
-
-    </div> -->
-
     <div class="buyableBox classNone" id="">
         
         <div id="pieceRef">
@@ -559,7 +596,7 @@
 
     <!-- pause_bot_button -->
 
-    <button id="pause_bot_button" type="button" style="display: none;" onclick="pause_bot_switch_button();">Parar</button>
+
 
 
     <!-------------------------------------------------------------- MatchWinner ---------------------------------------------------------->

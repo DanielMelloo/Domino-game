@@ -972,9 +972,10 @@ body{
 /* GraphBox Animation */
 
 
-.showGraph > button{
+.showGraph > div #colpaseGraphBtn{
     rotate: -180deg;
 }
+
 
 #colpaseGraphBtn{
     transition: var(--btn-time);
@@ -995,8 +996,91 @@ body{
 
 
 
+#main ::-webkit-scrollbar{
+    display: none;
+}
 
 
+.tooltipHover {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltipHover .tooltipGraphTextWithShow {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    margin-bottom: -155px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    rotate:180deg;
+}
+  
+.tooltipHover .tooltipGraphTextWithShow::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+  
+.tooltipHover:hover .tooltipGraphTextWithShow {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.tooltipHover {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+  
+.tooltipHover .tooltipGraphTextWithHide {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -30px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+  
+.tooltipHover .tooltipGraphTextWithHide::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+  
+.tooltipHover:hover .tooltipGraphTextWithHide {
+    visibility: visible;
+    opacity: 1;
+}
 
 
 
@@ -1109,10 +1193,10 @@ body{
 
 /* Gabriel */
 
-#pause_bot_button{
+/* #pause_bot_button{
 
     position: fixed;
-    /* right: 0; */
+
     left: 0;
     bottom: 150px;
 
@@ -1138,4 +1222,5 @@ body{
     -webkit-backdrop-filter: blur( 9px );
     border-radius: 20px;
     border: 2px solid rgba( 255, 255, 255, 0.18 );
-}
+} */
+
