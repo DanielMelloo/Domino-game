@@ -10,19 +10,12 @@ legenda:
 
 Emergencia!!!{
 
-[ ] Descrição do passo-a-passo feito no dominó
+[ ] Verificar problema na funçao de criação do SVG
+[ ] deve indicar quantas partidas cada um venceu? (Daniel)
 
-[ ] fazer table com scroll (Gabriel & Daniel) {
+[ ] Descrição do passo-a-passo feito no dominó (Daniel)
 
-    idéia de scroll, usar nth child para virar peças quando tiver uma certa quantidade de peças
-
-}
-
-[ ] deve indicar uma curva que mostra os pontos de cada um a cada rodada para uma partida ou algo do tipo
-
-[ ] deve indicar uma curva que mostra os pontos de cada um a cada rodada para uma partida.
-
-[ ] deve indicar quantas partidas cada um venceu? (????4)
+[x] fazer table com scroll (Rafael)
 
 [x] deve indicar quantas rodadas que cada um venceu (Gabriel)
 
@@ -32,7 +25,7 @@ Emergencia!!!{
 
 [x] criar a opção para selecionar a dificuldade do bot no menu de opções. (Daniel)
 
-[x] menu de "como jogar". (Taty)
+[-] menu de "como jogar". (Taty)
 
 [x] Oponente jogando........... nao aparece..... implemetar (Gabriel)
 
