@@ -1,5 +1,10 @@
 {
     "githubPullRequests.ignoredPullRequestBranches": [
         "main"
+    ],
+    "cSpell.enableFiletypes": [
+        "!css",
+        "!javascript",
+        "!markdown"
     ]
 }

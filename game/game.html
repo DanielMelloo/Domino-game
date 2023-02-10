@@ -402,7 +402,7 @@
                 <div class="optionConteiner">
 
                     <button class="optionBtn">
-                        Dificuldade
+                        Dificuldade Contra Jogador
                     </button>
 
                     <select 
@@ -413,11 +413,11 @@
                     id="difficultMode">
 
                     <option value="easy">
-                        Easy
+                        Fácil
                     </option>
 
                     <option value="hard">
-                        Hard
+                        Difícil
                     </option>
 
                     </select>
@@ -431,9 +431,9 @@
                         Velocidade do bot (ms)
                     </button>
 
-                    <div class="rightContent" style="display: flex;">
+                    <div class="divBtnsRow" >
         
-                        <button class="optionBtn" id="displayBotSpeed">
+                        <button style="margin-right:0.25em" class="optionBtn" id="displayBotSpeed">
                         </button> 
     
                         <input
@@ -498,7 +498,56 @@
 
                     
 
-                </div>  
+                </div> 
+
+                <div class="optionConteiner">
+
+                    <button class="optionBtn">
+                        <!-- Dificuldade de cada bot -->
+                        Dificuldades Bot vs Bot
+                    </button>
+                    
+                    <div style="margin-right:0" class="divBtnsRow">
+                        
+                        <select
+                            style="margin-right:0.25em"
+                            class="allowHoverButton inputValue optionBtn" 
+                            onchange="getBotDifficult(this.id)"
+                            required="required" 
+                            name="difficultBot1Mode" 
+                            id="difficultBot1Mode">
+    
+                            <option value="easy">
+                                Bot1 - Fácil
+                            </option>
+        
+                            <option value="hard">
+                                Bot1 - Difícil
+                            </option>
+    
+                        </select>
+    
+                        <select
+                            style="margin-left:0"
+                            class="allowHoverButton inputValue optionBtn" 
+                            onchange="getBotDifficult(this.id)"
+                            required="required" 
+                            name="difficultBot2Mode" 
+                            id="difficultBot2Mode">
+    
+                            <option value="easy">
+                                Bot2 - Fácil
+                            </option>
+        
+                            <option value="hard">
+                                Bot2 - Difícil
+                            </option>
+        
+                        </select>
+
+                    </div>
+
+                </div>
                 
             </div>
 
@@ -513,6 +562,7 @@
         </div>
 
     </div>
+    
 
 
 
