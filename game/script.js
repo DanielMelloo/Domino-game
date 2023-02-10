@@ -2078,7 +2078,7 @@ async function drop(side){ // [drop_event]
     
     // pause(pause_bot_flag);
     opponent_playing_warning_on(); // (...) broken!
-    await bot_play(bot_default_delay); // bot faz sua jogada e muda de volta para o player.
+    await bot_play(); // bot faz sua jogada e muda de volta para o player.
     opponent_playing_warning_off(); // (...) broken!
 
     if (debugMode){
