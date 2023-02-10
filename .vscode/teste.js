@@ -34,14 +34,16 @@ element.addEventListener('wheel', (event) => {
 // Debug Variables //
 // =============== //
 
-let debugMode = false;
+let debugMode = true;
 let botDrag = false; // Só da pra usar quando o debug mode esta ativo
 let botInit = true;
+// let dualBot = false;
 
 ////////////////////////////////////////
 // Consts:
 ////////////////////////////////////////
 
+let masterPiece
 const left = 0;
 const right = 1;
 const player1 = 0;
@@ -51,34 +53,17 @@ const yes = 1;
 const yes_rotate = 2;
 const empty = 0; 
 
+
 ////////////////////////////////////////
 
 ////////////////////////////////////////
-// variáveis de configuração:
+// variáveis:
 ////////////////////////////////////////
-
-let masterPiece;
-
+    
 let piece_min_value_limit = 0;
 let piece_max_value_limit = 6;
 
-let player_name = "Player";
 
-let default_difficulty_mode = "easy";
-let bot_difficulty_1 = "easy"
-let bot_difficulty_2 = "hard"
-let bot_default_delay = 1000;
-let view_bot_hand;
-
-let turn_counter = 1;
-let round_counter = 1;
-
-let game_over_flag = false;
-let game_max_points = 100;
-
-let pause_bot_flag = false;
-
-let hand_size; // quantidade inicial de peças
 
 ////////////////////////////////////////
 
@@ -96,7 +81,7 @@ let gameComponentsList = {
     '.cardStats': 1,
     '#graphBox': 1,
     '#colpaseGraphBtn': 1,
-    '.buyableBox': 1.,
+    '.buyableBox': 1.
     // '.buyable': 1,
     // '.buyableInner': 1,
     // 'gameStats': 1,
@@ -121,7 +106,7 @@ const defaultMetade = defaultSize/2 // 22.5
 const default34 = (defaultSize*34)/45
 
 let gameData = [
-    ['Turno', 'Jogador', 'Bot'],
+    ['Turno', 'Jogador', 'Bot', 'PlayedPiece'],
 ]
 
 let graphOptions = {
@@ -343,7 +328,7 @@ class Piece {
 
 
 class Player {
-    constructor(name = "generic", input_type = "Bot", hand_div_id, difficulty = default_difficulty_mode){
+    constructor(name = "generic", input_type = "Bot", hand_div_id){
         this.name = name;
         this.hand = new Array();
         this.hand_div = document.getElementById(hand_div_id);
@@ -351,15 +336,14 @@ class Player {
         this.round_wins = 0;
         this.can_play;
         this.input_type = input_type; // guarda se o objeto Player é Humano ou Bot
-        this.difficulty = difficulty;
 
         this.hand_div.innerHTML = ""; // esvazia a div que representa a mão do jogador caso tenha alguma imagem residual.
     }
     add_piece_svg_to_hand_div(piece_div){ // ???
         
         if(this.input_type == 'Bot'){
-            if (view_bot_hand === false){
-                setUnview(piece_div);
+            if (!debugMode){
+                setUnview (piece_div)
             }
 
         }
@@ -802,24 +786,13 @@ function shuffle_pile(pile) {
     
     for(let i = last; i > 0; i--){
         
-        // let j = Math.floor(Math.random() * (i + 1)); // numero aleatorio
-        let j = generate_random_int(i);
-        console.log('Daniel Log - shuffle_pile - j ', j );
-
-
+        let j = Math.floor(Math.random() * (i + 1)); // numero aleatorio
+        
         let temp = pile[i];
         pile[i] = pile[j];
         pile[j] = temp;
     }
 }
-
-function generate_random_int(max, min = 0) {
-
-    let result = (((Math.floor(Math.random()*10000) * (new Date().getTime())) % ((max + 1) - min)) + min);
-
-    return result;
-}
-
 function draw_piece(pile, player, quantity = 1) { // passa uma peça da pilha de compra para o jogador (ou BOT)  
     for(let i = quantity; i > 0; i--){
         let tmp = pile.pop()
@@ -978,7 +951,7 @@ function change_player(){
         }
     }
 
-    if(debugMode){
+    if (debugMode){
         console.log("changing to: "+next_player.name+"");
     }
     current_player = next_player;
@@ -986,9 +959,9 @@ function change_player(){
     everyone_update_all();
 }
 
-function bot_strategy(  ){
+function bot_strategy(){
 
-    switch(current_player.difficulty){
+    switch(dificulty_mode){
         case "easy": // itera pelas peças na mão do BOT procurando a primeira peça que pode ser jogada, e joga ela // broken here 20230120
             for(let position = 0; position < current_player.hand.length; position++){
                 for(let side = 0; side < current_player.hand[position].playable.length; side++){
@@ -1185,17 +1158,29 @@ function game_over(winner){
 // Main:
 ////////////////////////////////////////
 
+    // declaração
 
-// objetos iniciais o jogo
-
+    let hand_size; // quantidade inicial de peças
+    let player_name;
     let player_list;
     let table; // objeto que representa o grupo de peças na mesa
     let shop; // objeto que representa a pilha de compra
     let current_player;
+    let dificulty_mode = "easy";
+    // let dificulty_mode = "hard";
+    // let bot_default_delay = 100;
+    // let bot_default_delay = 500;
+    // let bot_default_delay = 750;
+    let bot_default_delay = 1000;
+    let turn_counter = 1;
+    let round_counter = 1;
+    let game_over_flag = false;
+    let game_max_points = 100; 
     
     document.getElementById('displayBotSpeed').innerHTML = bot_default_delay
 
     hand_size = piece_max_value_limit + 1; // quantidade inicial de peças
+    player_name = "Jogador1";
 
     shop = new Array();
     table = new Array();
@@ -1280,7 +1265,7 @@ playButton.addEventListener("click", function() {
 
 
 /**  */
-
+let timePause = false;
 
 /**
  * Executa uma função após um determinado tempo
@@ -1291,10 +1276,6 @@ playButton.addEventListener("click", function() {
  * 
  * tempo: Um valor <int> em ms
  */
-function sleepFor(sleepDuration){
-    var now = new Date().getTime();
-    while(new Date().getTime() < now + sleepDuration){}
-}
 
 
 /**  */
@@ -1414,21 +1395,6 @@ function createTablePieceWP (value1, value2){
 // ========== //
 // Init Lista //
 // ========== //
-
-
-
-
-function getBotDifficult(id) {
-    let botDifficult = document.getElementById (id).value
-
-    if (id == 'difficultBot1Mode'){
-        bot_difficulty_1 = botDifficult
-    }
-    
-    else if (id == 'difficultBot2Mode'){
-        bot_difficulty_2 = botDifficult
-    }
-}
 
 window.onload = function() {
     initForms ()
@@ -1618,11 +1584,6 @@ function resetGameData (){
 function displayGraph (){
     let btn = document.getElementById('graphBoxOuter');
     let graph =  document.getElementById('line-chart');
-
-    let showText = document.getElementById('showText');
-    showText.classList.toggle('classNone')
-    let hideText = document.getElementById('hideText');
-    hideText.classList.toggle('classNone')
     
     btn.classList.toggle('showGraph')
     graph.classList.toggle('displayGraphInner')
@@ -1692,8 +1653,8 @@ function getMaxPoints(input) {
 
 
 function difficultMode(){
-    default_difficulty_mode = document.getElementById('difficultMode').value;
-    console.log('Daniel Log - difficultMode - dificulty_mode', default_difficulty_mode);
+    dificulty_mode = document.getElementById('difficultMode').value;
+    console.log('Daniel Log - difficultMode - dificulty_mode', dificulty_mode);
 }
 
 function botSpeed(){
@@ -1712,14 +1673,7 @@ function botSpeed(){
 
 }
 
-function drawChart() {
 
-    let data = google.visualization.arrayToDataTable(gameData);
-  
-    let chart = new google.visualization.LineChart(document.getElementById('line-chart'));
-  
-    chart.draw(data, graphOptions);
-}
 
 function removePlayable (){
     player1Hand.classList.remove ('playable')
@@ -1734,8 +1688,19 @@ function minimalMaxRandomize(min, max) {
 
 
 function reloadGraph (actualTurn){
-    gameData.push ([actualTurn, player1Hand.children.length, player2Hand.children.length])
-    drawChart()
+    // gameData.push ([actualTurn, player1Hand.children.length, player2Hand.children.length])
+    drawChart (actualTurn, player1Hand.children.length, player2Hand.children.length)
+}
+
+function drawChart(actualTurn, player1Hand, player2Hand) {
+
+    let data = google.visualization.arrayToDataTable(gameData);
+  
+    let chart = new google.visualization.LineChart(document.getElementById('line-chart'));
+    // chart.addColumn({'type': 'string', 'role': 'tooltip', 'p': {'html': true}})
+    
+    data.addRows([actualTurn, player1Hand, player2Hand, '1,1']);
+    chart.draw(data, graphOptions);
 }
 
 
@@ -1826,8 +1791,8 @@ function playerStats(player, playerOrder) {
     // playerStats.textContent = playerName + ': ' + playerScore + ' Pontos';
     playerStats.innerHTML = 
     `${player.name}:<br>
-        Pontos da Partida: ${player.score}<br>
-        Rodadas Ganhas: ${player.round_wins}`;
+        Pontos da Rodada: ${player.score}<br>
+        Rodadas ganhas: ${player.round_wins}`;
 
     // &nbsp
 }
@@ -1889,6 +1854,7 @@ function canDisplayResults (){
     }
 }
 
+
 /**
  * Mostra o vencedor da >> partida <<
  * 
@@ -1931,6 +1897,7 @@ function displayOverlayMatchOn (player = 'unknown player', score = '0x1337'){
         card.classList.remove('classNone');
     }
 }
+
 
 /**
  * Mostra o vencedor do >> Jogo <<
@@ -1975,8 +1942,11 @@ function displayOverlayGameOn (player = 'unkn0wn pl4yer', score = '0x1337'){
     }
 }
 
-/** * Retira o Overlay da >> partida << da tela */
-function displayOverlayMatchOff(){
+
+/**
+ * Retira o Overlay da >> partida << da tela
+ */
+function displayOverlayMatchOff (){
     
     let card = document.getElementById('matchCard');
     card.classList.add('classNone');
@@ -1986,8 +1956,11 @@ function displayOverlayMatchOff(){
     removeChild (cardInner)
 }
 
-/** * Retira o Overlay do >> jogo << da tela */
-function displayOverlayGameOff(){
+
+/**
+ * Retira o Overlay do >> jogo << da tela
+ */
+function displayOverlayGameOff (){
     
     let card = document.getElementById('gameCard');
     card.classList.add('classNone');
@@ -1997,6 +1970,7 @@ function displayOverlayGameOff(){
     removeChild (cardInner)
 }
 
+
 /**
  * Apaga todos os filhos do elemento passado como parâmetro
  * 
@@ -2004,11 +1978,11 @@ function displayOverlayGameOff(){
  * 
  * parent: elemento do < DOM >
  */
-function removeChild(parent){
+function removeChild (parent){
 
     // console.log (parent.children.length)
 
-    for(let i = 0; i <= parent.children.length; i++){
+    for (let i = 0; i <= parent.children.length; i++){
 
         let child = parent.children[0]
         
@@ -2016,17 +1990,26 @@ function removeChild(parent){
     }
 }
 
-/** * Chama o displayOverlayMatchOff */
-function continueGame(){
-    displayOverlayMatchOff();
+
+/**
+ * Chama o displayOverlayMatchOff
+ */
+function continueGame (){
+    displayOverlayMatchOff ()
 }
 
-/** * Chama o displayOverlayGameOff */
-function resetGame(){
+
+/**
+ * Chama o displayOverlayGameOff
+ */
+function resetGame (){
     displayOverlayGameOff ()
 }
 
-/** */
+
+/**
+ * 
+ */
 function references(id){
 
     let ref = document.getElementById('reference' + id);
@@ -2040,8 +2023,11 @@ function references(id){
 
 }
 
-/**  */
-function setUnview(piece_div){
+
+/**
+ * 
+ */
+function setUnview (piece_div) {
 
     for (let i = 0; i < piece_div.children.length; i++) {
 
@@ -2063,15 +2049,19 @@ function setUnview(piece_div){
 
 }
 
+
 /** Permite o drop quando detectado dragevent em cima da div */
-function allowDrop(ev){
+function allowDrop(ev) {
     ev.preventDefault();
 }
 
+
 /** Identifica qual peça está sendo arrastada */
-function drag(piece){
-    masterPiece = piece   
+function drag(piece) {
+    masterPiece = piece
+    
 }
+
 
 /** Executa movimentação da peça no back e no front */
 async function drop(side){ // [drop_event]
@@ -2084,9 +2074,8 @@ async function drop(side){ // [drop_event]
     // muda de turno (para o bot) & atualiza os status do jogo
     change_player();
     
-    // pause(pause_bot_flag);
     opponent_playing_warning_on(); // (...) broken!
-    await bot_play(); // bot faz sua jogada e muda de volta para o player.
+    await bot_play(bot_default_delay); // bot faz sua jogada e muda de volta para o player.
     opponent_playing_warning_off(); // (...) broken!
 
     if (debugMode){
@@ -2096,6 +2085,7 @@ async function drop(side){ // [drop_event]
     return true;
 }
 
+
 /** 
  * Gera uma peça na table, com as propriedades da table, e identificação visual da peça que foi arrastada 
  * 
@@ -2103,7 +2093,7 @@ async function drop(side){ // [drop_event]
  * 
  * side: lado que a peça deverá ser colocada na mesa
 */
-function addToTable (side){
+function addToTable (side) {
 
     let id = parseInt(masterPiece.id.slice(6), 10);
 
@@ -2125,11 +2115,14 @@ function addToTable (side){
 
 }
 
+
 /** Apaga o menu de seleção de modo de jogo */
-function hideModeMenu (){  
+function hideModeMenu ()
+{  
     let menu = document.querySelector('#menu');
     menu.style.display = "none";
 }
+
 
 /** Mostra Componentes que devem aparecer após iniciar o game */
 function displayGame(){
@@ -2146,11 +2139,14 @@ function displayGame(){
     }
 }
 
+
 /** Mostra o menu de seleção de modo de jogo */
-function showModeMenu (){  
+function showModeMenu ()
+{  
     let menu = document.querySelector('#menu');
     menu.style.display = "flex";
 }
+
 
 /** Mostra o card anterior */
 function prevCard (btn){
@@ -2169,6 +2165,7 @@ function prevCard (btn){
     }   
 }
 
+
 /** Mostra o próximo card */
 function nextCard (btn){
 
@@ -2186,6 +2183,7 @@ function nextCard (btn){
         return;
     }
 }
+
 
 /** Retorna ao menu inicial */
 function returnToMenuByHowToPlay (){
@@ -2208,37 +2206,31 @@ function displayOptionsMenu() {
     document.getElementById('options').classList.toggle('classNone');
 }
 
+
 /** Inicializa o jogo mostrando elementos necessários e deletando desnecessários */
 function initGame(mode){
     
     hideModeMenu();
     
+
     switch(mode){
         case 0: // Player vs Bot
 
             displayGame();
 
-            view_bot_hand = false;
+            pvb_flow();
             // reset_game(mode);
             game_mode = "pvb";
-
-
-            pvb_flow();
             break;
 
         case 1: // Bot vs Bot
-
+    
             displayGame();
-            document.getElementById("pause_bot_button").classList.toggle("classNone");
-            document.getElementById("drawPieceBtn").classList.add("classNone");
-            
-            view_bot_hand = true;
-            game_mode = "bvb";
 
+            bvb_flow();
             // reset_game(mode);
             // dualBot = true;
-            bvb_flow();
-
+            game_mode = "bvb";
             break;
 
         case 2: // Como jogar
@@ -2250,12 +2242,13 @@ function initGame(mode){
             loadDefaultValueOptions();
             displayOptionsMenu();
 
-            break;
+            break
     }
 
     // createCard (
     // game(mode);
 }
+
 
 /**
  * Gera uma peça a partir dos parâmetros de entrada
@@ -2936,14 +2929,7 @@ function update_table(value1, value2, side, player){ // [Gabriel(adaptação)]
 
     let piece = create_table_piece(value1, value2);
 
-    if (player == 'Bot-1' || player == 'Bot-2' || player == 'Bot') {
-        piece.classList.add(player + 'Played')
-    }
-
-    else if (player != 'Bot-1' && player != 'Bot-2' && player != 'Bot'){
-        piece.classList.add('PlayerPlayed')
-    }
-
+    piece.classList.add(player + 'Played')
 
     if (side === left){
         containerTable.prepend (piece);
@@ -2958,7 +2944,7 @@ function create_table_piece(value1, value2){ // [Gabriel(adaptação)]
 
     let piece = generateTablePiece (value1, value2);
 
-    if (value1 == value2){ // Peça na Vertical
+    if (value1 == value2){                              // Peça na Vertical
         piece.setAttribute ('class', 'piece UsableRectangleH'); // Seta a classe de peça na Vertical (height)
     } else {  
         piece.setAttribute ('class', 'piece UsableRectangleW'); // Seta a classe de peça na Horizontal (width)
@@ -2995,7 +2981,6 @@ async function reset_match(){
     clear_shop();
     //  regen shop
     generate_shop();
-    shuffle_shop();
     //  redraw pieces
     for(let i = 0; i < player_list.length; i++){
         player_list[i].draw_piece(hand_size);
@@ -3005,7 +2990,6 @@ async function reset_match(){
 
     // if bot, make the first move (?)
     if(current_player.input_type === "Bot" && botInit){
-        // pause(pause_bot_flag);
         opponent_playing_warning_on();
         await bot_play(); // Bot faz primeira jogada
         opponent_playing_warning_off();
@@ -3026,7 +3010,49 @@ async function reset_match(){
 
 }
 
+/* function reset_match(){ //  versão antiga (...)  codigo precisa ser refeito após ser segregado do init_match 
+
+    turn_counter = 1;
+
+    clear_table();
+
+    shop = new Array();
+
+    // gerando as peças do shop.
+    generate_pile(shop, piece_min_value_limit, piece_max_value_limit);
+    shuffle_shop();
+
+    for(let player of player_list){
+        player.clear_hand();
+
+        // player.reset_score();
+        // player.reset_hand();
+    }
+
+    //comprando peças.
+    player_list[player1].draw_piece(hand_size); 
+    player_list[player2].draw_piece(hand_size);
+
+    // update para janela de status:
+    update_status_window_all();
+    
+    // decidindo qual jogador joga primeiro.
+    current_player = going_first();
+    update_status_window_all();
+
+    if(current_player.input_type === "Bot" && botInit){
+        bot_play(); // Bot faz primeira jogada
+        // bot_strategy(); // Bot faz primeira jogada
+        // change_player();
+        // everyone_update_all();
+    }
+} */
+
 function reset_game(){ // chamada pelo botão gerado no "displayOverlayGameOn()"
+    /* for(let i = 0; i < player_list.length; i++){
+        player_list[i].reset_score();
+    }
+    reset_match(); */
     
     clear_table();
     back_to_main_menu();
@@ -3051,7 +3077,6 @@ async function draw_piece_button(){ // compra uma peça para o jogador humano pe
     if(shop_is_empty()){
         console.log("shop already empty");
         change_player();
-        // pause(pause_bot_flag);
         opponent_playing_warning_on();
         await bot_play();
         opponent_playing_warning_off();
@@ -3071,6 +3096,7 @@ async function draw_piece_button(){ // compra uma peça para o jogador humano pe
 function sleep(ms){ 
     return new Promise(resolve => setTimeout(resolve, ms));;
 }
+
 
 function update_status_window_all(){
 
@@ -3160,8 +3186,27 @@ function human_play(side){
 */
 async function bot_play(delay = bot_default_delay){ // (...) broken
     
+    
+
+    // opponent_playing_warning_on(); // (...) broken!
     let repeat_play;
     do {
+       
+        /* // verifica se o Bot pode jogar
+        do{
+            if(current_player.can_play){
+                // Bot faz sua jogada
+                await sleep(delay);
+                bot_strategy();
+                break;
+            } else if(current_player.can_play === false) {
+                // Bot compra peça até poder jogar ou até não poder mais comprar
+                current_player.draw_piece(1);
+                everyone_update_all();
+            }
+        }while((current_player.can_play === false) && (shop_is_empty() === false)); 
+        */
+        
         // verifica se o bot precisa & pode comprar
         while((current_player.can_play === false) && (shop_is_empty() === false)){
             // Bot compra peça até poder jogar ou até não poder mais comprar
@@ -3179,7 +3224,9 @@ async function bot_play(delay = bot_default_delay){ // (...) broken
 
         // verifica se alguém ganhou a rodada.
         if(match_over()){
-            console.log("match-over-reached");            
+            console.log("match-over-reached");
+            // opponent_playing_warning_off(); // (...) broken!
+            
             return false;
         }
 
@@ -3199,7 +3246,9 @@ async function bot_play(delay = bot_default_delay){ // (...) broken
         }
         
     }while(repeat_play);
+    // opponent_playing_warning_off(); // (...) broken!
 
+    
     return true;
 }
 
@@ -3235,11 +3284,8 @@ async function pvb_flow(){
     generate_shop();
     shuffle_shop();
     
-    
-    player_name = prompt("Digite Seu Nome: ");
-    
-    player_list[player1] = new Player(player_name, "Jogador", "player1HandInner"); // objeto que representa o jogador
-    player_list[player2] = new Player("Bot", "Bot", "player2HandInner", default_difficulty_mode); // objeto que representa o BOT
+    player_list[player1] = new Player("Player", "Jogador", "player1HandInner"); // objeto que representa o jogador
+    player_list[player2] = new Player("Bot", "Bot", "player2HandInner"); // objeto que representa o BOT
 
     //comprando peças.
     player_list[player1].draw_piece(hand_size); 
@@ -3253,7 +3299,6 @@ async function pvb_flow(){
     update_status_window_all();
 
     if(current_player.input_type === "Bot" && botInit){
-        // pause(pause_bot_flag);
         opponent_playing_warning_on();
         await bot_play(); // Bot faz primeira jogada
         opponent_playing_warning_off();
@@ -3267,8 +3312,8 @@ async function bvb_flow(){
     shuffle_shop();
     
     // gerando os bots.
-    player_list[player1] = new Player("Bot-1", "Bot", "player1HandInner", bot_difficulty_1); // objeto que representa o BOT-1
-    player_list[player2] = new Player("Bot-2", "Bot", "player2HandInner", bot_difficulty_2); // objeto que representa o BOT-2
+    player_list[player1] = new Player("Bot-1", "Bot", "player1HandInner"); // objeto que representa o BOT-1
+    player_list[player2] = new Player("Bot-2", "Bot", "player2HandInner"); // objeto que representa o BOT-2
 
     //comprando peças.
     for(let i = 0; i < player_list.length; i++){
@@ -3286,18 +3331,24 @@ async function bvb_flow(){
     await bot_play();    
     
     // loop que faz as jogadas subsequentes.
-    while(await bot_play()); // loop da rodada. 
+    /* while(game_over_flag === false){ // loop da partida.
+        while(await bot_play()); // loop da rodada.
+    } */
+    
+    while(await bot_play()); // loop da rodada. // (...) broken! [next]
 
+    // (...) reconfigurar o reset_match() para acomodar segunda rodada do bvb
 }
 
 async function bvb_flow_second(){
-    while(await bot_play()); // loop da rodada.
+    while(await bot_play()); // loop da rodada. // (...) broken! [next]
 }
+
+
 
 function back_to_main_menu(){
     hide_game_back();
     show_main_menu_back();
-    document.getElementById("pause_bot_button").style.display = "none";
 }
 
 function hide_game_back(){
@@ -3334,36 +3385,26 @@ function how_many_pieces_generated(min = 0, max = 6) { // gera a pilha inicial d
             }
         }
     }
+
     return result;
 }
+
 
 function update_round_counter_visual(){
     document.getElementById('round_counter').textContent = `Rodada: ${round_counter}`;
 
 }
 
+/* function updateByTurn(actualTurn = 1){
+    turnsStats (actualTurn);    
+} */
 
-async function pause_bot_switch_button(){
+/* function turnsStats (turn = 1){
+
+    let turns = document.getElementById ('turns');
     
-    alert("Pausado! Para despausar o jogo clique em ok");
-
-    // switch(pause_bot_flag){
-    //     case false: // jogo rodando, clicar pausa o jogo
-    //         pause_bot_flag = true;
-    //         document.getElementById("pause_bot_button").textContent = "Continuar";
-    //         break;
-    //     case true: // jogo pausado, clicar continua o jogo
-    //         pause_bot_flag = false;
-    //         document.getElementById("pause_bot_button").textContent = "Parar";
-            
-    //         break;
-    // }
-
-    // alert(`pause-bot-state: ${pause_bot}`);
-    // id="pause_bot_button"
-
-} 
-
+    turns.textContent = 'Turno: ' + turn;
+} */
 // =============================== //
 // |        Gabriel-End          | //  
 // =============================== //

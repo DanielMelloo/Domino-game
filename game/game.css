@@ -25,6 +25,10 @@
     --margin-btn: 1em;
 
     --btn-time: 1s;
+
+    --player1-clr: rgba(43, 150, 251, 0.72);
+    
+    --player2-clr: rgba(184, 80, 239, 0.834);
     
 
     /* ====== */
@@ -254,22 +258,22 @@ body{
 }
 
 .undefinedPlayed{
-    background-color: rgba(245, 5, 245, 0.35)
+    background-color: var(--player1-clr);
 }
 
 .PlayerPlayed{
-    background-color: rgba(245, 5, 245, 0.35)
+    background-color: var(--player1-clr);
 }
 .BotPlayed{
-    background-color: rgba(29, 29, 218, 0.35);
+    background-color: var(--player2-clr);
 }
 
 .Bot-1Played {
-    background-color: rgba(245, 5, 245, 0.35)
+    background-color: var(--player1-clr);
 }
 
 .Bot-2Played {
-    background-color: rgba(29, 29, 218, 0.35);
+    background-color: var(--player2-clr);
 }
 
 
@@ -810,7 +814,7 @@ body{
     outline: none; 
     align-self: center;
 
-    margin: var(--margin-btn);
+    /* margin: var(--margin-btn); */
 }
   
   
@@ -901,10 +905,12 @@ body{
 .divBtnsRow {
     display: flex;
     flex-direction: row;
+    font-size: x-large;
     /* justify-content: space-between; */
     align-items: center;
-    padding: 0 0.5em 0 0.5em;
-    margin-right: 0.5em
+    /* padding: 0 0.5em 0 0.5em;
+    */
+    margin-right: 1em;
 }
 
 #maxPoints{
@@ -972,9 +978,10 @@ body{
 /* GraphBox Animation */
 
 
-.showGraph > button{
+.showGraph > div #colpaseGraphBtn{
     rotate: -180deg;
 }
+
 
 #colpaseGraphBtn{
     transition: var(--btn-time);
@@ -995,8 +1002,89 @@ body{
 
 
 
+#main ::-webkit-scrollbar{
+    display: none;
+}
 
 
+.tooltipHover {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltipHover .tooltipGraphTextWithShow {
+    visibility: hidden;
+    width: 120px;
+    /* background-color: #555; */
+    /* color: #fff; */
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    margin-bottom: -155px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    rotate:180deg;
+}
+  
+.tooltipHover .tooltipGraphTextWithShow::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+  
+.tooltipHover:hover .tooltipGraphTextWithShow {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.tooltipHover {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+  
+.tooltipHover .tooltipGraphTextWithHide {
+    visibility: hidden;
+    width: 120px;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -30px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+  
+.tooltipHover .tooltipGraphTextWithHide::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+  
+.tooltipHover:hover .tooltipGraphTextWithHide {
+    visibility: visible;
+    opacity: 1;
+}
 
 
 
@@ -1109,10 +1197,10 @@ body{
 
 /* Gabriel */
 
-#pause_bot_button{
+/* #pause_bot_button{
 
     position: fixed;
-    /* right: 0; */
+
     left: 0;
     bottom: 150px;
 
@@ -1138,4 +1226,5 @@ body{
     -webkit-backdrop-filter: blur( 9px );
     border-radius: 20px;
     border: 2px solid rgba( 255, 255, 255, 0.18 );
-}
+} */
+

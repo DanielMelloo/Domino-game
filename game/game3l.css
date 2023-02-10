@@ -1,0 +1,158 @@
+:root {
+
+
+    /* ======= */
+    /* Numbers */
+    /* ======= */
+
+    --defaultSize: 45px;
+    --default2xSize: calc(var(--defaultSize)*2);
+
+    --defaultCardStatsSize: 20vw;
+    --marginCard: 20px;
+
+    --defaultTipCardSizeW: 50em;
+    --defaultTipCardSizeH: 60vh;
+
+    --fontSize: x-large;
+    --fontSize2: x-large;
+    --fontSize3: xx-large;
+
+    --animation-time: 1s;
+
+    --margin-btn: 1em;
+
+    --btn-time: 1s;
+    
+
+    /* ====== */
+    /* Colors */
+    /* ====== */
+
+    --color1: #68b2f8;
+    --color2: #506ee5;
+    --color3: #7037cd;
+    --color4: #651f71;
+    --color5: #3B0944;
+
+    --pieceColor: white;
+
+
+    /* ===== */
+    /* Geral */
+    /* ===== */
+
+
+    --display: flex;
+}
+
+*{
+    font-family: acumin-pro, system-ui, sans-serif;
+}
+
+html{
+    min-height: 2.520px;
+    max-width: 2520px;
+    scroll-behavior: smooth;
+}
+
+body{
+    /* min-height: 100%; */
+    margin: 0;
+    padding: 0;
+
+    width: auto;
+    /* width: 2520px; */
+    /* left: 50%; */
+    
+    /* overflow: auto; */
+    /* width: 100%;
+    height: 100%; */
+
+    /* width: 200%; */
+
+    /* Gabriel */
+
+}
+
+.main{
+
+    height: 100vh;
+    max-width: 200vw;
+    width: auto;
+
+    /* width:100%; */
+    /* width: 100vw; */
+    
+    /* min-width: 100vw;  */
+    /* max-width: 2520px; */
+ 
+
+    
+    /* height: auto; */
+
+    display: flex;
+
+    align-items: center;
+    
+    justify-content: center;
+
+    background: radial-gradient(circle, var(--color1) 0%, var(--color2)  70%, var(--color3) 100%);
+
+    overflow: auto;
+    /* overflow-X: scroll;  */
+}
+
+.tableOuter {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+
+    /* left: 50%; */
+}
+
+#table {
+    /* background-color: blue; */
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    min-width: calc(28 * 90px); /* 28 peças com 90px de largura */
+
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    vertical-align: middle;
+
+    justify-content: center;
+
+    margin: 90; /* 45px de altura de cada peça */
+    overflow-x: auto;
+
+    /* Gabriel */
+
+    /* left: 50%; */
+    /* right: 50%; */
+    
+}
+
+* ::-webkit-scrollbar{
+    display: none;
+}
+
+
+/* .rotatePiece {
+    rotate: 180deg;
+}
+
+.spaceIn {
+    margin-bottom: 20px;
+}
+
+.spaceOut {
+    margin-bottom: -20px;
+}
+
+.rotatePiece text{
+    rotate: 180deg;
+} */
