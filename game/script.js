@@ -3044,28 +3044,78 @@ function everyone_update_all(){
     }
     update_status_window_all();
     block_everyone_not_playing();
+    draw_piece_button_auto_highlight();
     return true;
 }
 
 async function draw_piece_button(){ // compra uma peça para o jogador humano pelo botão.
-    if(shop_is_empty()){
+    
+    if(player_list[player1].can_play){
+        
+        alert('já tem peças jogaveis');
+        
+        return false;
+
+    } else if(shop_is_empty()){
+        
+        alert("Bolo vazio!");
         console.log("shop already empty");
         change_player();
         // pause(pause_bot_flag);
         opponent_playing_warning_on();
         await bot_play();
         opponent_playing_warning_off();
+        
         return false;
-    }
-    
-    if(player_list[player1].can_play){
-        alert('já tem peças jogaveis');
-        return false;
-    }
-    player_list[player1].draw_piece(1);
-    everyone_update_all();
 
-    return true;
+    } else {
+        
+        player_list[player1].draw_piece(1);
+        everyone_update_all();
+        
+
+        return true;
+
+    }
+}
+
+function draw_piece_button_auto_highlight(){
+    if(current_player === player_list[player1]){
+        switch(player_list[player1].can_play){
+            case true:
+                draw_piece_button_highlight_off();
+                break;
+            case false:
+                draw_piece_button_highlight_on();
+                break;
+        }
+    }
+}
+
+function draw_piece_button_highlight_on(){
+    
+    // modified highlight:
+    // color: #80ff80;
+    // border: 4px solid #80ff80;
+
+    let button = document.getElementById("drawPieceBtn");
+
+    button.style.color = "#80ff80";
+    button.style.border = "4px solid #80ff80";
+
+}
+
+function draw_piece_button_highlight_off(){
+
+    // start
+    // color: #68b2f8;
+    // border: 1px solid #ffffff2e;
+
+    let button = document.getElementById("drawPieceBtn");
+
+    button.style.color = "#68b2f8";
+    button.style.border = "1px solid #ffffff2e";
+    
 }
 
 function sleep(ms){ 
@@ -3363,6 +3413,12 @@ async function pause_bot_switch_button(){
     // id="pause_bot_button"
 
 } 
+
+
+{
+    // rgb(0 188 46) // green
+    // border: 1px solid rgb(75 255 0);
+}
 
 // =============================== //
 // |        Gabriel-End          | //  
