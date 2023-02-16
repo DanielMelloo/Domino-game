@@ -10,14 +10,14 @@ google.charts.load('current', {'packages':['corechart']});
 
 const element = document.querySelector("#main");
 
-element.addEventListener('wheel', (event) => {
-  event.preventDefault();
+// element.addEventListener('wheel', (event) => {
+//   event.preventDefault();
 
-  element.scrollBy({
-    left: event.deltaY < 0 ? -30 : 30,
+//   element.scrollBy({
+//     left: event.deltaY < 0 ? -30 : 30,
     
-  });
-});
+//   });
+// });
 
 /* search keywords:
 
@@ -804,8 +804,6 @@ function shuffle_pile(pile) {
         
         // let j = Math.floor(Math.random() * (i + 1)); // numero aleatorio
         let j = generate_random_int(i);
-        console.log('Daniel Log - shuffle_pile - j ', j );
-
 
         let temp = pile[i];
         pile[i] = pile[j];
@@ -1797,6 +1795,7 @@ function updateByMatches(){
     playerStats(player_list[player2], 2);
 
 }
+
 /**
  * Atualiza pontuação do jogador no cardStats
  * 
@@ -2070,8 +2069,29 @@ function allowDrop(ev){
 
 /** Identifica qual peça está sendo arrastada */
 function drag(piece){
-    masterPiece = piece   
+    masterPiece = piece
+    // piece.style.cursor = 'dragging'
+    piece.classList.add('dragging');
 }
+
+EventUtil.addHandler(dm, 'dragstart', function(e) {
+    e.dataTransfer.setData(format, 'Dragme');
+    e.dataTransfer.effectAllowed = effect;
+    var target = EventUtil.getCurrentTarget(e);
+    target.style.backgroundColor = 'blue';
+    target.style.cursor = 'move'; // You can do this or use a css class to change the cursor
+    console.log ('dsa')
+    return true;
+});
+
+// EventUtil.addHandler(dm, 'dragend', function(e) {  
+//     var target = EventUtil.getCurrentTarget(e);
+//     target.style.backgroundColor = '';
+//     target.style.cursor = 'default'; // Reset cursor
+//     return true;
+// });
+
+
 
 /** Executa movimentação da peça no back e no front */
 async function drop(side){ // [drop_event]

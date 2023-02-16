@@ -351,6 +351,7 @@ body{
 
     color: var(--pieceColor);
     box-shadow: 0 5px 15px rgba(145, 92, 182, .4);
+    cursor: grab;   
 
 }
 
@@ -367,6 +368,7 @@ body{
 }
 
 
+
 .dropAreaInner{
     width: 100vw;
     width: 50vw;
@@ -374,7 +376,14 @@ body{
     /* background-color: black; */
 
     z-index: 1;
+
+    
 }   
+
+.dropAreaInner:-moz-drag-over{
+    background-color: red;
+}
+
 
 
 
@@ -1111,6 +1120,23 @@ body{
 
 
 
+.dragging {
+    cursor: grab;  
+}
+
+.dragging:focus {
+    cursor: grab;    
+}
+
+.dragging:hover {
+    /* cursor: grab;    */
+    cursor: grab;   
+}
+
+.dragging:-moz-drag-over {
+    /* cursor: grab;    */
+    cursor: grab;   
+}
 
 
 
@@ -1227,4 +1253,5 @@ body{
     border-radius: 20px;
     border: 2px solid rgba( 255, 255, 255, 0.18 );
 } */
+
 
