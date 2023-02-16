@@ -235,13 +235,15 @@ class Piece {
         this.playable = new Array();
         this.playable[left] = no;
         this.playable[right] = no;
-        // this.piece_div = generate_piece_svg(value_left, value_right);
         this.piece_div = generateHandPiece(value_left, value_right);
-        // this.onluSvgs = 
         this.piece_div.setAttribute('class', 'handSlot');
-        // this.piece_div.setAttribute('id', '');
         this.piece_div.setAttribute('ondragstart', 'drag(this)');
+        
+        this.piece_div.setAttribute('ondrag', 'ondragEvent(this)');
+        this.piece_div.setAttribute('ondragend', 'ondragendEvent(this)');   
+        // this.piece_div.setAttribute('ondragleave', 'ondragleaveEvent(this)');
         // this.piece_div.setAttribute('onclick', 'check_playable_onclick()');
+
         this.owner;
 
     }
@@ -311,6 +313,7 @@ class Piece {
             this.piece_div.classList.remove('right');
             if(this.owner.input_type !== 'Bot'){
                 this.piece_div.classList.add('playable');
+                // this.piece_div.setAttribute('onclick', 'onclickHandPiece(this)');    
             }
         }
 
@@ -1102,7 +1105,10 @@ function match_over(){
             over_flag = true;
 
         } else {
-            console.log("Empate?(sei lá... não deveria tá acontecendo...)");
+            console.log("Empate!");
+            round_counter++;
+
+            return true;
         }
     } else {
         // console.log(">>> Next-Turn <<<");
@@ -2073,11 +2079,26 @@ function drag(piece){
     piece.classList.add('dragging');
 }
 
+// function onclickHandPiece (el) {
+//     // el.classList.add('dragging');
+// }
+
+function ondragEvent (el){
+    // el.classList.add('dragging');
+    console.log ('ta arrastando ')
+    
+}
+
+function ondragendEvent (el) {
+    // el.classList.remove('dragging');
+    console.log ('acabou')
+}
+// function ondragleaveEvent (el) {
+//     // console.log ('n ta em cima de um droparea')
+// }
 
 /** Executa movimentação da peça no back e no front */
 async function drop(side){ // [drop_event]
-
-    masterPiece.classList.remove('dragging');
     // coloca a peça arrastada na mesa
     if(human_play(side) === false){
         return false; // se a jogada for invalida ou o jogo tiver terminado aborta o resto da execução
@@ -3473,6 +3494,93 @@ async function pause_bot_flag_switch(){
             pause_bot_flag = false;
     }
 }
+
+
+function empate_scenario_on(){
+    if(canDisplayResults()){
+        // =============== //
+        // Create Elements //
+        // =============== //
+
+        let card = document.getElementById('matchCard');
+        let matchCardInner = document.getElementById('matchCardInner');
+        let cardText = document.createElement('h1');
+        let btn = document.createElement('button');
+        
+        // ==== //
+        // Sets //
+        // ==== //
+        
+        btn.setAttribute ('onclick', 'reset_match();') // (...) use this button to reset_match
+        btn.textContent = 'Continue'
+        
+        cardText.textContent = `Empate! Ninguem ganhou nada esta rodada!`;
+    
+        matchCardInner.appendChild (cardText);
+        matchCardInner.appendChild (btn);
+        
+        card.classList.remove('classNone');        
+    }
+}
+
+function empate_scenario_off(){
+    let card = document.getElementById('matchCard');
+    card.classList.add('classNone');
+
+    let cardInner = document.getElementById('matchCardInner');
+
+    removeChild (cardInner)
+}
+
+/* 
+
+function displayOverlayMatchOff(){
+    
+    let card = document.getElementById('matchCard');
+    card.classList.add('classNone');
+
+    let cardInner = document.getElementById('matchCardInner');
+
+    removeChild (cardInner)
+}
+
+*/
+
+
+
+
+/* function displayOverlayMatchOn (player = 'unknown player', score = '0x1337'){
+
+    if (canDisplayResults()){
+
+        // =============== //
+        // Create Elements //
+        // =============== //
+
+
+        let card = document.getElementById('matchCard');
+        let matchCardInner = document.getElementById('matchCardInner');
+        let cardText = document.createElement('h1');
+        let btn = document.createElement('button');
+
+        
+        // ==== //
+        // Sets //
+        // ==== //
+
+
+        btn.setAttribute ('onclick', 'reset_match();') // (...) use this button to reset_match
+        btn.textContent = 'Continue'
+        
+        cardText.textContent =`O vencedor desse round é ${player} com um total de ${score} pontos`;
+
+        matchCardInner.appendChild (cardText);
+        matchCardInner.appendChild (btn);
+        
+        card.classList.remove('classNone');
+    }
+} */
+
 
 
 // {
