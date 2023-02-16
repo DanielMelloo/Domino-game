@@ -62,7 +62,7 @@ let masterPiece;
 let piece_min_value_limit = 0;
 let piece_max_value_limit = 6;
 
-let player_name = "Player";
+let player_name = "Jogador";
 
 let default_difficulty_mode = "easy";
 let bot_difficulty_1 = "easy"
@@ -343,7 +343,7 @@ class Piece {
 
 
 class Player {
-    constructor(name = "generic", input_type = "Bot", hand_div_id, difficulty = default_difficulty_mode){
+    constructor(name = player_name, input_type = "Bot", hand_div_id, difficulty = default_difficulty_mode){
         this.name = name;
         this.hand = new Array();
         this.hand_div = document.getElementById(hand_div_id);
@@ -3318,10 +3318,7 @@ async function pvb_flow(){
     generate_shop();
     shuffle_shop();
     
-    
-    player_name = prompt("Digite Seu Nome: ");
-    
-    player_list[player1] = new Player(player_name, "Jogador", "player1HandInner"); // objeto que representa o jogador
+    player_list[player1] = new Player("Jogador", "Jogador", "player1HandInner"); // objeto que representa o jogador
     player_list[player2] = new Player("Bot", "Bot", "player2HandInner", default_difficulty_mode); // objeto que representa o BOT
 
     //comprando peças.
