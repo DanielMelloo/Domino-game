@@ -1134,7 +1134,7 @@ body{
 
 */
 
-.dragging:active, dragging:focus-within {
+.dragging:active {
     cursor: grabbing;
     cursor: -moz-grabbing;
     cursor: -webkit-grabbing;

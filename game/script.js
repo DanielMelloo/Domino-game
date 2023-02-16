@@ -2070,36 +2070,19 @@ function allowDrop(ev){
 /** Identifica qual peça está sendo arrastada */
 function drag(piece){
     masterPiece = piece
-    // piece.style.cursor = 'dragging'
     piece.classList.add('dragging');
 }
-
-EventUtil.addHandler(dm, 'dragstart', function(e) {
-    e.dataTransfer.setData(format, 'Dragme');
-    e.dataTransfer.effectAllowed = effect;
-    var target = EventUtil.getCurrentTarget(e);
-    target.style.backgroundColor = 'blue';
-    target.style.cursor = 'move'; // You can do this or use a css class to change the cursor
-    console.log ('dsa')
-    return true;
-});
-
-// EventUtil.addHandler(dm, 'dragend', function(e) {  
-//     var target = EventUtil.getCurrentTarget(e);
-//     target.style.backgroundColor = '';
-//     target.style.cursor = 'default'; // Reset cursor
-//     return true;
-// });
-
 
 
 /** Executa movimentação da peça no back e no front */
 async function drop(side){ // [drop_event]
 
+    masterPiece.classList.remove('dragging');
     // coloca a peça arrastada na mesa
     if(human_play(side) === false){
         return false; // se a jogada for invalida ou o jogo tiver terminado aborta o resto da execução
     }
+
 
     // muda de turno (para o bot) & atualiza os status do jogo
     change_player();
@@ -3470,20 +3453,21 @@ async function pause_bot_button(){
 async function pause_bot_flag_switch(){
     
     let warning_prompt = document.querySelector("#gameStats");
-    let button_text = document.querySelector("#pause_bot_button").textContent;
 
     switch(pause_bot_flag){
-        case false:
+        case false: // ativa
             pause_bot_flag = true;
             warning_prompt.textContent = "Jogo Pausado";
             warning_prompt.classList.remove("classNone");
             button_text = "Continuar";
+            document.querySelector("#pause_bot_button").textContent  = "Continuar";
             break;
-        case true:
+        case true: // desativa
             pause_bot_flag = false;
             warning_prompt.classList.add("classNone");
             warning_prompt.textContent = "Oponente Jogando...";
-            button_text = "Pausar";
+            button_text = 
+            document.querySelector("#pause_bot_button").textContent  = "Pausar";
             break;
         default:
             pause_bot_flag = false;
