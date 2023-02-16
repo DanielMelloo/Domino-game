@@ -238,11 +238,7 @@ class Piece {
         this.piece_div = generateHandPiece(value_left, value_right);
         this.piece_div.setAttribute('class', 'handSlot');
         this.piece_div.setAttribute('ondragstart', 'drag(this)');
-        
-        this.piece_div.setAttribute('ondrag', 'ondragEvent(this)');
-        this.piece_div.setAttribute('ondragend', 'ondragendEvent(this)');   
-        // this.piece_div.setAttribute('ondragleave', 'ondragleaveEvent(this)');
-        // this.piece_div.setAttribute('onclick', 'check_playable_onclick()');
+        this.piece_div.setAttribute('ondragend', 'ondragendEvent(this)');
 
         this.owner;
 
@@ -342,7 +338,6 @@ class Piece {
         // }
     }
 }
-
 
 
 class Player {
@@ -2071,31 +2066,21 @@ function setUnview(piece_div){
 /** Permite o drop quando detectado dragevent em cima da div */
 function allowDrop(ev){
     ev.preventDefault();
+    
 }
 
 /** Identifica qual peça está sendo arrastada */
 function drag(piece){
     masterPiece = piece
-    piece.classList.add('dragging');
+    piece.classList.add('dragging'); 
 }
 
-// function onclickHandPiece (el) {
-//     // el.classList.add('dragging');
-// }
-
-function ondragEvent (el){
-    // el.classList.add('dragging');
-    console.log ('ta arrastando ')
-    
-}
 
 function ondragendEvent (el) {
-    // el.classList.remove('dragging');
-    console.log ('acabou')
+    el.classList.remove('dragging');
+    el.style.cursor = 'grab';
 }
-// function ondragleaveEvent (el) {
-//     // console.log ('n ta em cima de um droparea')
-// }
+
 
 /** Executa movimentação da peça no back e no front */
 async function drop(side){ // [drop_event]
@@ -3097,9 +3082,20 @@ async function draw_piece_button(){ // compra uma peça para o jogador humano pe
         player_list[player1].draw_piece(1);
         everyone_update_all();
         
-
+        if(shop_is_empty()){
+        
+            alert("Bolo vazio!");
+            console.log("shop already empty");
+            change_player();
+            // pause(pause_bot_flag);
+            opponent_playing_warning_on();
+            await bot_play();
+            opponent_playing_warning_off();
+            
+            return false;
+        }
+        
         return true;
-
     }
 }
 

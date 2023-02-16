@@ -12,7 +12,7 @@ Emergencia!!!{
 
 [ ] scroll da mesa so funcionna quando clica na parte inferior da tela (Rafael)
 
-[ ] Descrição do passo-a-passo feito no dominó (Daniel/Tathiana/Steffany)
+[x] Descrição do passo-a-passo feito no dominó (Daniel/Tathiana/Steffany)
 
 [x] fazer table com scroll (Rafael)
 
@@ -24,7 +24,7 @@ Emergencia!!!{
 
 [x] criar a opção para selecionar a dificuldade do bot no menu de opções. (Daniel)
 
-[-] menu de "como jogar". (Taty)
+[x] menu de "como jogar". (Taty)
 
 [x] Oponente jogando........... nao aparece..... implemetar (Gabriel)
 

@@ -1117,27 +1117,21 @@ body{
 
 
 
+.dragging {
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+    user-select: none;
+}
 
 
-/* 
-
-    .dragging:hover {
-        /* cursor: grab;    
-        cursor: grab;   
-    }
-
-    .dragging{
-        cursor: grab;
-        cursor: -moz-grab;
-        cursor: -webkit-grab;
-    }
-
-*/
 
 .dragging:active {
     cursor: grabbing;
     cursor: -moz-grabbing;
     cursor: -webkit-grabbing;
+    user-select: none;
 }
 
 
