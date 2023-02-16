@@ -347,10 +347,10 @@ class Player {
             // }
 
             // id: drawPieceBtn
+            
+            console.error(`[nesse caso não teria peças o suficiente no bolo para comprar]`);
+            console.error(`pedido: ${quantity} | disponivel: ${shop.length}`);
 
-            
-            
-            
             return false;
         }
     }
