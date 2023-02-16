@@ -18,8 +18,8 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 - [x] Landing Page
 - [x] Estrutura do Jogo
 - [x] Algoritmo
-- [ ] Integração
-- [ ] Testes
+- [x] Integração
+- [x] Testes
 
 
 ## 📫 Contribuindo para Dominoh Game

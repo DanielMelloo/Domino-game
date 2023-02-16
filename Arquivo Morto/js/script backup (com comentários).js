@@ -1,13 +1,38 @@
 http://127.0.0.1:5500/game/game.html
 
+
+// google.load("visualization", "1", {packages:["corechart"]});
+// google.setOnLoadCallback(drawCharts);
+
+
 google.charts.load('current', {'packages':['corechart']});
+
+
 const element = document.querySelector("#main");
 
+// element.addEventListener('wheel', (event) => {
+//   event.preventDefault();
+
+//   element.scrollBy({
+//     left: event.deltaY < 0 ? -30 : 30,
+    
+//   });
+// });
+
+/* search keywords:
+
+    - issues:
+    - (...)
+    - (desnecessario?)
+
+    - [-]: criar uma botão para tela de "como jogar"
+    - [-]: uma janela de status
+    
+*/
 
 // =============== //
 // Debug Variables //
 // =============== //
-
 
 let debugMode = false;
 let botDrag = false; // Só da pra usar quando o debug mode esta ativo
@@ -56,6 +81,8 @@ let pause_bot_flag = false;
 let hand_size; // quantidade inicial de peças
 
 ////////////////////////////////////////
+
+////////////////////////////////////////
 // Daniel Variables
 ////////////////////////////////////////
 
@@ -70,21 +97,28 @@ let gameComponentsList = {
     '#graphBox': 1,
     '#colpaseGraphBtn': 1,
     '.buyableBox': 1.,
+    // '.buyable': 1,
+    // '.buyableInner': 1,
+    // 'gameStats': 1,
+    // '.horizontalBox': 29,
+    // '.verticalBox': 26,
+    // '.UsableRectangleW': 55,
+    // '.UsableRectangleH': 55,
 };
 
 
 // ===================================================== //
-// |         Tamanho da peça(definida no css)         | //
+// |         Tamanho da peça (definida no css)         | //
 // ===================================================== //
 
 
 const defaultSize = getComputedStyle(document.documentElement).getPropertyValue('--defaultSize').slice(1,3);
 
 const default3 = defaultSize/15
-const default11 =(defaultSize*11)/45
-const default12 =(defaultSize*4)/15
+const default11 = (defaultSize*11)/45
+const default12 = (defaultSize*4)/15
 const defaultMetade = defaultSize/2 // 22.5
-const default34 =(defaultSize*34)/45
+const default34 = (defaultSize*34)/45
 
 let gameData = [
     ['Turno', 'Jogador', 'Bot'],
@@ -97,6 +131,7 @@ let graphOptions = {
     fontName: 'Open Sans',
     focusTarget: 'category',
     tooltip:{textStyle:{
+        // color:,
         fontSize: 15
         }
     },
@@ -125,6 +160,8 @@ let graphOptions = {
         }
     },
     vAxis: {
+        // minValue: 0,
+        // maxValue: 5,
         baselineColor: '#DDD',
         gridlines: {
             color: '#68b2f8',
@@ -147,6 +184,11 @@ let graphOptions = {
             color: '#68b2f8',
         }
     },
+    // animation: {
+    //     duration: 1200,
+    //     easing: 'out',
+    //         startup: true
+    // }
 };
     
 
@@ -159,7 +201,7 @@ let player1Hand = document.getElementById('player1HandInner');
 
 
 /** Seleção da table para utilizar de referência de inserção */ 
-let player2Hand = document.getElementById('player2HandInner');
+let player2Hand = document.getElementById ('player2HandInner');
 
 
 // ====== //
@@ -168,11 +210,11 @@ let player2Hand = document.getElementById('player2HandInner');
 
 
 let cheats = [
-    'genetate20pieces()',
-    'createCard()',
-    'drawPieceCurrentPlayer()',
-    'updateTableSP()',
-    'updateTableWP()',
+    'genetate20pieces ()',
+    'createCard ()',
+    'drawPieceCurrentPlayer ()',
+    'updateTableSP ()',
+    'updateTableWP ()',
     'createTablePieceWP()',
 ];
 
@@ -201,7 +243,7 @@ class Piece {
         this.owner;
 
     }
-    string(){ 
+    string(){ // (W.I.P)
         return "["+this.value[left]+"|"+this.value[right]+"]";
     }
     rotate(){
@@ -211,7 +253,7 @@ class Piece {
 
         this.update_playable();
     }
-    is_mirror(){ 
+    is_mirror(){ // (W.I.P)
         if(this.value[left] == this.value[right]){
             return true;
         } else {
@@ -219,10 +261,10 @@ class Piece {
         }
     }
     sum(){
-        return(this.value[left] + this.value[right]);
+        return (this.value[left] + this.value[right]);
     }
 
-    check_playable(side){ // verifica se a peça é jogavel
+    check_playable(side) { // verifica se a peça é jogavel
         
         let piece = this;
 
@@ -230,52 +272,58 @@ class Piece {
             return yes;
         }
 
-        if(side === left){
+        if(side === left) {
             const first = 0;
 
-            if((table[first].value[left]) ===(piece.value[right])){
+            if((table[first].value[left]) === (piece.value[right])) {
                 return yes;
-            } else if((table[first].value[left]) ===(piece.value[left])){
+            } else if ((table[first].value[left]) === (piece.value[left])) {
                 return yes_rotate;
             } else {
                 return no;
             }
 
-        } else if(side === right){
-            const last =((table.length)-1);
+        } else if(side === right) {
+            const last = ((table.length)-1);
 
-            if((table[last].value[right]) ===(piece.value[left])){
+            if((table[last].value[right]) === (piece.value[left])) {
                 return yes;
-            } else if((table[last].value[right]) ===(piece.value[right])){
+            } else if((table[last].value[right]) === (piece.value[right])) {
                 return yes_rotate;
             } else {
                 return no;
             }
         }        
     }
-    update_playable(){ // atualiza o status se peça é jogavel
+    update_playable() { // atualiza o status se peça é jogavel
         this.playable[left] = this.check_playable(left);
         this.playable[right] = this.check_playable(right);
         this.update_classes_by_playable();
     }
 
-    update_classes_by_playable(){
+    update_classes_by_playable (){
 
-        if(this.check_playable(left)){
+        if (this.check_playable(left)){
             this.piece_div.setAttribute('draggable', 'true');
             this.piece_div.classList.add('left');
             this.piece_div.classList.remove('right');
             if(this.owner.input_type !== 'Bot'){
                 this.piece_div.classList.add('playable');
+                // this.piece_div.setAttribute('onclick', 'onclickHandPiece(this)');    
             }
-        } else if(this.check_playable(right)){
+        }
+
+        else if (this.check_playable(right)){
             this.piece_div.setAttribute('draggable', 'true');
+            // this.piece_div.setAttribute('ondragstart', 'drag(event)');
             this.piece_div.classList.add('right');
             this.piece_div.classList.remove('left');
             if(this.owner.input_type !== 'Bot'){
                 this.piece_div.classList.add('playable');
             }
-        } else if(!(this.check_playable(right)) && !(this.check_playable(left))){
+        }
+        
+        else if (!(this.check_playable(right)) && !(this.check_playable(left))){
             this.piece_div.classList.remove('right');
             this.piece_div.classList.remove('left');
             if(this.owner.input_type !== 'Bot'){
@@ -283,8 +331,14 @@ class Piece {
             }
             this.piece_div.setAttribute('draggable', 'false');
         }
+
+        // if(!(debugMode && botDrag)){
+            
+        //     this.piece_div.setAttribute('draggable', 'false');
+        // }
     }
 }
+
 
 class Player {
     constructor(name = player_name, input_type = "Bot", hand_div_id, difficulty = default_difficulty_mode){
@@ -302,19 +356,27 @@ class Player {
     add_piece_svg_to_hand_div(piece_div){ // ???
         
         if(this.input_type == 'Bot'){
-            if(view_bot_hand === false){
+            if (view_bot_hand === false){
                 setUnview(piece_div);
             }
 
         }
+
+        /* else if (this.input_type == "Jogador"){
+
+        } */
         
         this.hand_div.appendChild(piece_div);
         
 
     }
-    draw_piece(quantity = 1){ // compra uma peça da pilha inicial
+    draw_piece(quantity = 1) { // compra uma peça da pilha inicial
         if(quantity <= shop.length){
-            for(var i = 0; i < quantity; i++){
+            /* if(this.can_play){
+                alert('já tem peças jogaveis');
+                return false;
+            } */
+            for(var i = 0; i < quantity; i++) {
                 var piece = shop.pop();
                 piece.owner = this;
                 this.hand.push(piece);
@@ -327,12 +389,12 @@ class Player {
             }
             return true;
         } else {
-            alert('Shop vazio!')
+            alert ('Shop vazio!')
             console.log("error: not enough pieces!");
             return false;
         }
     }
-    print_hand(){ // imprime cada peça da mão do jogador no terminal, e a posição em que ela está
+    print_hand() { // imprime cada peça da mão do jogador no terminal, e a posição em que ela está
         console.log("------------------------------");
         console.log(">>>> [Printing Hand"+this.name+"] <<<<");
         for(var i = 0; i < this.hand.length; i++){
@@ -340,8 +402,8 @@ class Player {
         }
         console.log("------------------------------");
     }
-    print_playables(){ // imprime cada peça da mão do jogador que podem ser jogadas na hora
-        if(debugMode){
+    print_playables() { // imprime cada peça da mão do jogador que podem ser jogadas na hora
+        if (debugMode){
             console.log("------------------------------");
             console.log(">>>> [Printing-Playables: "+this.name+"] <<<<");
             let piece;
@@ -350,20 +412,20 @@ class Player {
                 
                 piece = this.hand[i];
     
-                if(piece.playable[left] === yes || piece.playable[right] === yes){
+                if(piece.playable[left] === yes || piece.playable[right] === yes) {
                 
                     console.log("Piece "+i+": "+piece.string()+" {Playable}.");
                     
-                    if(piece.playable[left] === yes){
+                    if(piece.playable[left] === yes) {
                         console.log("left: yes.");
-                    } else if(piece.playable[left] === yes_rotate){
+                    } else if(piece.playable[left] === yes_rotate) {
                         console.log("left: yes_rotate.");
                     } else {
                         console.log("left: no.");
                     }
-                    if(piece.playable[right] === yes){
+                    if(piece.playable[right] === yes) {
                         console.log("right: yes.");
-                    } else if(piece.playable[right] === yes_rotate){
+                    } else if(piece.playable[right] === yes_rotate) {
                         console.log("right: yes_rotate.");
                     } else {
                         console.log("right: no.");
@@ -372,9 +434,9 @@ class Player {
             }
         }
     }
-    print_hand_playables(){ // imprime cada peça da mão do jogador que podem ser jogadas na hora
+    print_hand_playables() { // imprime cada peça da mão do jogador que podem ser jogadas na hora
         
-        if(debugMode){
+        if (debugMode){
                 console.log("------------------------------");
             console.log(">>>> [Printing-Playables: "+this.name+"] <<<<");
             
@@ -387,7 +449,7 @@ class Player {
                 if(piece.playable[left] >= yes || piece.playable[right] >= yes){
                     console.log(">> Piece "+i+": "+piece.string()+" {Playable}");
 
-                    switch(piece.playable[left]){
+                    switch (piece.playable[left]) {
                         case yes:
                             console.log("left: yes.");    
                             break;
@@ -400,7 +462,7 @@ class Player {
                         default:
                             console.log("left: Error.");
                             break;
-                    } switch(piece.playable[right]){
+                    } switch (piece.playable[right]) {
                         case yes:
                             console.log("right: yes.");    
                             break;
@@ -421,7 +483,7 @@ class Player {
                 }
             } 
 
-            if(debugMode){
+            if (debugMode){
                 console.log("------------------------------");
             }
         }
@@ -432,27 +494,31 @@ class Player {
             console.error("error: update_playables, hand empty");
             return false;
         }
-        for(let i = 0; i < this.hand.length; i++){
+        if (debugMode){
+            // console.log(">>>> [Updating-Playables: "+this.name+"] <<<<");
+        }
+        for(let i = 0; i < this.hand.length; i++) {
             this.hand[i].update_playable();
             this.hand[i].piece_div.setAttribute('id', 'slotId' + i); 
             
             if(this.input_type === "Bot" && !(debugMode && botDrag)){  // se a peça estivar com o bot...
 
                 this.hand[i].piece_div.setAttribute('draggable', 'false'); // ...remover propriedade "dragable" da peça          
+            //     this.piece_div.setAttribute('draggable', 'false'); // ...remover propriedade "dragable" da peça
             }
 
         }
         
         return true;
     }
-    update_can_play(){ // marca em uma variavel do objeto Player que ele tem pelo menos uma jogada possivel
+    update_can_play() { // marca em uma variavel do objeto Player que ele tem pelo menos uma jogada possivel
         
         let player = this;
 
         // iterar por todas as peças.
         for(let i = 0; i < player.hand.length; i++){
             for(let j = 0; j < player.hand[i].playable.length; j++){
-                if((player.hand[i].playable[j] === yes) ||(player.hand[i].playable[j] === yes_rotate)){ // se uma achada como jogavel, retornar true.
+                if((player.hand[i].playable[j] === yes) || (player.hand[i].playable[j] === yes_rotate)) { // se uma achada como jogavel, retornar true.
                     player.can_play = true; 
                     return true;
                 }
@@ -470,6 +536,7 @@ class Player {
             if(this.input_type === "Bot"){
                 if(!(debugMode && botDrag)){
                     this.hand[i].piece_div.setAttribute('draggable', 'false');
+                    // this.piece_div.setAttribute('draggable', 'false');   
                 }
             }
         }
@@ -481,7 +548,7 @@ class Player {
             this.hand[i].piece_div.classList.remove('left');
             this.hand[i].piece_div.classList.remove('playable');
         }
-        if(debugMode){
+        if (debugMode){
             console.log(`blocking for: ${this.name}`);
         }
     }
@@ -489,7 +556,7 @@ class Player {
         this.update_playables();
         this.update_can_play();
         this.update_draggables();
-        if(debugMode){
+        if (debugMode){
             console.log(`updating: ${this.name}`);
         }
     }
@@ -502,38 +569,44 @@ class Player {
     }
     play_piece(position, side = right){
 
-        if(debugMode){
+        if (debugMode){
             console.log(`${this.name}: chosen piece ${position}`); // debug?
         }
 
-        if(this.hand[position].playable[side] === yes_rotate){
+        if(this.hand[position].playable[side] === yes_rotate) {
             this.hand[position].rotate();
         }
 
-        if(this.hand[position].playable[side] === yes){
+        if(this.hand[position].playable[side] === yes) {
             
-            if(side == left){ // jogar na ponta esquerda da mesa
+            if(side == left) { // jogar na ponta esquerda da mesa
+                // this.set_left(position);
                 var piece = remove_piece(this.hand, position);
-                if(debugMode){
+                if (debugMode){
                     console.log("[Playing Piece "+position+"]");
                 }
                 table.unshift(piece);  
                 update_table(piece.value[left], piece.value[right], side, current_player.name);
                 piece.piece_div.remove();
-            } else if(side == right){ // jogar na ponta direita da mesa
+                // console.log(piece.value[left]);
+                // console.log(piece.value[right]);
+            } else if(side == right) { // jogar na ponta direita da mesa
+                // this.set_right(position);
                 var piece = remove_piece(this.hand, position);
-                if(debugMode){
+                if (debugMode){
                     console.log("[Playing Piece "+position+"]");
                 }
                 table.push(piece);
                 update_table(piece.value[left], piece.value[right], side, current_player.name);
                 piece.piece_div.remove();
+                // console.log(piece.value[left]); 
+                // console.log(piece.value[right]);
             } else {
                 console.log("error: invalid play!");
                 return false;
             }
         } else {
-            if(debugMode){
+            if (debugMode){
                 console.log("unexpected error: Player.play_piece()");
             }
             return false;
@@ -541,14 +614,21 @@ class Player {
         
         
         turn_counter++;
-        if(debugMode){
+        if (debugMode){
             console.log(`>>>> current turn: ${turn_counter} <<<<`);
         }
         update_status_window_all();
+        // updateByTurn(turn_counter);
+        // updateByMove(shop.length);
+        // updateByMatches(player_list[player1].name, player_list[player1].score, player_list[player2].name, player_list[player2].score);
+        
+        // function updatebleByTurn (actualTurn = 1){
+        // function updateByMove (remainingPieces = 14){
+        // function updatebleByMatches (player1Name='Player1', player1Score=0, player2Name='Player2', player2Score=0){
     
         return true;
     }
-    hand_sum(){
+    hand_sum() {
         let player = this;
         let total = 0;
 
@@ -558,28 +638,114 @@ class Player {
 
         return total;
     }
-    clear_hand(){
+    clear_hand() {
         for(let i = this.hand_div.children.length-1; i >= 0; i--){
             this.hand_div.children[i].remove();
         }
 
         this.hand = new Array();
     }
-    reset_score(){
+    /* set_left(hand_position) { // (obsoleta) joga uma peça escolhida da mão do jogador na ponta esquerda da sequencia da mesa se possivel (é escolhida pela numeração mostrada no method print_hand())
+
+        if(hand_is_empty(table)){
+            var piece = remove_piece(this.hand, hand_position);
+            table.unshift(piece);
+            return 1;
+        } else if((table[0].value_left) == (this.hand[hand_position].value_right)) {
+            var piece = remove_piece(this.hand, hand_position);
+            table.unshift(piece);
+            return 1;
+        } else if((table[0].value_left) == (this.hand[hand_position].value_left)) {
+            var piece = remove_piece(this.hand, hand_position);
+            piece.rotate();
+            table.unshift(piece);
+            return 1;
+        } else {
+            console.log('not empty or incompatible');
+            return 0;
+        }
+    } */
+    /* set_right(hand_position) { //(obsoleta)joga uma peça escolhida da mão do jogador na ponta direita da sequencia da mesa
+
+        if(hand_is_empty(table)){
+            var piece = remove_piece(this.hand, hand_position);
+            console.log("[Playing Piece "+hand_position+"]");
+            table.push(piece);
+            return 1;
+        } else if((table[table.length-1].value_right) == (this.hand[hand_position].value_left)) {
+            var piece = remove_piece(this.hand, hand_position)
+            table.push(piece);
+            return 1;
+        } else if((table[table.length-1].value_right) == (this.hand[hand_position].value_right)) {
+            var piece = remove_piece(this.hand, hand_position)
+            piece.rotate();
+            table.push(piece);
+            return 1;
+        } else {
+            console.log('not empty or incompatible');
+            return 0;
+        }
+    } */
+    /* check_can_play() { // (obsoleta) retorna quantas peças que estão na mão do jogador que ele pode jogar na hora
+
+        let how_many = 0;
+        
+        for(let i = 0; i < this.hand.length; i++){
+            if(this.check_fit_left(i)){
+                how_many++;
+            }
+            if(this.check_fit_right(i)){
+                how_many++;
+            }
+        }
+
+        // compra peça se não puder jogar
+        // passa o turno se não puder jogar ou comprar
+
+        return how_many;
+        
+    } */
+    reset_score() {
         this.score = 0;
     }
-    reset_hand(){
+    reset_hand() {
         let player = this;
         player.hand = new Array();
         return true;
     }
-    add_score(points){
+    add_score(points) {
         this.score += points;
-    } 
+    }
+    
 }
 
-function generate_pile(pile, min = 0, max = 6){ // gera a pilha inicial de peças. 
+////////////////////////////////////////
+
+////////////////////////////////////////
+// functions:
+////////////////////////////////////////
+
+/* // funciona, porém predefinida
+function generate_pile(pile) { // gera a pilha inicial de peças. 
     
+    // let svgs = document.getElementById("template_values_svg").children;
+
+    for(let i = 0; i <= 6; i++){
+        pile.push(new Piece(i,i));
+    }
+    for(let i = 0; i <= 6; i++){
+        for(let j = i; j <= 6; j++){
+            if(!(i === j)){
+                pile.push(new Piece(i,j));
+            }
+        }
+    }
+} */
+
+function generate_pile(pile, min = 0, max = 6) { // gera a pilha inicial de peças. 
+    
+    // let svgs = document.getElementById("template_values_svg").children;
+
     for(let i = min; i <= max; i++){
         pile.push(new Piece(i,i));
     }
@@ -591,25 +757,30 @@ function generate_pile(pile, min = 0, max = 6){ // gera a pilha inicial de peça
         }
     }
 }
-function print_pile(pile){ // imprime no console as peças de grupo de peças
+
+
+
+function print_pile(pile) { // imprime no console as peças de grupo de peças
     
-    let last =((pile.length)-1)
+    let last = ((pile.length)-1)
 
     for(let i = 0; i <= last; i++){
         console.log("Piece "+i+":"+pile[i].string())
     }
 
 }
-function print_shop(){
-    if(debugMode){        console.log("--------------------------");
+function print_shop() {
+    if (debugMode)
+    {
+        console.log("--------------------------");
         console.log(">>>> [Printing-Shop] <<<<");
         print_pile(shop);
         console.log("--------------------------");
     }
     
 }
-function print_table(){
-    if(debugMode){
+function print_table() {
+    if (debugMode){
         console.log("--------------------------");
         console.log(">>>> [Printing-Table] <<<<");
         print_pile(table);
@@ -623,12 +794,13 @@ function print_table(){
     }
 
 }
-function shuffle_pile(pile){
+function shuffle_pile(pile) {
 
-    let last =(pile.length - 1)
+    let last = (pile.length - 1)
     
     for(let i = last; i > 0; i--){
         
+        // let j = Math.floor(Math.random() * (i + 1)); // numero aleatorio
         let j = generate_random_int(i);
 
         let temp = pile[i];
@@ -637,30 +809,31 @@ function shuffle_pile(pile){
     }
 }
 
-function generate_random_int(max, min = 0){
+function generate_random_int(max, min = 0) {
 
-    let result =(((Math.floor(Math.random()*10000) *(new Date().getTime())) %((max + 1) - min)) + min);
+    let result = (((Math.floor(Math.random()*10000) * (new Date().getTime())) % ((max + 1) - min)) + min);
 
     return result;
 }
 
-function draw_piece(pile, player, quantity = 1){ // passa uma peça da pilha de compra para o jogador(ou BOT)  
+function draw_piece(pile, player, quantity = 1) { // passa uma peça da pilha de compra para o jogador (ou BOT)  
     for(let i = quantity; i > 0; i--){
         let tmp = pile.pop()
         player.hand.push(tmp)
     }
     update_status_window_all();
 }
-function remove_piece(pile, position){ // remove uma peça de um grupo de peças(contagem começa do 1, não do 0)
+function remove_piece(pile, position) { // remove uma peça de um grupo de peças (contagem começa do 1, não do 0)
     return pile.splice((position), 1)[0];
 }
-function check_empty(pile){ // verifica se tem peças na mesa
+function check_empty(pile) { // verifica se tem peças na mesa
 
     return Boolean(!(pile.length));
 }
-function going_first(){
+function going_first() {
 
-    let winner_position =(-1);
+    // (temp) precisa retornar objeto do jogador vencedor
+    let winner_position = (-1);
     let mirrored = new Array();
     let highest_value = new Array();
     let highest_position = new Array();
@@ -669,13 +842,13 @@ function going_first(){
     
     mirrored[player1] = false;
     mirrored[player2] = false;
-    highest_value[player1] =(-1);
-    highest_value[player2] =(-1);
+    highest_value[player1] = (-1);
+    highest_value[player2] = (-1);
 
     // testando peças espelhadas
     for(let i = 0; i < player_list.length; i++){ // itera por cada jogador
         for(let j = 0; j < player_list[i].hand.length; j++){ // itera por cada peça na mão do jogador
-            if((player_list[i].hand[j].is_mirror()) &&((player_list[i].hand[j].value[left]) >(highest_value[i]))){  // verifica se é espelhado, soma dois valores, compara com o ultimo valor.
+            if((player_list[i].hand[j].is_mirror()) && ((player_list[i].hand[j].value[left]) > (highest_value[i]))){  // verifica se é espelhado, soma dois valores, compara com o ultimo valor.
                 highest_position[i] = j;
                 highest_value[i] = player_list[i].hand[j].value[left];
                 mirrored[i] = true;
@@ -683,32 +856,32 @@ function going_first(){
         }
     }
     
-    if((mirrored[player1] === true) &&(mirrored[player2] === true)){ // se ambos tiverem peça espelhada, quem tiver a de maior valor, ganha.
+    if((mirrored[player1] === true) && (mirrored[player2] === true)) { // se ambos tiverem peça espelhada, quem tiver a de maior valor, ganha.
         if(highest_value[player1] > highest_value[player2]){
             winner = player_list[player1];
             winner_position = highest_position[player1];
             
-        } else if(highest_value[player2] > highest_value[player1]){
+        } else if(highest_value[player2] > highest_value[player1]) {
             winner = player_list[player2];
             winner_position = highest_position[player2];
         } else { // error testing 1.
-            console.log("ERROR:1"); // não tira essa!
+            console.log("ERROR:1");
         }
-    } else if((mirrored[player1] === true) &&(mirrored[player2] === false)){ // se somente o human tiver a espelhada, o human ganha.
+    } else if((mirrored[player1] === true) && (mirrored[player2] === false)) { // se somente o human tiver a espelhada, o human ganha.
         winner = player_list[player1];
         winner_position = highest_position[player1];
-    } else if((mirrored[player2] === true) &&(mirrored[player1] === false)){ // se somente o bot tiver a espelhada, o bot ganha.
+    } else if((mirrored[player2] === true) && (mirrored[player1] === false)){ // se somente o bot tiver a espelhada, o bot ganha.
         winner = player_list[player2];
         winner_position = highest_position[player2];
-    } else if((mirrored[player1] === false) &&(mirrored[player2] === false)){ // se nenhum que tiver peça espelhada, vão ser comparadas as não-espelhadas
+    } else if((mirrored[player1] === false) && (mirrored[player2] === false)){ // se nenhum que tiver peça espelhada, vão ser comparadas as não-espelhadas
         
         // reiniciando array que guarda maiores valores.
-        highest_value[player1] =(-1);
-        highest_value[player2] =(-1);
+        highest_value[player1] = (-1);
+        highest_value[player2] = (-1);
 
         for(let i = 0; i < player_list.length; i++){ // itera por cada jogador
             for(let j = 0; j < player_list[i].hand.length; j++){ // itera por cada peça na mão do jogador
-                if(((player_list[i].hand[j].sum()) >(highest_value[i]))){  // compara com o ultimo valor.
+                if(((player_list[i].hand[j].sum()) > (highest_value[i]))){  // compara com o ultimo valor.
                     highest_position[i] = j;
                     highest_value[i] = player_list[i].hand[j].sum();
                 }
@@ -719,13 +892,13 @@ function going_first(){
         if(highest_value[player1] > highest_value[player2]){ // se o human tiver a peça não-espelhada de maior soma de valores, então human ganha.
             winner = player_list[player1];
             winner_position = highest_position[player1];
-        } else if(highest_value[player2] > highest_value[player1]){ // se o bot tiver a peça não-espelhada de maior soma de valores, então bot ganha.
+        } else if(highest_value[player2] > highest_value[player1]) { // se o bot tiver a peça não-espelhada de maior soma de valores, então bot ganha.
             winner = player_list[player2];
             winner_position = highest_position[player2];
         } else { // error testing 2.
-            console.log("ERROR:2"); // não tira essa!
+            console.log("ERROR:2"); 
         }
-    } else { //(Somente para debugging)
+    } else { // (Somente para debugging)
         console.log("fatal-error!!!");
         console.log(mirrored[player1]);
         console.log(mirrored[player2]);
@@ -745,13 +918,28 @@ function going_first(){
     }
     
     winner.hand[winner_position].update_playable(); // marca somente a peça ganhadora como jogavel.
-    winner.can_play = true; //(...)
+    winner.can_play = true; // (...)
     winner.hand[winner_position].piece_div.setAttribute('id', 'slotId' + winner_position); // marca o indice da peça na mão como id do svg da peça
     if(winner.input_type === "Bot" && !(debugMode && botDrag)){ // transforma em não arrastavel se pertencer ao bot 
         winner.hand[winner_position].piece_div.setAttribute('draggable', 'false');     
     }
+    // botDrag = false
+    // !botDrag = true
 
-    if(debugMode){
+
+    // botDrag = true
+    // !botDrag = false
+
+    /* for(let i = 0; i < winner.hand[winner_position].playable.length; i++){ // marca somente a peça ganhadora como jogavel.
+       
+        winner.hand[winner_position].update_playable();
+        winner.hand[winner_position].piece_div.setAttribute('id', 'slotId' + i); 
+        // winner.hand[winner_position].playable[i] = yes; // (old!)
+        // winner.hand[winner_position].update_classes_by_playable();
+    } */
+
+    
+    if (debugMode){
         console.log("First: "+winner.name);
     }
     
@@ -760,6 +948,19 @@ function going_first(){
     return winner;
 }
 function change_player(){
+    /* old code (it works)
+    let next;
+    
+    if(current_player === player_list[player1]){
+        next = player_list[player2];
+    } else {
+        next = player_list[player1];
+    }
+
+    console.log("changing to: "+next.name+"");
+    current_player = next;
+    everyone_update_all();
+    block_everyone_not_playing(); */
 
     let next_player;
 
@@ -781,14 +982,15 @@ function change_player(){
     everyone_update_all();
 }
 
-function bot_strategy(){
+function bot_strategy(  ){
 
     switch(current_player.difficulty){
-        case "easy": // itera pelas peças na mão do BOT procurando a primeira peça que pode ser jogada, e joga ela
+        case "easy": // itera pelas peças na mão do BOT procurando a primeira peça que pode ser jogada, e joga ela // broken here 20230120
             for(let position = 0; position < current_player.hand.length; position++){
                 for(let side = 0; side < current_player.hand[position].playable.length; side++){
                     if(current_player.hand[position].playable[side] === yes || current_player.hand[position].playable[side] === yes_rotate){       
                         current_player.play_piece(position, side);
+                        // ask_play(position, side);
                         return "worked!";
                     }
                 }
@@ -806,24 +1008,48 @@ function bot_strategy(){
                 for(let side = 0; side < current_player.hand[position].playable.length; side++){
                     
                     if((current_player.hand[position].playable[side] >= yes && current_player.hand[position].sum() > highest_sum)){
+                        // console.log(`found: ${position}|${side}`);
                         highest_sum = current_player.hand[position].sum();
                         highest_sum_position = position;
                         highest_sum_side = side;
+                        // [breaking-here]
+                    } else {
+                        // console.log(`checked: ${position}|${side}`);
                     }
                 }
             }
             
-            if(debugMode){
+            if (debugMode){
                 console.log("highest_sum: "+highest_sum); // debug
                 console.log("highest_sum_position: "+highest_sum_position); // debug
                 console.log("highest_sum_side: "+highest_sum_side); // debug
             }
 
-            current_player.play_piece(highest_sum_position, highest_sum_side); // debug  
+            current_player.play_piece(highest_sum_position, highest_sum_side); // debug
+
+
+            // console.error("Error: AI hard mode");
+
+            /* 
+            for(let position = 0; position < (current_player.hand.length); position++){
+                for(let side = 0; side < (current_player.hand[position].playable.length); side++){
+                    if(current_player[position].playable[side] === true && current_player[position].sum() > highest_sum){
+                        highest_sum = current_player[position].sum();
+                        highest_sum_position = position;
+                        highest_sum_side = side;
+                    }
+                }
+                if(highest_sum >= 0){
+                    ask_play(highest_sum_position, highest_sum_side);
+                } else {
+                    console.error("Error: AI hard mode");
+                }
+            } */   
             
             break;
 
         case "mittens":
+            // (W.I.P)
             break;
 
         default:
@@ -859,14 +1085,14 @@ function match_over(){
 
     } else if(players_cannot_play()){ // shop va
         // test who wins...
-        if((player_list[player1].hand_sum()) <(player_list[player2].hand_sum())){ // Player 1 menor valor total em mãos, Player 1 ganha.
+        if((player_list[player1].hand_sum()) < (player_list[player2].hand_sum())){ // Player 1 menor valor total em mãos, Player 1 ganha.
             
             var winner = player_list[player1];
             var loser = player_list[player2];
             
             over_flag = true;
 
-        } else if((player_list[player2].hand_sum()) <(player_list[player1].hand_sum())){ // Player 2 menor valor total em mãos, Player 2 ganha.
+        } else if((player_list[player2].hand_sum()) < (player_list[player1].hand_sum())){ // Player 2 menor valor total em mãos, Player 2 ganha.
             
             var winner = player_list[player2];
             var loser = player_list[player1];
@@ -880,6 +1106,7 @@ function match_over(){
             return true;
         }
     } else {
+        // console.log(">>> Next-Turn <<<");
         return false;
     }
 
@@ -901,9 +1128,12 @@ function match_over(){
         console.log("=========================================");
         console.log(">>>> Match-Winner: ["+winner.name+"] <<<<");
         console.log("added points: "+points);
-        console.log("=========================================");   
+        console.log("=========================================");
+        // alert(">>>> Match-Winner: ["+winner.name+"] <<<<"+"\n"+"added points: "+points);    
     }
     
+    // init_match();
+
     return true;
 }
 function game_over(winner){
@@ -916,6 +1146,7 @@ function game_over(winner){
         if(debugMode){
             console.log(">>> Winner: "+player.name+" <<<");
         }
+        game_over_flag = false; // desnecessaria?
         round_counter = 1;
         return true;
 
@@ -927,7 +1158,24 @@ function game_over(winner){
 
     }
     
-   
+    /* for(let player of player_list){ // passa por todos os jogadores
+        if(player.score >= 100){ // verifica se o jogador tem 100 pontos ou mais
+            // mostra a tela de vitória do jogo
+            displayOverlayGameOn(winner.name, winner.score);
+            
+            if(debugMode){
+                console.log(">>> Winner: "+player.name+" <<<");
+            }
+            return true;
+
+        } else {
+            if(debugMode){
+                console.log(">>> Next-Match <<<");
+            }
+            return false;
+
+        }
+    } */
 }
 
 ////////////////////////////////////////
@@ -953,10 +1201,85 @@ function game_over(winner){
     
     // criando players.
     player_list = new Array();
+    // player_list[player1] = new Player("Player1", "Jogador", "player1HandInner"); // objeto que representa o jogador
+    // player_list[player2] = new Player("Player2", "Bot", "player2HandInner"); // objeto que representa o BOT
+
+////////////////////////////////////////
+
+//Usar a função de exibição de mensagem quando ocorre uma jogada inválida:
+
+/* if (!is_valid_move(move)){
+    show_error_message("Invalid move. Please try again.")
+
+    return 
+} */
+
+
+// const playButton = document.querySelector('#play-button');
+// playButton.addEventListener('click', play_game);
+// function updateBoard() {
+//     const board = document.querySelector("#board");
+//     // Use o código já existente para atualizar o tabuleiro com as peças
+//     // ex: board.innerHTML = getBoardHTML()
+// }
+
+//function isValidMove(move) {
+    // Use o código já existente para validar a jogada
+    // ex: return isValidMove(move);
+//}
+// const playButton = document.querySelector("#play-button");
+// playButton.addEventListener("click", function() {
+//     const move = getPlayerMove();
+//     if (isValidMove(move)) {
+//         updateBoard();
+//     } else {
+//         // Exibir mensagem de erro para jogada inválida
+//     }
+// });
+
+/* 
+const hand = document.querySelector("#hand");
+hand.addEventListener("click", selectPiece);
+hand.addEventListener("dragstart", dragPiece);
+
+const board = document.querySelector("#board");
+board.addEventListener("drop", dropPiece);
+board.addEventListener("dragover", allowDrop);
+
+// const playButton = document.querySelector("#play-button");
+playButton.addEventListener("click", play_game);
+
+function play_game() {
+    const move = getPlayerMove();
+    if (isValidMove(move)) {
+        updateBoard();
+    } else {
+        show_error_message("Invalid move. Please try again.");
+    }
+}
+
+
+const playButton = document.querySelector("#play-button");
+playButton.addEventListener("click", function() {
+    const result = confirm("Vamos começar a jogar?");
+    if (result) {
+        // código para iniciar o jogo
+    } else {
+        // código para cancelar o jogo
+    }
+});
+*/
+
+
+
 
 // =============================== //
 // |         Daniel Init         | //
 // =============================== //
+
+
+/**  */
+
 
 /**
  * Executa uma função após um determinado tempo
@@ -972,89 +1295,109 @@ function sleepFor(sleepDuration){
     while(new Date().getTime() < now + sleepDuration){}
 }
 
-function printCheats(){
 
-    if(debugMode){
-        console.log('\n\n*** Cheats ***\n\n')
+/**  */
+function printCheats (){
 
-        for(i in cheats){
+    if (debugMode){
+        console.log ('\n\n*** Cheats ***\n\n')
 
-            console.log(cheats[i]);
+        for (i in cheats){
+
+            console.log (cheats[i]);
         }
-    } else {
+    }
+    else{
         console.error('Change debug mode to on to use this function!!!')
     }
 }
 
-function generate20pieces(){
-    if(debugMode){
-        for( let i = 0; i< 20; i++){
+
+/**  */
+function generate20pieces (){
+    if (debugMode){
+        for ( let i = 0; i< 20; i++){
             updateTableSP();
         }
-    } else {
+    }
+    else{
         console.error('Change debug mode to on to use this function!!!')
     }
+    
 }
 
-function createCard(){
-    if(debugMode){
-        updateByTurn();
+
+/**  */
+function createCard (){
+    if (debugMode){
+        updateByTurn ();
         updateByMatches();
-    } else {
+    }
+    else{
         console.error('Change debug mode to on to use this function!!!')
     }
 }
 
-function drawPieceCurrentPlayer(){
-    if(debugMode){
+
+/**  */
+function drawPieceCurrentPlayer (){
+    if (debugMode){
 
         current_player.draw_piece();
-    } else {
+    }
+    else{
         console.error('Change debug mode to on to use this function!!!')
     }
 }
 
 
-/** * Função de testes com valores arbitrarios e aleatorios */
-function updateTableSP(){
+/** Função de testes com valores arbitrarios e aleatorios */
+function updateTableSP (){
 
     let tableSide = 'r'
     
     let value1 = Math.floor(Math.random() * 6);
     let value2 = Math.floor(Math.random() * 6);
 
-    updateTableWP(tableSide, value1, value2);
+    
+    updateTableWP (tableSide, value1, value2);
 }
 
+
 /** Função de testes com valores arbitrarios e aleatorios */
-function updateTableWP(tableSide, value1, value2){
+function updateTableWP (tableSide, value1, value2){
 
-    let piece = createTablePieceWP(value1, value2);
+    let piece = createTablePieceWP (value1, value2);
 
-    if(tableSide == 'l'){
-        containerTable.prepend(piece);
-    } else if(tableSide == 'r'){
+    if (tableSide == 'l'){
+        containerTable.prepend (piece);
+    }
+
+    else if (tableSide == 'r'){
         
-        containerTable.appendChild(piece);
-    } else {
+        containerTable.appendChild (piece);
+    }
+
+    else {
         return console.error('Invalid Entry');
 
     }
 }
 
+
 /** Função de testes com valores arbitrarios e aleatorios */
-function createTablePieceWP(value1, value2){
+function createTablePieceWP (value1, value2){
     
-    let piece = generateTablePiece(value1,value2);
+    let piece = generateTablePiece (value1,value2);
 
-    if(value1 == value2){                              // Peça na Vertical
+    if (value1 == value2){                              // Peça na Vertical
 
-        piece.setAttribute('class', 'piece UsableRectangleH'); // Seta a classe de peça na Vertical(height)
+        piece.setAttribute ('class', 'piece UsableRectangleH'); // Seta a classe de peça na Vertical (height)
     }
     
     else {   
 
-        piece.setAttribute('class', 'piece UsableRectangleW'); // Seta a classe de peça na Horizontal(width)
+        piece.setAttribute ('class', 'piece UsableRectangleW'); // Seta a classe de peça na Horizontal (width)
     }
 
     return piece
@@ -1074,51 +1417,51 @@ function createTablePieceWP(value1, value2){
 
 
 
-function getBotDifficult(id){
-    let botDifficult = document.getElementById(id).value;
+function getBotDifficult(id) {
+    let botDifficult = document.getElementById (id).value
 
-    if(id == 'difficultBot1Mode'){
-        bot_difficulty_1 = botDifficult;
+    if (id == 'difficultBot1Mode'){
+        bot_difficulty_1 = botDifficult
     }
     
-    else if(id == 'difficultBot2Mode'){
-        bot_difficulty_2 = botDifficult;
+    else if (id == 'difficultBot2Mode'){
+        bot_difficulty_2 = botDifficult
     }
 }
 
-window.onload = function(){
-    initForms();
+window.onload = function() {
+    initForms ()
 }
 
-function initForms(){
-    generateFormMin(piece_max_value_limit);
-    generateFormMax(piece_min_value_limit);
-    generateFormHand(piece_max_value_limit+1);
+function initForms (){
+    generateFormMin (piece_max_value_limit)
+    generateFormMax (piece_min_value_limit)
+    generateFormHand (piece_max_value_limit+1)
 }
 
 function initArrayInRange(min, max){
     let array = [];
 
-    for(let i = min; i <= max; i++){
+    for (let i = min; i <= max; i++){
         array.push(i);
     }
 
     return array;
 }
 
-function resetOptions(id){
+function resetOptions (id){
     document.getElementById(id).innerHTML = '';
 }
 
-function generateFormMin(max){
+function generateFormMin (max){
 
     let possibilitiesMin = initArrayInRange(0, max-2);
 
     let minValue = document.getElementById("minValue");
     
-    resetOptions('minValue');
+    resetOptions ('minValue');
 
-    for(x of possibilitiesMin){
+    for (x of possibilitiesMin) {
         
         let y = parseInt(x, 10);
         let minOption = new Option(y, y);
@@ -1129,15 +1472,15 @@ function generateFormMin(max){
     }
 }
 
-function generateFormMax(min){
+function generateFormMax (min){
 
     let possibilitiesMax = initArrayInRange(min+2, 6);
     
     let maxValue = document.getElementById("maxValue");
 
-    resetOptions('maxValue');
+    resetOptions ('maxValue');
     
-    for(x of possibilitiesMax){
+    for (x of possibilitiesMax) {
 
         let y = parseInt(x, 10);
         let maxOption = new Option(y, y);
@@ -1148,13 +1491,13 @@ function generateFormMax(min){
     }
 }
 
-function generateFormHand(hand){
+function generateFormHand (hand){
     let possibilitiesHand = initArrayInRange(2, hand);
     let handLimit = document.getElementById("qtdHandPieces");
 
-    resetOptions('qtdHandPieces');
+    resetOptions ('qtdHandPieces');
 
-    for(x of possibilitiesHand){
+    for (x of possibilitiesHand) {
         
         let y = parseInt(x, 10);
         let handOption = new Option(y, y);
@@ -1165,11 +1508,11 @@ function generateFormHand(hand){
     }
 }
 
-function generateForms(max, hand){
+function generateForms (min, max, hand){
 
-    generateFormMin(max);
+    generateFormMin (max);
 
-    generateFormHand(hand);
+    generateFormHand (hand);
 }
 
 let formContent = [
@@ -1178,16 +1521,16 @@ let formContent = [
     ['qtdHandPieces', hand_size],
 ]
 
-function loadSelectedMin(input){
+function loadSelectedMin (input){
 
-    let obj = document.getElementById('optionFormMin#' + 0);
+    let obj = document.getElementById ('optionFormMin#' + 0);
 
     
-    for(let i = 0; i <= input ; i++){
+    for (let i = 0; i <= input ; i++) {
         
-        let j = document.getElementById('optionFormMin#' + i);
+        let j = document.getElementById ('optionFormMin#' + i);
 
-        if(j == null){
+        if (j == null){
             break;
         }
         
@@ -1195,38 +1538,38 @@ function loadSelectedMin(input){
 
     }
 
-    obj.setAttribute('selected', 'selected');
+    obj.setAttribute ('selected', 'selected');
 }
 
-function loadSelectedHand(input){
+function loadSelectedHand (input){
 
-    let obj = document.getElementById('optionFormHandLimit#' + input);
+    let obj = document.getElementById ('optionFormHandLimit#' + input);
 
-    obj.setAttribute('selected', 'selected');
+    obj.setAttribute ('selected', 'selected');
 }
 
-function getDataForms(){
+function getDataForms (){
 
-    let form = [];
+    let form = []
     
     // ========= //
     // Init form //
     // ========= //
 
-    for(obj of formContent){
+    for (obj of formContent){
         let insertValue = parseInt(document.getElementById(obj[0]).value, 10)
         
         form.push( [obj[0], insertValue])
     }
     
-    let handInterval = form[1][1] - form[0][1];
-    let handLimitSize = handInterval + 1;
-    form[2][1] = handLimitSize;
+    let handInterval = form[1][1] - form[0][1]
+    let handLimitSize = handInterval + 1
+    form[2][1] = handLimitSize
     
-    generateForms(form[1][1], handLimitSize);
+    generateForms (form[0][1], form[1][1], handLimitSize)
     
-    loadSelectedMin(form[0][1]);
-    loadSelectedHand(handLimitSize) ;   
+    loadSelectedMin (form[0][1])
+    loadSelectedHand (handLimitSize)        
     
     console.log('Daniel Log - getDataForms -  handLimitSize',  handLimitSize);
 
@@ -1235,13 +1578,17 @@ function getDataForms(){
     // Min Max Value Block //
     // =================== //
 
-    if(form[0][1] > form[1][1]){    // Min > Max value error
+    if ( form[0][1] > form[1][1] ) {    // Min > Max value error
         alert('O valor mínimo não pode ser maior que o valor máximo');
         return;
-    } else if(form[1][1] == form[0][1]) {  // Min == Max value error
+    }
+
+    else if(form[1][1] == form[0][1]){  // Min == Max value error
         alert('O valor mínimo não pode ser igual ao valor máximo');
         return;
-    } else {                              // Min value without error
+    }
+
+    else {                              // Min value without error
 
         piece_min_value_limit = form[0][1];
         piece_max_value_limit = form[1][1];
@@ -1250,25 +1597,24 @@ function getDataForms(){
     hand_size = form[2][1];
 }
 
-function setPossibilities(){
-    
+function setPossibilities (){
     let possibilities = [];
 
-    for(let i = 0; i <= piece_max_value_limit; i++){
+    for (let i = 0; i <= piece_max_value_limit; i++){
         possibilities.push(i);
     }
 
     return possibilities;
 }
 
-function resetGameData(){
+function resetGameData (){
 
     gameData = [
         ['Turno', 'Jogador', 'Bot'],
     ]
 }
 
-function displayGraph(){
+function displayGraph (){
     let btn = document.getElementById('graphBoxOuter');
     let graph =  document.getElementById('line-chart');
 
@@ -1281,24 +1627,39 @@ function displayGraph(){
     graph.classList.toggle('displayGraphInner')
 }
 
-function loadDefaultValueOptions(){
+function loadDefaultValueOptions() {
 
-    let listMin = document.getElementById('optionFormMin#' + piece_min_value_limit);
-    let listMax = document.getElementById('optionFormMax#' + piece_max_value_limit);
-    let listHand = document.getElementById('optionFormHandLimit#' + hand_size);
+    let listMin = document.getElementById ('optionFormMin#' + piece_min_value_limit);
+    let listMax = document.getElementById ('optionFormMax#' + piece_max_value_limit);
+    let listHand = document.getElementById ('optionFormHandLimit#' + hand_size);
 
-    listMin.setAttribute('selected', 'selected');
-    listMax.setAttribute('selected', 'selected');
-    listHand.setAttribute('selected', 'selected');
+    listMin.setAttribute ('selected', 'selected');
+    listMax.setAttribute ('selected', 'selected');
+    listHand.setAttribute ('selected', 'selected');
 }
 
-function attHandLimit(){
-    hand_size = document.getElementById('qtdHandPieces').value;
+function attHandLimit () {
+    hand_size = document.getElementById('qtdHandPieces').value
 }
+
+
+// todo
+
+// não deixar o valor máximo ser menor do que o mínimo
+// não deixar o valor mínimo ser maior que o valor máximo
+// não deixar o intervalo entre o valor mínimo e o valor máximo > 2
+// não deixar a mão ser maior que valor máximo + 1
+
+
+// nas próprias listas está apenas o intervalo que é possível e permitido utilizar, 
+// e atualizando o valor das listas a cada valor inserido nelas
+
 
 // ========= //
 // End Lista //
 // ========= //
+
+
 
 function addToInput(input){
     let atual = document.getElementById(input).value;
@@ -1308,23 +1669,26 @@ function addToInput(input){
 
     document.getElementById(input).value = novo;
 }
-
+  
 function subToInput(input){
     let atual = document.getElementById(input).value;
-    if(atual > 0){
+    if(atual > 0) {
         let novo = atual - 1;
         game_max_points = novo;
         document.getElementById(input).value = novo;
     }
 }
 
-function getMaxPoints(input){
+function getMaxPoints(input) {
     let points = document.getElementById(input).value;
     
-    if(points > 0){
+    if (points > 0){
         game_max_points = points;
     }
 }
+
+
+
 
 function difficultMode(){
     default_difficulty_mode = document.getElementById('difficultMode').value;
@@ -1336,7 +1700,7 @@ function botSpeed(){
 
     document.getElementById('displayBotSpeed').innerHTML = speed
 
-    if(speed == 0){
+    if (speed == 0){
         bot_default_delay = 1;
     }
 
@@ -1347,7 +1711,7 @@ function botSpeed(){
 
 }
 
-function drawChart(){
+function drawChart() {
 
     let data = google.visualization.arrayToDataTable(gameData);
   
@@ -1356,20 +1720,20 @@ function drawChart(){
     chart.draw(data, graphOptions);
 }
 
-function removePlayable(){
-    player1Hand.classList.remove('playable')
+function removePlayable (){
+    player1Hand.classList.remove ('playable')
 }
 
 
-function minimalMaxRandomize(min, max){
+function minimalMaxRandomize(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() *(max - min) + min); 
+    return Math.floor(Math.random() * (max - min) + min); 
 }
 
 
-function reloadGraph(actualTurn){
-    gameData.push([actualTurn, player1Hand.children.length, player2Hand.children.length])
+function reloadGraph (actualTurn){
+    gameData.push ([actualTurn, player1Hand.children.length, player2Hand.children.length])
     drawChart()
 }
 
@@ -1379,15 +1743,16 @@ function reloadGraph(actualTurn){
  * 
  * Parâmetro de entrada: acturalTurn < int >
  * 
- * actualTurn: Turno atual(após cada mudança de turno) que deverá aparecer no card
+ * actualTurn: Turno atual (após cada mudança de turno) que deverá aparecer no card
  * 
  * Valor Default: 1
  */
 function updateByTurn(actualTurn = 1){
-    turnsStats(actualTurn);
-    reloadGraph(actualTurn)
+    turnsStats (actualTurn);
+    reloadGraph (actualTurn)
 
-    
+    // opponent_playing_warning_on()
+    // opponent_playing_warning_off()
     
 }
 
@@ -1397,15 +1762,34 @@ function updateByTurn(actualTurn = 1){
  * 
  * Parâmetro de entrada: remainingPieces < int >
  * 
- * remainingPieces: Peças restantes(após cada movimento) que deverá aparecer no card
+ * remainingPieces: Peças restantes (após cada movimento) que deverá aparecer no card
  * 
  * Valor Default: 14
  */
-function updateByMove(remainingPieces = 14){
-    restingPiecesStats(remainingPieces);
+function updateByMove (remainingPieces = 14){
+    restingPiecesStats (remainingPieces);
 }
 
-/* * função refatorada(2) ... */
+
+/**
+ * Funções que devem ser atualizadas a cada partida
+ * 
+ * Parâmetros de entrada: player1Name < string > , player1Score < int >, player2Name < string >, player2Score1 < int >
+ * 
+ * player1Name e player2Name: Nome do jogador 1 e jogador 2 respectivamente, que deveram aparecer no card
+ * 
+ * player1Score e player2Name: Score do jogador 1 e jogador 2 respectivamente, que deveram aparecer no card
+ * 
+ * Valor Default: 'Player1', 0, 'Bot', 0
+ */
+/* function updateByMatches (player1Name='Player1', player1Score=0, player2Name='Bot', player2Score=0){
+    
+    playerStats (player1Name, player1Score, 1);
+    playerStats (player2Name, player2Score, 2);
+
+} */
+
+/* * função refatorada (2) ... */
 function updateByMatches(){
     
     playerStats(player_list[player1], 1);
@@ -1413,12 +1797,33 @@ function updateByMatches(){
 
 }
 
+/**
+ * Atualiza pontuação do jogador no cardStats
+ * 
+ * Parâmetros de entrada: playerName < string > , playerScore < int >, PlayerOrder < int >
+ * 
+ * playerName: Nome do jogador que deverá aparecer no card
+ * 
+ * playerScore: Score do jogador que deverá aparecer no card
+ * 
+ * PlayerOrder: Qual jogador está sendo referenciado (1 ou 2)
+ */
+
+/* nction playerStats(playerName, playerScore, playerOrder, player_round_wins = -1) {
+
+    let playerStats = document.getElementById ('player'+ playerOrder + 'Stats'); // Nome: pontos
+    
+    playerStats.textContent = playerName + ': ' + playerScore + ' Pontos';
+    pl// ayerStats.textContent = `${playerName}:\n  Pontos: ${playerScore}\n  Rodadas ganhas: ${player_round_wins}`
+}
+ */
+
 /* * função refatorada... */
-function playerStats(player, playerOrder){
+function playerStats(player, playerOrder) {
 
     let playerStats = document.getElementById('player'+ playerOrder + 'Stats'); // Nome: pontos
     
-    
+    // playerStats.textContent = playerName + ': ' + playerScore + ' Pontos';
     playerStats.innerHTML = 
     `${player.name}:<br>
         Pontos da Partida: ${player.score}<br>
@@ -1435,16 +1840,16 @@ function playerStats(player, playerOrder){
  * 
  * Valor Default: 1
  */
-function turnsStats(turn = 1){
+function turnsStats (turn = 1){
 
-    let turns = document.getElementById('turns');
+    let turns = document.getElementById ('turns');
     
     turns.textContent = 'Turno: ' + turn;
 }
 
 
 /**
- * Atualiza as peças no bolo(peças restantes) no cardStats
+ * Atualiza as peças no bolo (peças restantes) no cardStats
  * 
  * Parâmetros de entrada: remainingPieces < int >
  * 
@@ -1452,9 +1857,9 @@ function turnsStats(turn = 1){
  * 
  * Valor Default: 14
  */
-function restingPiecesStats(remainingPieces = 14){
+function restingPiecesStats (remainingPieces = 14) {
 
-    let amount = document.getElementById('restingPieces');
+    let amount = document.getElementById ('restingPieces');
     
     amount.textContent = remainingPieces;
 }
@@ -1466,20 +1871,20 @@ function restingPiecesStats(remainingPieces = 14){
  * 
  * Retorno: true < bool > ou console.error referente ao elemento que gerou o erro
  */
-function canDisplayResults(){
+function canDisplayResults (){
 
     let matchCardInner = document.getElementById('matchCardInner');
     let gameCardInner = document.getElementById('gameCardInner');
 
-    if(matchCardInner.children.length == 0 && gameCardInner.children.length == 0){
+    if (matchCardInner.children.length == 0 && gameCardInner.children.length == 0){
         return true;
     }
 
-    else if(matchCardInner.children.length != 0){
+    else if (matchCardInner.children.length != 0){
         console.error('Need to display match overlay off')
     }
 
-    else if(gameCardInner.children.length != 0){
+    else if (gameCardInner.children.length != 0){
         console.error('Need to game display overlay off')
     }
 }
@@ -1495,9 +1900,9 @@ function canDisplayResults(){
  * 
  * Necessário chamar a função displayOverlayMatchOff para retirar esse overlay
  */
-function displayOverlayMatchOn(player = 'unknown player', score = '0x1337'){
+function displayOverlayMatchOn (player = 'unknown player', score = '0x1337'){
 
-    if(canDisplayResults()){
+    if (canDisplayResults()){
 
         // =============== //
         // Create Elements //
@@ -1515,13 +1920,13 @@ function displayOverlayMatchOn(player = 'unknown player', score = '0x1337'){
         // ==== //
 
 
-        btn.setAttribute('onclick', 'reset_match();') //(...) use this button to reset_match
+        btn.setAttribute ('onclick', 'reset_match();') // (...) use this button to reset_match
         btn.textContent = 'Continue'
         
         cardText.textContent =`O vencedor desse round é ${player} com um total de ${score} pontos`;
 
-        matchCardInner.appendChild(cardText);
-        matchCardInner.appendChild(btn);
+        matchCardInner.appendChild (cardText);
+        matchCardInner.appendChild (btn);
         
         card.classList.remove('classNone');
     }
@@ -1538,9 +1943,9 @@ function displayOverlayMatchOn(player = 'unknown player', score = '0x1337'){
  * 
  * Necessário chamar a função displayOverlayGameOff para retirar esse overlay
  */
-function displayOverlayGameOn(player = 'unkn0wn pl4yer', score = '0x1337'){
+function displayOverlayGameOn (player = 'unkn0wn pl4yer', score = '0x1337'){
 
-    if(canDisplayResults()){
+    if (canDisplayResults()){
 
         // =============== //
         // Create Elements //
@@ -1558,13 +1963,13 @@ function displayOverlayGameOn(player = 'unkn0wn pl4yer', score = '0x1337'){
         // ==== //
 
 
-        btn.setAttribute('onclick', 'reset_game();');
+        btn.setAttribute ('onclick', 'reset_game();');
         btn.textContent = 'Voltar ao Menu';
         
         cardText.textContent =`O vencedor do jogo é ${player} com um total de ${score} pontos`;
 
-        gameCardInner.appendChild(cardText);
-        gameCardInner.appendChild(btn);
+        gameCardInner.appendChild (cardText);
+        gameCardInner.appendChild (btn);
         
         card.classList.remove('classNone');
     }
@@ -1578,7 +1983,7 @@ function displayOverlayMatchOff(){
 
     let cardInner = document.getElementById('matchCardInner');
 
-    removeChild(cardInner)
+    removeChild (cardInner)
 }
 
 /** * Retira o Overlay do >> jogo << da tela */
@@ -1589,17 +1994,20 @@ function displayOverlayGameOff(){
 
     let cardInner = document.getElementById('gameCardInner');
 
-    removeChild(cardInner)
+    removeChild (cardInner)
 }
 
 /**
  * Apaga todos os filhos do elemento passado como parâmetro
  * 
- * Parâmetro de entrada:(parent)
+ * Parâmetro de entrada: (parent)
  * 
  * parent: elemento do < DOM >
  */
 function removeChild(parent){
+
+    // console.log (parent.children.length)
+
     for(let i = 0; i <= parent.children.length; i++){
 
         let child = parent.children[0]
@@ -1615,7 +2023,7 @@ function continueGame(){
 
 /** * Chama o displayOverlayGameOff */
 function resetGame(){
-    displayOverlayGameOff()
+    displayOverlayGameOff ()
 }
 
 /** */
@@ -1635,17 +2043,21 @@ function references(id){
 /**  */
 function setUnview(piece_div){
 
-    for(let i = 0; i < piece_div.children.length; i++){
+    for (let i = 0; i < piece_div.children.length; i++) {
 
+        // let subStr = 'playable'
+        // console.log (piece_div.getAttributeNode("class").value)
+
+        
         let pieces = piece_div.children[i]
         pieces.setAttribute('style', 'border: unset')
 
 
-        for(let j = 0; j < pieces.children.length; j++){
+        for (let j = 0; j < pieces.children.length; j++){
 
             let svgs = pieces.children[j]
             
-            svgs.classList.add('classNone')
+            svgs.classList.add ('classNone')
         }
     }
 
@@ -1663,10 +2075,12 @@ function drag(piece){
     piece.classList.add('dragging'); 
 }
 
-function ondragendEvent(el){
+
+function ondragendEvent (el) {
     el.classList.remove('dragging');
     el.style.cursor = 'grab';
 }
+
 
 /** Executa movimentação da peça no back e no front */
 async function drop(side){ // [drop_event]
@@ -1675,14 +2089,16 @@ async function drop(side){ // [drop_event]
         return false; // se a jogada for invalida ou o jogo tiver terminado aborta o resto da execução
     }
 
-    // muda de turno(para o bot) & atualiza os status do jogo
-    change_player();
-        
-    opponent_playing_warning_on();
-    await bot_play(); // bot faz sua jogada e muda de volta para o player.
-    opponent_playing_warning_off();
 
-    if(debugMode){
+    // muda de turno (para o bot) & atualiza os status do jogo
+    change_player();
+    
+    // pause(pause_bot_flag);
+    opponent_playing_warning_on(); // (...) broken!
+    await bot_play(); // bot faz sua jogada e muda de volta para o player.
+    opponent_playing_warning_off(); // (...) broken!
+
+    if (debugMode){
         console.log("drop() function: [end reached]");
     }
 
@@ -1696,11 +2112,11 @@ async function drop(side){ // [drop_event]
  * 
  * side: lado que a peça deverá ser colocada na mesa
 */
-function addToTable(side){
+function addToTable (side){
 
     let id = parseInt(masterPiece.id.slice(6), 10);
 
-    if(current_player.hand[id].value[left] == current_player.hand[id].value[right]){
+    if (current_player.hand[id].value[left] == current_player.hand[id].value[right]){
         masterPiece.setAttribute('class', 'piece UsableRectangleH');
     }
 
@@ -1708,17 +2124,18 @@ function addToTable(side){
         masterPiece.setAttribute('class', 'piece UsableRectangleW');
     }
     
-    if(side == left){
+    if (side == left){
         containerTable.prepend(masterPiece);
     }
     
-    else if(side == right){
+    else if (side == right){
         containerTable.appendChild(masterPiece);
     }
+
 }
 
 /** Apaga o menu de seleção de modo de jogo */
-function hideModeMenu(){  
+function hideModeMenu (){  
     let menu = document.querySelector('#menu');
     menu.style.display = "none";
 }
@@ -1726,76 +2143,77 @@ function hideModeMenu(){
 /** Mostra Componentes que devem aparecer após iniciar o game */
 function displayGame(){
 
-    for(let obj in gameComponentsList){   
+    for (let obj in gameComponentsList) {   
 
         let k = document.querySelectorAll(obj);
-        
-        for(let i = 0; i < gameComponentsList[obj]; i++){
-            k[i].classList.remove('classNone');
-            console.log();
+            
+            for (let i = 0; i < gameComponentsList[obj]; i++ ){
+                
+                k[i].classList.remove('classNone');
+                console.log ()
         }
     }
 }
 
 /** Mostra o menu de seleção de modo de jogo */
-function showModeMenu(){  
+function showModeMenu (){  
     let menu = document.querySelector('#menu');
     menu.style.display = "flex";
 }
 
 /** Mostra o card anterior */
-function prevCard(btn){
+function prevCard (btn){
     let card = btn.parentNode.parentNode
     let cardParent = card.parentNode
     let id = parseInt(card.id.slice(10), 10) -1;
 
-    if(id > 0){ // Se pode voltar
+    if (id > 0){ // Se pode voltar
         card.classList.toggle('classNone');
         cardParent.children[id-1].classList.toggle('classNone');
     }
 
     else {
-        console.error('Não tem mais cards para tras');
+        console.error ('Não tem mais cards para tras');
         return;
     }   
 }
 
 /** Mostra o próximo card */
-function nextCard(btn){
+function nextCard (btn){
 
     let card = btn.parentNode.parentNode
     let cardParent = card.parentNode
     let id = parseInt(card.id.slice(10), 10) -1;
 
-    if( id < cardParent.children.length - 1 ){  // Se pode avançar
+    if ( id < cardParent.children.length - 1 ){  // Se pode avançar
         card.classList.toggle('classNone');
         cardParent.children[id+1].classList.toggle('classNone');
     }
     
     else {
-        console.error('Não tem mais cards para frente');
+        console.error ('Não tem mais cards para frente');
         return;
     }
 }
 
 /** Retorna ao menu inicial */
-function returnToMenuByHowToPlay(){
-    displayHowToPlay();
-    showModeMenu()
+function returnToMenuByHowToPlay (){
+    displayHowToPlay ();
+    showModeMenu ()
 }
 
-function returnToMenuByOptions(){
-    displayOptionsMenu();
-    showModeMenu()
+function returnToMenuByOptions (){
+    displayOptionsMenu ();
+    showModeMenu ()
 }
 
 
 /** Mostra a aba de como jogar o dominó */
-function displayHowToPlay(){
+function displayHowToPlay (){
     document.getElementById('howToPlay').classList.toggle('classNone');
 }
 
-function displayOptionsMenu(){
+function displayOptionsMenu() {
     document.getElementById('options').classList.toggle('classNone');
 }
 
@@ -1810,6 +2228,7 @@ function initGame(mode){
             displayGame();
 
             view_bot_hand = false;
+            // reset_game(mode);
             game_mode = "pvb";
 
 
@@ -1825,6 +2244,8 @@ function initGame(mode){
             view_bot_hand = true;
             game_mode = "bvb";
 
+            // reset_game(mode);
+            // dualBot = true;
             bvb_flow();
 
             break;
@@ -1840,6 +2261,9 @@ function initGame(mode){
 
             break;
     }
+
+    // createCard (
+    // game(mode);
 }
 
 /**
@@ -1849,11 +2273,11 @@ function initGame(mode){
  * 
  * A definição da orientação da peça é dada pela classe side, sendo elas: Up, Down, Left e Ritgh
  * 
- * >( Essa função não define classe de permanencia da peça como a table) 
+ * > ( Essa função não define classe de permanencia da peça como a table) 
  * 
- * >( A classe de permanencia da peça deverá ser definida após ela ser gerada)
+ * > ( A classe de permanencia da peça deverá ser definida após ela ser gerada)
  */
-function generateTablePiece(value1, value2){
+function generateTablePiece (value1, value2){
 
 
     // ======================== //
@@ -1869,18 +2293,18 @@ function generateTablePiece(value1, value2){
     // ================== //
 
 
-    let child1 = document.createElement('div');     // Cria uma div(será SideUp)
-    parentPiece.appendChild(child1)                // Tornna essa div descendente de parentPiece
+    let child1 = document.createElement('div');     // Cria uma div (será SideUp)
+    parentPiece.appendChild (child1)                // Tornna essa div descendente de parentPiece
 
-    let child2 = document.createElement('div');     // Cria uma div(será SideDown)
-    parentPiece.appendChild(child2)                // Tornna essa div descendente de parentPiece
+    let child2 = document.createElement('div');     // Cria uma div (será SideDown)
+    parentPiece.appendChild (child2)                // Tornna essa div descendente de parentPiece
 
 
     // ============================== //
     // Verifica se tem números iguais //
     // ============================== //
 
-    if(value1 == value2){
+    if (value1 == value2) {
 
         // ======= //
         // Side Up //
@@ -1940,7 +2364,7 @@ function generateTablePiece(value1, value2){
             break;
     }
     
-    child1.appendChild(svg1);                       // Tornna esse svg descendente de child1
+    child1.appendChild (svg1);                       // Tornna esse svg descendente de child1
 
     // =========== //
     // Def do svg2 //
@@ -1984,7 +2408,7 @@ function generateTablePiece(value1, value2){
  * 
  * Atualmente admite como parâmetros internos os valores dos lados a ser gerada via prompt, mudar para peça da hand.
  * 
- * Ordem de escolha:( sideLeft, sideRight ) ou( sideUp, sideDown ).
+ * Ordem de escolha: ( sideLeft, sideRight ) ou ( sideUp, sideDown ).
  * 
  * Parametros aceitos atualmente: [0, 1, 2, 3, 4, 5, 6]
 */
@@ -1998,36 +2422,64 @@ function createTablePiece(){ // [Daniel]
     let userInput2 = prompt("Insira outro valor:");             // Entrada de Usuário 2
     userInput2 = parseInt(userInput2, 10);                      // Seta a entrada como inteiro
 
-    let piece = generateTablePiece(userInput1,userInput2);
+    let piece = generateTablePiece (userInput1,userInput2);
 
-    if(userInput1 == userInput2){                              // Peça na Vertical
+    if (userInput1 == userInput2){                              // Peça na Vertical
 
-        piece.setAttribute('class', 'piece UsableRectangleH'); // Seta a classe de peça na Vertical(height)
+        piece.setAttribute ('class', 'piece UsableRectangleH'); // Seta a classe de peça na Vertical (height)
     }
     
     else {   
 
-        piece.setAttribute('class', 'piece UsableRectangleW'); // Seta a classe de peça na Horizontal(width)
+        piece.setAttribute ('class', 'piece UsableRectangleW'); // Seta a classe de peça na Horizontal (width)
     }
 
     return piece
 }
 
 
-function set_piece_table_svg(){
+/** 
+ * Coloca uma peça na table 
+ * 
+ * Atualemente admite como parâmetro interno o lado a ser colocado via prompt, mudar para parâmetro intrinseco da peça
+ *
+ * Parametros aceitos atualmente: [L] ou [R]
+*/
+function updateTable(){
 
-    let piece = createTablePiece();
+    let piece = createTablePiece ();
     let tableSide = prompt("Insira um lado: [L] ou [R]");
 
     tableSide = tableSide.toLowerCase();
 
-    if(tableSide == 'l'){
-        containerTable.prepend(piece);
-    } else if(tableSide == 'r') {
+    if (tableSide == 'l'){
+        containerTable.prepend (piece);
+    }
+
+    else if (tableSide == 'r'){
         
-        containerTable.appendChild(piece);
+        containerTable.appendChild (piece);
     }
 }
+
+
+function set_piece_table_svg (){
+
+    let piece = createTablePiece ();
+    let tableSide = prompt("Insira um lado: [L] ou [R]");
+
+    tableSide = tableSide.toLowerCase();
+
+    if (tableSide == 'l'){
+        containerTable.prepend (piece);
+    }
+
+    else if (tableSide == 'r'){
+        
+        containerTable.appendChild (piece);
+    }
+}
+
 
 /**
  * Gera uma peça a partir dos parâmetros de entrada
@@ -2036,11 +2488,11 @@ function set_piece_table_svg(){
  * 
  * A definição da orientação da peça é dada pela classe side, sendo elas: Up, Down, Left e Ritgh
  * 
- * >( Essa função não define classe de permanencia da peça, como hand ou table) 
+ * > ( Essa função não define classe de permanencia da peça, como hand ou table) 
  * 
- * >( A classe de permanencia da peça deverá ser definida após ela ser gerada)
+ * > ( A classe de permanencia da peça deverá ser definida após ela ser gerada)
  */
-function generateHandPiece(value1, value2){
+function generateHandPiece (value1, value2){
 
 
     // ======================== //
@@ -2056,11 +2508,11 @@ function generateHandPiece(value1, value2){
     // ================== //
 
 
-    let child1 = document.createElement('div');     // Cria uma div(será SideUp)
-    parentPiece.appendChild(child1)                // Tornna essa div descendente de parentPiece
+    let child1 = document.createElement('div');     // Cria uma div (será SideUp)
+    parentPiece.appendChild (child1)                // Tornna essa div descendente de parentPiece
 
-    let child2 = document.createElement('div');     // Cria uma div(será SideDown)
-    parentPiece.appendChild(child2)                // Tornna essa div descendente de parentPiece
+    let child2 = document.createElement('div');     // Cria uma div (será SideDown)
+    parentPiece.appendChild (child2)                // Tornna essa div descendente de parentPiece
 
 
     // ============================== //
@@ -2111,7 +2563,7 @@ function generateHandPiece(value1, value2){
             break;
     }
     
-    child1.appendChild(svg1);                       // Tornna esse svg descendente de child1
+    child1.appendChild (svg1);                       // Tornna esse svg descendente de child1
 
     // =========== //
     // Def do svg2 //
@@ -2150,7 +2602,7 @@ function generateHandPiece(value1, value2){
 }
 
 /** Cria SVG da peça 6 */
-function createSVG_6(){  
+function createSVG_6() {  
 
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute('width', defaultSize);
@@ -2219,7 +2671,7 @@ function createSVG_6(){
 }
 
 /** Cria SVG da peça 5 */ 
-function createSVG_5(){
+function createSVG_5() {  
 
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute('width', defaultSize);
@@ -2290,7 +2742,7 @@ function createSVG_5(){
 } 
 
 /** Cria SVG da peça 4 */
-function createSVG_4(){  
+function createSVG_4() {  
 
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute('width', defaultSize);
@@ -2350,7 +2802,7 @@ function createSVG_4(){
 } 
 
 /** Cria SVG da peça 3 */
-function createSVG_3(){
+function createSVG_3() {  
 
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute('width', defaultSize);
@@ -2400,11 +2852,12 @@ function createSVG_3(){
     circle3.setAttribute('fill', 'black');
     svg.appendChild(circle3);
     
+
     return svg;
 } 
 
 /** Cria SVG da peça 2 */
-function createSVG_2(){
+function createSVG_2() {  
 
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute('width', defaultSize);
@@ -2445,15 +2898,17 @@ function createSVG_2(){
 }
 
 /** Cria SVG da peça 1 */
-function createSVG_1(){
+function createSVG_1() {  
 
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute('width', defaultSize);
     svg.setAttribute('height', defaultSize);
+
     
         // =========== //
         // Set Circles //
         // =========== //
+
 
     let circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     circle1.setAttribute('cx', defaultMetade);
@@ -2462,15 +2917,18 @@ function createSVG_1(){
     circle1.setAttribute('fill', 'black');
     svg.appendChild(circle1);
     
+
     return svg;
+
 } 
 
 /** Cria SVG da peça 0 */
-function createSVG_0(){
+function createSVG_0() {  
     
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute('width', defaultSize);
     svg.setAttribute('height', defaultSize);
+
 
     return svg;
 }
@@ -2483,48 +2941,45 @@ function createSVG_0(){
 // |        Gabriel-Begin        | //  
 // =============================== //
 
-
-/** 
- * Coloca uma peça na table 
- * 
- * Atualemente admite como parâmetro interno o lado a ser colocado via prompt, mudar para parâmetro intrinseco da peça
- *
- * Parametros aceitos atualmente: [L] ou [R]
-*/
 function update_table(value1, value2, side, player){ // [Gabriel(adaptação)]
 
     let piece = create_table_piece(value1, value2);
 
-    if(player == 'Bot-1' || player == 'Bot-2' || player == 'Bot'){
+    if (player == 'Bot-1' || player == 'Bot-2' || player == 'Bot') {
         piece.classList.add(player + 'Played')
-    } else if(player != 'Bot-1' && player != 'Bot-2' && player != 'Bot') {
+    }
+
+    else if (player != 'Bot-1' && player != 'Bot-2' && player != 'Bot'){
         piece.classList.add('PlayerPlayed')
     }
 
-    if(side === left){
-        containerTable.prepend(piece);
-    } else if(side === right) {
-        containerTable.appendChild(piece);
+
+    if (side === left){
+        containerTable.prepend (piece);
+    }
+
+    else if (side === right){
+        containerTable.appendChild (piece);
     }
 }
 
 function create_table_piece(value1, value2){ // [Gabriel(adaptação)]
 
-    let piece = generateTablePiece(value1, value2);
+    let piece = generateTablePiece (value1, value2);
 
-    if(value1 == value2){ // Peça na Vertical
-        piece.setAttribute('class', 'piece UsableRectangleH'); // Seta a classe de peça na Vertical(height)
+    if (value1 == value2){ // Peça na Vertical
+        piece.setAttribute ('class', 'piece UsableRectangleH'); // Seta a classe de peça na Vertical (height)
     } else {  
-        piece.setAttribute('class', 'piece UsableRectangleW'); // Seta a classe de peça na Horizontal(width)
+        piece.setAttribute ('class', 'piece UsableRectangleW'); // Seta a classe de peça na Horizontal (width)
     }
 
     return piece
 }
-
 function players_cannot_play(){
-    
+    // player_list[player1].update_all();
+    // player_list[player2].update_all();
     everyone_update_all();
-    if(((player_list[player1].can_play === false) &&(player_list[player2].can_play === false)) &&(shop_is_empty() === true)){
+    if(((player_list[player1].can_play === false) && (player_list[player2].can_play === false)) && (shop_is_empty() === true)){
         return true;
     } else {
         return false;
@@ -2532,6 +2987,7 @@ function players_cannot_play(){
 }
 
 async function reset_match(){
+    // alert("will reset match");
 
     // reset turn counter
     turn_counter = 1;
@@ -2556,8 +3012,9 @@ async function reset_match(){
     //  reselect going first
     current_player = going_first();
 
-    // if bot, make the first move(?)
+    // if bot, make the first move (?)
     if(current_player.input_type === "Bot" && botInit){
+        // pause(pause_bot_flag);
         opponent_playing_warning_on();
         await bot_play(); // Bot faz primeira jogada
         opponent_playing_warning_off();
@@ -2613,6 +3070,7 @@ async function draw_piece_button(){ // compra uma peça para o jogador humano pe
         alert("Bolo vazio!");
         console.log("shop already empty");
         change_player();
+        // pause(pause_bot_flag);
         opponent_playing_warning_on();
         await bot_play();
         opponent_playing_warning_off();
@@ -2629,6 +3087,7 @@ async function draw_piece_button(){ // compra uma peça para o jogador humano pe
             alert("Bolo vazio!");
             console.log("shop already empty");
             change_player();
+            // pause(pause_bot_flag);
             opponent_playing_warning_on();
             await bot_play();
             opponent_playing_warning_off();
@@ -2655,13 +3114,23 @@ function draw_piece_button_auto_highlight(){
 
 function draw_piece_button_highlight_on(){
     
+    // modified highlight:
+    // color: #80ff80;
+    // border: 4px solid #80ff80;
+
     let button = document.getElementById("drawPieceBtn");
 
     button.style.color = "#80ff80";
     button.style.border = "4px solid #80ff80";
+
 }
 
 function draw_piece_button_highlight_off(){
+
+    // start
+    // color: #68b2f8;
+    // border: 1px solid #ffffff2e;
+
     let button = document.getElementById("drawPieceBtn");
 
     button.style.color = "#68b2f8";
@@ -2679,8 +3148,7 @@ function update_status_window_all(){
     updateByMove(shop.length);
 
     updateByMatches();
-    update_round_counter_visual();
-}
+    update_round_counter_visual();}
 
 function clear_table(){
     let table_div = document.getElementById("table");
@@ -2696,7 +3164,7 @@ function clear_shop(){
     shop = new Array();
 }
 
-/** * já usa as variaveis globais para configurar o valor limite maximo e minimo para as peças */
+// já usa as variaveis globais para configurar o valor limite maximo e minimo para as peças
 function generate_shop(){
     shop = new Array();
     generate_pile(shop, piece_min_value_limit, piece_max_value_limit);
@@ -2709,18 +3177,18 @@ function shuffle_shop(){
 
 function block_everyone_not_playing(){
     
-    if(debugMode){
+    if (debugMode){
         console.log("blocking everyone not playing");
     }
     for(let i = 0; i < player_list.length; i++){
         if(player_list[i] == current_player){
-            if(debugMode){
+            if (debugMode){
                 console.log(`${player_list[i].name} IS current_player`);
             }
             player_list[i].update_all();
             
         } else {
-            if(debugMode){
+            if (debugMode){
                 console.log(`${player_list[i].name} NOT current_player`);
             }
             player_list[i].block_all_draggables();
@@ -2740,10 +3208,10 @@ function human_play(side){
 
     // verifica se ganhou a partida
     if(match_over()){
-        if(debugMode){
+        if (debugMode){
             console.log("[match-over-reached!]");
         }
-        return false;
+        return false; // se 
     }
     
     return true;
@@ -2760,7 +3228,7 @@ function human_play(side){
  * se conseguiu fazer sua jogada & o jogo não acabou, então verifica se o proximo jogador pode jogar.
  * se o proximo jogador não pode jogar, então esse jogador joga de novo
 */
-async function bot_play(delay = bot_default_delay){
+async function bot_play(delay = bot_default_delay){ // (...) broken
     
 
     while(pause_bot_flag){ // pause checkpoint 1
@@ -2770,7 +3238,7 @@ async function bot_play(delay = bot_default_delay){
     let repeat_play;
     do {
         // verifica se o bot precisa & pode comprar
-        while((current_player.can_play === false) &&(shop_is_empty() === false)){
+        while((current_player.can_play === false) && (shop_is_empty() === false)){
             // Bot compra peça até poder jogar ou até não poder mais comprar
             current_player.draw_piece(1);
             everyone_update_all();
@@ -2815,15 +3283,15 @@ async function bot_play(delay = bot_default_delay){
 
 function opponent_playing_warning_toggle(){
     let stats = document.getElementById('gameStats');
-    console.log(stats)
+    console.log (stats)
 
     stats.classList.toggle('classNone');
 
-    console.log(stats);
+    console.log (stats);
 }
 
 function opponent_playing_warning_on(){
-    
+    // document.getElementById('gameStats').classList.remove('classNone');
 
     switch(game_mode){
         case "pvb":
@@ -2844,21 +3312,25 @@ function opponent_playing_warning_on(){
 }
 
 function opponent_playing_warning_off(){
-   
+    // document.getElementById('gameStats').classList.add('classNone');
+    
+    // let warning = document.getElementById('gameStats');
+    // warning.style.display = "none";
+    // return warning.style.display;
 
     switch(game_mode){
         case "pvb":
             let warning = document.getElementById('gameStats');
             warning.style.display = "none";
             return warning.style.display;
-            
+            // break;
         case "bvb":
             return "skip warning - bvb mode";
-            
+            // break;
         default:
             console.error("unforceen behavior: opponent_playing_warning_on()");    
             return;
-           
+            // break;
     }
 
 }
@@ -2884,7 +3356,7 @@ async function pvb_flow(){
     update_status_window_all();
 
     if(current_player.input_type === "Bot" && botInit){
-        
+        // pause(pause_bot_flag);
         opponent_playing_warning_on();
         await bot_play(); // Bot faz primeira jogada
         opponent_playing_warning_off();
@@ -2951,7 +3423,7 @@ function show_main_menu_back(){
 
 }
 
-function how_many_pieces_generated(min = 0, max = 6){ // gera a pilha inicial de peças. 
+function how_many_pieces_generated(min = 0, max = 6) { // gera a pilha inicial de peças. 
 
     let result = 0;
 
@@ -2970,6 +3442,29 @@ function how_many_pieces_generated(min = 0, max = 6){ // gera a pilha inicial de
 
 function update_round_counter_visual(){
     document.getElementById('round_counter').textContent = `Rodada: ${round_counter}`;
+
+}
+
+
+async function pause_bot_button(){
+    
+    alert("Pausado! Para despausar o jogo clique em ok");
+
+    // switch(pause_bot_flag){
+    //     case false: // jogo rodando, clicar pausa o jogo
+    //         pause_bot_flag = true;
+    //         document.getElementById("pause_bot_button").textContent = "Continuar";
+    //         break;
+    //     case true: // jogo pausado, clicar continua o jogo
+    //         pause_bot_flag = false;
+    //         document.getElementById("pause_bot_button").textContent = "Parar";
+            
+    //         break;
+    // }
+
+    // alert(`pause-bot-state: ${pause_bot}`);
+    // id="pause_bot_button"
+
 }
 
 async function pause_bot_flag_switch(){
@@ -2996,6 +3491,7 @@ async function pause_bot_flag_switch(){
     }
 }
 
+
 function empate_scenario_on(){
     if(canDisplayResults()){
         // =============== //
@@ -3011,21 +3507,82 @@ function empate_scenario_on(){
         // Sets //
         // ==== //
         
-        btn.setAttribute('onclick', 'reset_match();') //(...) use this button to reset_match
+        btn.setAttribute ('onclick', 'reset_match();') // (...) use this button to reset_match
         btn.textContent = 'Continue'
         
         cardText.textContent = `Empate! Ninguem ganhou nada esta rodada!`;
     
-        matchCardInner.appendChild(cardText);
-        matchCardInner.appendChild(btn);
+        matchCardInner.appendChild (cardText);
+        matchCardInner.appendChild (btn);
         
         card.classList.remove('classNone');        
     }
 }
 
 function empate_scenario_off(){
-    displayOverlayMatchOff();
+    let card = document.getElementById('matchCard');
+    card.classList.add('classNone');
+
+    let cardInner = document.getElementById('matchCardInner');
+
+    removeChild (cardInner)
 }
+
+/* 
+
+function displayOverlayMatchOff(){
+    
+    let card = document.getElementById('matchCard');
+    card.classList.add('classNone');
+
+    let cardInner = document.getElementById('matchCardInner');
+
+    removeChild (cardInner)
+}
+
+*/
+
+
+
+
+/* function displayOverlayMatchOn (player = 'unknown player', score = '0x1337'){
+
+    if (canDisplayResults()){
+
+        // =============== //
+        // Create Elements //
+        // =============== //
+
+
+        let card = document.getElementById('matchCard');
+        let matchCardInner = document.getElementById('matchCardInner');
+        let cardText = document.createElement('h1');
+        let btn = document.createElement('button');
+
+        
+        // ==== //
+        // Sets //
+        // ==== //
+
+
+        btn.setAttribute ('onclick', 'reset_match();') // (...) use this button to reset_match
+        btn.textContent = 'Continue'
+        
+        cardText.textContent =`O vencedor desse round é ${player} com um total de ${score} pontos`;
+
+        matchCardInner.appendChild (cardText);
+        matchCardInner.appendChild (btn);
+        
+        card.classList.remove('classNone');
+    }
+} */
+
+
+
+// {
+//     // rgb(0 188 46) // green
+//     // border: 1px solid rgb(75 255 0);
+// }
 
 // =============================== //
 // |        Gabriel-End          | //  
