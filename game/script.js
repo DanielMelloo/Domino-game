@@ -3210,6 +3210,11 @@ function human_play(side){
 */
 async function bot_play(delay = bot_default_delay){ // (...) broken
     
+
+    while(pause_bot_flag){
+        await sleep(0);
+    }
+
     let repeat_play;
     do {
         // verifica se o bot precisa & pode comprar
@@ -3264,19 +3269,47 @@ function opponent_playing_warning_toggle(){
 
 function opponent_playing_warning_on(){
     // document.getElementById('gameStats').classList.remove('classNone');
-    let warning = document.getElementById('gameStats');
-    warning.style.display = "block";
 
-    console.log(warning.style.display);
-    return warning.style.display;
+    switch(game_mode){
+        case "pvb":
+            let warning = document.getElementById('gameStats');
+            warning.style.display = "block";
+
+            console.log(warning.style.display);
+            return warning.style.display;
+            break;
+        case "bvb":
+            return "skip warning - bvb mode";
+            break;
+        default:
+            console.error("unforceen behavior: opponent_playing_warning_on()");    
+            return;
+            break;
+    }
 }
 
 function opponent_playing_warning_off(){
     // document.getElementById('gameStats').classList.add('classNone');
     
-    let warning = document.getElementById('gameStats');
-    warning.style.display = "none";
-    return warning.style.display;
+    // let warning = document.getElementById('gameStats');
+    // warning.style.display = "none";
+    // return warning.style.display;
+
+    switch(game_mode){
+        case "pvb":
+            let warning = document.getElementById('gameStats');
+            warning.style.display = "none";
+            return warning.style.display;
+            // break;
+        case "bvb":
+            return "skip warning - bvb mode";
+            // break;
+        default:
+            console.error("unforceen behavior: opponent_playing_warning_on()");    
+            return;
+            // break;
+    }
+
 }
 
 async function pvb_flow(){
@@ -3393,7 +3426,7 @@ function update_round_counter_visual(){
 }
 
 
-async function pause_bot_switch_button(){
+async function pause_bot_button(){
     
     alert("Pausado! Para despausar o jogo clique em ok");
 
@@ -3412,13 +3445,36 @@ async function pause_bot_switch_button(){
     // alert(`pause-bot-state: ${pause_bot}`);
     // id="pause_bot_button"
 
-} 
-
-
-{
-    // rgb(0 188 46) // green
-    // border: 1px solid rgb(75 255 0);
 }
+
+async function pause_bot_flag_switch(){
+    
+    let warning_prompt = document.querySelector("#gameStats");
+    let button_text = document.querySelector("#pause_bot_button").textContent;
+
+    switch(pause_bot_flag){
+        case false:
+            pause_bot_flag = true;
+            warning_prompt.textContent = "Jogo Pausado";
+            warning_prompt.classList.remove("classNone");
+            button_text = "Continuar";
+            break;
+        case true:
+            pause_bot_flag = false;
+            warning_prompt.classList.add("classNone");
+            warning_prompt.textContent = "Oponente Jogando...";
+            button_text = "Pausar";
+            break;
+        default:
+            pause_bot_flag = false;
+    }
+}
+
+
+// {
+//     // rgb(0 188 46) // green
+//     // border: 1px solid rgb(75 255 0);
+// }
 
 // =============================== //
 // |        Gabriel-End          | //  
