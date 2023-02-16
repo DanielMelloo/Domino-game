@@ -16,7 +16,7 @@
     --defaultTipCardSizeW: 50em;
     --defaultTipCardSizeH: 60vh;
 
-    --fontSize: x-large;
+    --fontSize: middle;
     --fontSize2: x-large;
     --fontSize3: xx-large;
 
@@ -142,7 +142,6 @@ body{
     
 }
 
-
 .menu {
     display: flex;
 
@@ -245,7 +244,6 @@ body{
     border-radius: 5px;
 }
 
-
 .hand .handSlot{
     margin: 0 2px 0 2px;
     background: white;
@@ -264,6 +262,7 @@ body{
 .PlayerPlayed{
     background-color: var(--player1-clr);
 }
+
 .BotPlayed{
     background-color: var(--player2-clr);
 }
@@ -275,7 +274,6 @@ body{
 .Bot-2Played {
     background-color: var(--player2-clr);
 }
-
 
 .UsableRectangleW{
     height: var(--default2xSize);
@@ -290,11 +288,6 @@ body{
     
     flex-direction: column;
 }
-
-
-
-
-
 
 .sideUp {
     width: var(--defaultSize);
@@ -336,11 +329,6 @@ body{
     rotate: 90deg;
 }
 
-
-
-
-
-
 .hand .handSlot .sideLeft, .hand .handSlot .sideRight{
     rotate: unset;
 }
@@ -355,8 +343,6 @@ body{
 
 }
 
-
-
 #dropArea{
     position: fixed;
     width: 100vw;
@@ -366,8 +352,6 @@ body{
     flex-direction: row;
 
 }
-
-
 
 .dropAreaInner{
     width: 100vw;
@@ -379,10 +363,6 @@ body{
 
     
 }   
-
-
-
-
 
 .card{
     position: fixed;
@@ -452,7 +432,6 @@ body{
 
 }
 
-
 .gameStats{
     display: flex;
     position: fixed;
@@ -463,9 +442,9 @@ body{
     margin: var(--marginCard);
 
     
-    width: var(--defaultCardStatsSize);
+    width: auto;
     height: auto; 
-    /* height: 20vh; */
+
 
     color: var(--color1);
 
@@ -481,7 +460,8 @@ body{
 }
 
 .gameStats h1 {
-    font-size: var(--fontSize2);
+    font-size: var(--fontSize);
+
 }
 
 .cardStats {
@@ -492,7 +472,8 @@ body{
     margin: var(--marginCard);
 
     
-    width: var(--defaultCardStatsSize);
+    /* min-width: var(--defaultCardStatsSize); */
+    width: auto;
     height: auto; 
 
     color: var(--color1);
@@ -510,6 +491,7 @@ body{
 
 .cardStats h1{
     font-size: var(--fontSize2);
+    font-size: var(--fontSize);
 }
 
 .howToPlay{
@@ -545,10 +527,6 @@ body{
     border-radius: 10px;
     border: 1px solid rgba( 255, 255, 255, 0.18 );
 }
-
-/* .tipsText{
-    height;
-} */
 
 .tipsText h1 {
     margin: 2rem;
@@ -666,7 +644,6 @@ body{
     align-items: center;
 }
 
-
 .choices {
     /* margin: var(--marginCard); */
     height: 100%;
@@ -678,7 +655,6 @@ body{
 
     align-items: start;
 }
-
 
 #pieceRefInner {
 
@@ -706,29 +682,6 @@ body{
     font-size: var(--fontSize3);
 }
 
-
-
-#drawPieceBtn{
-
-    margin: 20px;
-    padding: 10px;
-
-
-    font-size: var(--fontSize);
-    color: var(--color1);
-
-    background: rgba( 0, 0, 0, 0.35 );
-    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-    backdrop-filter: blur( 9px );
-    -webkit-backdrop-filter: blur( 9px );
-
-    border-radius: 25px;
-    border: 1px solid rgba( 255, 255, 255, 0.18 );
-
-    cursor: pointer;
-
-}
-  
 .buttonConteiner{
     
     display: flex;
@@ -749,14 +702,15 @@ body{
     width: 100%;
 }
 
-.btnDefalt{
+
+.btnDefault{
 
     margin: var(--marginCard);
     padding: calc(var(--marginCard)/2);
 
     width:auto;
 
-    font-size: var(--fontSize);
+    font-size: var(--fontSize2);
     color: var(--color1);
 
     background: rgba( 0, 0, 0, 0.35 );
@@ -765,11 +719,14 @@ body{
     -webkit-backdrop-filter: blur( 9px );
 
     border-radius: 25px;
+    
     border: 1px solid rgba( 255, 255, 255, 0.18 );
 
     cursor: pointer;
 
+    text-transform: capitalize;    
 }
+
 
 .optionBtn {
 
@@ -779,7 +736,7 @@ body{
 
     width:auto;
 
-    font-size: var(--fontSize);
+    font-size: var(--fontSize2);
     color: var(--color1);
 
     background: rgba( 0, 0, 0, 0.35 );
@@ -823,8 +780,6 @@ body{
     /* margin: var(--margin-btn); */
 }
   
-  
-  /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
 .slider::-webkit-slider-thumb {
     -webkit-appearance: none; 
     appearance: none;
@@ -881,11 +836,6 @@ body{
     height: 25vh;
 }
 
-/* #graphShow{
-
-} */
-
-
 .svgImg {
     stroke:var(--color1);
     width: 1em;
@@ -932,17 +882,19 @@ body{
 
 }
 
-
 #maxPoints:focus::placeholder {
     display: none;color:transparent;
 }
 
-/* Hover*/
 .allowHoverButton:hover {
     background-color: rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
 
+.allowHoverButtonOverlay:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+}
 
 #maxPoints[type="number"] {
     -webkit-appearance: textfield;
@@ -954,6 +906,7 @@ body{
 #maxPoints[type=number]::-webkit-outer-spin-button { 
     -webkit-appearance: none;
 }
+
 #maxPoints[type="number"]{
     outline:none;
     border-right: 0;
@@ -963,9 +916,6 @@ body{
     outline:none;
     cursor: pointer;
 }
-
-
-
 
 /* Select */
 
@@ -980,14 +930,11 @@ body{
     align-items: center;
 }
 
-
 /* GraphBox Animation */
-
 
 .showGraph > div #colpaseGraphBtn{
     rotate: -180deg;
 }
-
 
 #colpaseGraphBtn{
     transition: var(--btn-time);
@@ -1006,12 +953,9 @@ body{
     overflow: hidden;
 }
 
-
-
 #main ::-webkit-scrollbar{
     display: none;
 }
-
 
 .tooltipHover {
     position: relative;
@@ -1054,7 +998,6 @@ body{
     opacity: 1;
 }
 
-
 .tooltipHover {
     position: relative;
     display: inline-block;
@@ -1092,10 +1035,12 @@ body{
     opacity: 1;
 }
 
-
+.btnHighlight {
+    color: #80ff80;
+    box-shadow: inset 0 0 .75em 0.1em #80ff80;
+}
 
 ::-webkit-scrollbar {
-    /* width: 10px; */
     height: 5%;
 }
   
@@ -1115,8 +1060,6 @@ body{
     background: var(--color2);
 }
 
-
-
 .dragging {
     cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
@@ -1125,8 +1068,6 @@ body{
     user-select: none;
 }
 
-
-
 .dragging:active {
     cursor: grabbing;
     cursor: -moz-grabbing;
@@ -1134,15 +1075,9 @@ body{
     user-select: none;
 }
 
-
-
-
 .classNone {
     display: none;
 }
-
-
-
 
 /* Mobile View */
 @media screen and (max-width: 680px) {
@@ -1160,7 +1095,7 @@ body{
         --defaultTipCardSizeH: 40vh;
     
         
-        --fontSize: small;
+        --fontSize2: small;
         --fontSize2: smaller;
         --fontSize3: x-large;
 
@@ -1186,8 +1121,6 @@ body{
         top:0;
     }
 }
-
-
 
 /* ************************** */
 

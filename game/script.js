@@ -3,15 +3,14 @@ http://127.0.0.1:5500/game/game.html
 google.charts.load('current', {'packages':['corechart']});
 const element = document.querySelector("#main");
 
-
 // =============== //
 // Debug Variables //
 // =============== //
 
-
 let debugMode = false;
 let botDrag = false; // Só da pra usar quando o debug mode esta ativo
 let botInit = true;
+let speedNull = false;
 
 ////////////////////////////////////////
 // Consts:
@@ -52,6 +51,8 @@ let game_over_flag = false;
 let game_max_points = 100;
 
 let pause_bot_flag = false;
+
+let cantplay_by_draw = false;
 
 let hand_size; // quantidade inicial de peças
 
@@ -176,6 +177,9 @@ let cheats = [
     'createTablePieceWP()',
 ];
 
+if (speedNull){
+    bot_default_delay = 1;
+}
 
 ////////////////////////////////////////
 // classes:
@@ -325,10 +329,28 @@ class Player {
             if(debugMode){
                 console.log(this.name+"-buy: "+piece.string());
             }
+            if(shop_is_empty()){
+                document.querySelector('#drawPieceBtn').textContent = 'Vazio';
+                draw_piece_button_highlight_off();
+                console.log('>>>>>>>>>> Shop vazio! <<<<<<<<<<<<');
+                console.log("error: not enough pieces!");
+            }
             return true;
-        } else {
-            alert('Shop vazio!')
-            console.log("error: not enough pieces!");
+        } else { // nesse caso não teria peças o suficiente no bolo para comprar // (half-broken!)
+
+            // alert('Shop vazio!')
+            
+            // generic_overlay_warning_on('Shop vazio!', 'Confirmar', 'turn_cantplay_by_draw();');
+            
+            // while(cantplay_by_draw){
+            //     await sleep(0);
+            // }
+
+            // id: drawPieceBtn
+
+            
+            
+            
             return false;
         }
     }
@@ -779,6 +801,7 @@ function change_player(){
     current_player = next_player;
 
     everyone_update_all();
+    draw_piece_button_auto_highlight();
 }
 
 function bot_strategy(){
@@ -1014,6 +1037,10 @@ function drawPieceCurrentPlayer(){
     }
 }
 
+function turn_cantplay_by_draw(){
+    
+    cantplay_by_draw = !cantplay_by_draw;
+}
 
 /** * Função de testes com valores arbitrarios e aleatorios */
 function updateTableSP(){
@@ -1227,8 +1254,6 @@ function getDataForms(){
     
     loadSelectedMin(form[0][1]);
     loadSelectedHand(handLimitSize) ;   
-    
-    console.log('Daniel Log - getDataForms -  handLimitSize',  handLimitSize);
 
     
     // =================== //
@@ -1236,10 +1261,10 @@ function getDataForms(){
     // =================== //
 
     if(form[0][1] > form[1][1]){    // Min > Max value error
-        alert('O valor mínimo não pode ser maior que o valor máximo');
+        console.error('O valor mínimo não pode ser maior que o valor máximo');
         return;
     } else if(form[1][1] == form[0][1]) {  // Min == Max value error
-        alert('O valor mínimo não pode ser igual ao valor máximo');
+        console.error('O valor mínimo não pode ser igual ao valor máximo');
         return;
     } else {                              // Min value without error
 
@@ -1328,7 +1353,6 @@ function getMaxPoints(input){
 
 function difficultMode(){
     default_difficulty_mode = document.getElementById('difficultMode').value;
-    console.log('Daniel Log - difficultMode - dificulty_mode', default_difficulty_mode);
 }
 
 function botSpeed(){
@@ -1516,6 +1540,7 @@ function displayOverlayMatchOn(player = 'unknown player', score = '0x1337'){
 
 
         btn.setAttribute('onclick', 'reset_match();') //(...) use this button to reset_match
+        btn.classList.add('allowHoverButtonOverlay')
         btn.textContent = 'Continue'
         
         cardText.textContent =`O vencedor desse round é ${player} com um total de ${score} pontos`;
@@ -2596,7 +2621,6 @@ function everyone_update_all(){
     }
     update_status_window_all();
     block_everyone_not_playing();
-    draw_piece_button_auto_highlight();
     return true;
 }
 
@@ -2604,13 +2628,15 @@ async function draw_piece_button(){ // compra uma peça para o jogador humano pe
     
     if(player_list[player1].can_play){
         
-        alert('já tem peças jogaveis');
-        
+        // alert('já tem peças jogaveis');
+        generic_overlay_warning_on('Já tem peças jogaveis');
+        draw_piece_button_highlight_off();
         return false;
 
     } else if(shop_is_empty()){
         
-        alert("Bolo vazio!");
+        // alert("Bolo vazio!");
+        generic_overlay_warning_on('Bolo vazio!');
         console.log("shop already empty");
         change_player();
         opponent_playing_warning_on();
@@ -2623,10 +2649,17 @@ async function draw_piece_button(){ // compra uma peça para o jogador humano pe
         
         player_list[player1].draw_piece(1);
         everyone_update_all();
+
+        draw_piece_button_auto_highlight();
+
+        // if(current_player.can_play){
+        //     draw_piece_button_highlight_off();
+        // }
         
         if(shop_is_empty()){
         
-            alert("Bolo vazio!");
+            // alert("Bolo vazio!");
+            generic_overlay_warning_on('Bolo vazio!');
             console.log("shop already empty");
             change_player();
             opponent_playing_warning_on();
@@ -2641,11 +2674,13 @@ async function draw_piece_button(){ // compra uma peça para o jogador humano pe
 }
 
 function draw_piece_button_auto_highlight(){
+    
     if(current_player === player_list[player1]){
         switch(player_list[player1].can_play){
             case true:
                 draw_piece_button_highlight_off();
                 break;
+
             case false:
                 draw_piece_button_highlight_on();
                 break;
@@ -2657,16 +2692,13 @@ function draw_piece_button_highlight_on(){
     
     let button = document.getElementById("drawPieceBtn");
 
-    button.style.color = "#80ff80";
-    button.style.border = "4px solid #80ff80";
+    button.classList.add('btnHighlight')
 }
 
 function draw_piece_button_highlight_off(){
     let button = document.getElementById("drawPieceBtn");
 
-    button.style.color = "#68b2f8";
-    button.style.border = "1px solid #ffffff2e";
-    
+    button.classList.remove('btnHighlight') 
 }
 
 function sleep(ms){ 
@@ -2824,7 +2856,6 @@ function opponent_playing_warning_toggle(){
 
 function opponent_playing_warning_on(){
     
-
     switch(game_mode){
         case "pvb":
             let warning = document.getElementById('gameStats');
@@ -3026,6 +3057,68 @@ function empate_scenario_on(){
 function empate_scenario_off(){
     displayOverlayMatchOff();
 }
+
+function empate_scenario_on(){
+    if(canDisplayResults()){
+        // =============== //
+        // Create Elements //
+        // =============== //
+
+        let card = document.getElementById('matchCard');
+        let matchCardInner = document.getElementById('matchCardInner');
+        let cardText = document.createElement('h1');
+        let btn = document.createElement('button');
+        
+        // ==== //
+        // Sets //
+        // ==== //
+        
+        btn.setAttribute('onclick', 'reset_match();') //(...) use this button to reset_match
+        btn.textContent = 'Continue'
+        
+        cardText.textContent = `Empate! Ninguem ganhou nada esta rodada!`;
+    
+        matchCardInner.appendChild(cardText);
+        matchCardInner.appendChild(btn);
+        
+        card.classList.remove('classNone');        
+    }
+}
+
+function generic_overlay_warning_off(){
+    displayOverlayMatchOff();
+}
+
+function generic_overlay_warning_on(message, button_name = 'Voltar', button_action = 'generic_overlay_warning_off();'){
+    if(canDisplayResults()){
+        // =============== //
+        // Create Elements //
+        // =============== //
+
+        let card = document.getElementById('matchCard');
+        let matchCardInner = document.getElementById('matchCardInner');
+        let cardText = document.createElement('h1');
+        let btn = document.createElement('button');
+        
+        // ==== //
+        // Sets //
+        // ==== //
+        
+        btn.setAttribute('onclick', button_action); //(...) use this button to reset_match
+        btn.textContent = button_name;
+        
+        cardText.textContent = message;
+    
+        matchCardInner.appendChild(cardText);
+        matchCardInner.appendChild(btn);
+        
+        card.classList.remove('classNone');        
+    }
+}
+
+// 
+// 
+
 
 // =============================== //
 // |        Gabriel-End          | //  
