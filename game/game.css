@@ -380,9 +380,6 @@ body{
     
 }   
 
-.dropAreaInner:-moz-drag-over{
-    background-color: red;
-}
 
 
 
@@ -1120,22 +1117,27 @@ body{
 
 
 
-.dragging {
-    cursor: grab;  
-}
 
-.dragging:focus {
-    cursor: grab;    
-}
 
-.dragging:hover {
-    /* cursor: grab;    */
-    cursor: grab;   
-}
+/* 
 
-.dragging:-moz-drag-over {
-    /* cursor: grab;    */
-    cursor: grab;   
+    .dragging:hover {
+        /* cursor: grab;    
+        cursor: grab;   
+    }
+
+    .dragging{
+        cursor: grab;
+        cursor: -moz-grab;
+        cursor: -webkit-grab;
+    }
+
+*/
+
+.dragging:active, dragging:focus-within {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
 }
 
 

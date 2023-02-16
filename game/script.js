@@ -3231,7 +3231,7 @@ function human_play(side){
 async function bot_play(delay = bot_default_delay){ // (...) broken
     
 
-    while(pause_bot_flag){
+    while(pause_bot_flag){ // pause checkpoint 1
         await sleep(0);
     }
 
@@ -3248,6 +3248,9 @@ async function bot_play(delay = bot_default_delay){ // (...) broken
         if(current_player.can_play){
             // Bot faz sua jogada
             await sleep(delay);
+            while(pause_bot_flag){ // pause checkpoint 2
+                await sleep(0);
+            }
             bot_strategy();
             everyone_update_all();
         }
