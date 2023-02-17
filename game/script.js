@@ -79,7 +79,7 @@ let gameComponentsList = {
 // ===================================================== //
 
 
-const defaultSize = getComputedStyle(document.documentElement).getPropertyValue('--defaultSize').slice(1,3);
+let defaultSize = getComputedStyle(document.documentElement).getPropertyValue('--defaultSize').trim().slice(0,2);
 
 const default3 = defaultSize/15
 const default11 =(defaultSize*11)/45
@@ -336,17 +336,8 @@ class Player {
                 console.log("error: not enough pieces!");
             }
             return true;
-        } else { // nesse caso não teria peças o suficiente no bolo para comprar // (half-broken!)
+        } else { // nesse caso não teria peças o suficiente no bolo para comprar
 
-            // alert('Shop vazio!')
-            
-            // generic_overlay_warning_on('Shop vazio!', 'Confirmar', 'turn_cantplay_by_draw();');
-            
-            // while(cantplay_by_draw){
-            //     await sleep(0);
-            // }
-
-            // id: drawPieceBtn
             
             console.error(`[nesse caso não teria peças o suficiente no bolo para comprar]`);
             console.error(`pedido: ${quantity} | disponivel: ${shop.length}`);
